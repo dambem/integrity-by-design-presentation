@@ -1,0 +1,312 @@
+/* ============================================
+   Integrity by Design — Global Style System
+   Light-mode-first, professional, low-key
+
+   Design approach: background tint + shadow
+   for depth. Hairline borders for crispness.
+   Typography and icons carry semantic meaning.
+   ============================================ */
+
+:root {
+  /* Override Slidev theme primary */
+  --slidev-theme-primary: #d65321;
+
+  /* Primary accent */
+  --c-primary: #d65321;
+  --c-primary-light: #f0764a;
+  --c-primary-subtle: #fdf0ec;
+
+  /* Surfaces */
+  --c-surface: #ffffff;
+  --c-surface-raised: #fafafa;
+  --c-surface-muted: #f4f4f5;
+
+  /* Text hierarchy */
+  --c-text: #1a1a1a;
+  --c-text-secondary: #525252;
+  --c-text-muted: #737373;
+  --c-text-faint: #a3a3a3;
+
+  /* Semantic: danger */
+  --c-danger: #dc2626;
+  --c-danger-bg: #fef2f2;
+
+  /* Semantic: warning */
+  --c-warning: #d97706;
+  --c-warning-bg: #fffbeb;
+
+  /* Semantic: success */
+  --c-success: #16a34a;
+  --c-success-bg: #f0fdf4;
+
+  /* Borders — hairline for crispness */
+  --border-hairline: 1px solid color-mix(in srgb, var(--c-text) 6%, transparent);
+  --border-subtle: 1px solid color-mix(in srgb, var(--c-text) 10%, transparent);
+
+  /* Radii */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+
+  /* Shadows — layered for realism */
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.03), 0 0 0 1px rgb(0 0 0 / 0.02);
+  --shadow-card: 0 1px 3px rgb(0 0 0 / 0.04), 0 1px 2px -1px rgb(0 0 0 / 0.03), 0 0 0 1px rgb(0 0 0 / 0.02);
+  --shadow-elevated: 0 4px 16px -3px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.04);
+
+  /* Easing */
+  --ease-out: cubic-bezier(0.16, 1, 5, 1);
+  --ease-spring: cubic-bezier(5, 1.56, 0.64, 1);
+
+  /* Code blocks */
+  --slidev-code-background: #f7f7f8;
+  --slidev-code-foreground: #1a1a1a;
+  --slidev-slide-container-background: white;
+  --slidev-controls-foreground: #525252;
+}
+
+
+/* === GLOBAL TYPOGRAPHY === */
+
+h1, h2, h3 {
+  text-wrap: balance;
+}
+
+h1 {
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  letter-spacing: -0.01em;
+}
+
+
+/* === SLIDE LAYOUT OVERRIDES === */
+
+.slidev-layout {
+  background: var(--c-surface);
+  color: var(--c-text);
+}
+
+.slidev-layout.section {
+  background:
+    radial-gradient(ellipse at 70% 20%, color-mix(in srgb, var(--c-primary) 4%, transparent) 0%, transparent 60%),
+    linear-gradient(160deg, #fdfcfb 0%, #fdf0ec 100%);
+}
+
+
+/* === CARDS === */
+
+.card {
+  background: var(--c-surface-raised);
+  border: var(--border-hairline);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+}
+
+@keyframes card-lift {
+  0% {
+    box-shadow: var(--shadow-card);
+    transform: translateY(0);
+  }
+  100% {
+    box-shadow: var(--shadow-elevated);
+    transform: translateY(-1px);
+  }
+}
+
+.card {
+  animation: card-lift 0.4s var(--ease-out) 0.3s both;
+}
+
+.card--accent {
+  background: var(--c-primary-subtle);
+  border-color: color-mix(in srgb, var(--c-primary) 12%, transparent);
+}
+
+.card--lg {
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+}
+
+
+/* === CALLOUT BOXES === */
+/* Tinted background + thin left accent line */
+
+.callout-danger {
+  background: var(--c-danger-bg);
+  border: var(--border-hairline);
+  border-left: 3px solid color-mix(in srgb, var(--c-danger) 50%, transparent);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.callout-info {
+  background: var(--c-primary-subtle);
+  border: var(--border-hairline);
+  border-left: 3px solid color-mix(in srgb, var(--c-primary) 40%, transparent);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.callout-success {
+  background: var(--c-success-bg);
+  border: var(--border-hairline);
+  border-left: 3px solid color-mix(in srgb, var(--c-success) 50%, transparent);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.callout-warning {
+  background: var(--c-warning-bg);
+  border: var(--border-hairline);
+  border-left: 3px solid color-mix(in srgb, var(--c-warning) 50%, transparent);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.callout-info--lg,
+.callout-danger--lg,
+.callout-success--lg,
+.callout-warning--lg {
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+}
+
+
+/* === STAT DISPLAYS === */
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-value--danger { color: var(--c-danger); }
+.stat-value--primary { color: var(--c-primary); }
+.stat-value--success { color: var(--c-success); }
+
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--c-text-muted);
+  margin-top: 0.25rem;
+  letter-spacing: 0.01em;
+}
+
+
+/* === TEXT COLOR UTILITIES === */
+
+.text-accent { color: var(--c-primary); }
+.text-danger { color: var(--c-danger); }
+.text-success { color: var(--c-success); }
+.text-warning { color: var(--c-warning); }
+.text-secondary { color: var(--c-text-secondary); }
+.text-muted { color: var(--c-text-muted); }
+.text-faint { color: var(--c-text-faint); }
+
+
+/* === SECTION HEADERS === */
+
+.section-subtitle {
+  color: var(--c-text-secondary);
+  margin-top: 1rem;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+
+/* === ATTRIBUTIONS === */
+
+.attribution {
+  font-size: 0.75rem;
+  color: var(--c-text-faint);
+}
+
+.attribution--subtle {
+  font-size: 0.7rem;
+  color: var(--c-text-faint);
+  opacity: 0.6;
+}
+
+
+/* === SPECIAL EFFECTS === */
+
+.glass {
+  background: rgb(255 255 255 / 0.7);
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  border: 1px solid rgb(255 255 255 / 0.5);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-elevated), inset 0 1px 0 rgb(255 255 255 / 0.4);
+}
+
+.highlight-box {
+  background: var(--c-surface-muted);
+  border: var(--border-hairline);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+
+
+/* === CODE BLOCKS === */
+
+.slidev-layout pre {
+  border-radius: var(--radius-md) !important;
+  border: var(--border-hairline) !important;
+}
+
+
+/* === LISTS — tighter, crisper === */
+
+.slidev-layout li + li {
+  margin-top: 0.15em;
+}
+
+.slidev-layout li::marker {
+  color: var(--c-text-faint);
+}
+
+
+/* === SOURCE CITATIONS === */
+
+.source {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 2rem;
+  font-size: 0.6rem;
+  color: var(--c-text-faint);
+  opacity: 0.7;
+  max-width: 40%;
+  text-align: right;
+  line-height: 1.4;
+  font-style: italic;
+}
+
+.source a {
+  color: var(--c-text-faint);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: color-mix(in srgb, var(--c-text-faint) 40%, transparent);
+  transition: color 0.2s var(--ease-out);
+}
+
+.source a:hover {
+  color: var(--c-primary);
+}
+
+
+/* === SLIDE PROGRESS BAR === */
+
+.slidev-progress {
+  background: color-mix(in srgb, var(--c-primary) 80%, transparent) !important;
+}
