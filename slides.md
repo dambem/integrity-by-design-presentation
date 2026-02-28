@@ -46,12 +46,12 @@ RSA Fellow · IBM Recognised Speaker
 <b>Senior Software Engineer & Speaker on AI Safety </b> Developing secure AI Applications for the Civil Nuclear sector.
 
 
-<div class="mt-2 text-sm text-muted">
-I care about AI Adoption - and believe we need to achieve it in a way that works, looking past the hype cycle.
-</div>
+
 
 </div>
 <div>
+
+
 
 <div class="grid grid-cols-1 gap-3 mt-2">
 
@@ -83,6 +83,18 @@ I care about AI Adoption - and believe we need to achieve it in a way that works
 
 </div>
 </div>
+---
+
+# My Professional Career (AdaMode)
+
+Deploying Human in The Loop AI for secure Civil Nuclear deployments
+
+
+---
+
+# My Un-Professional Career ()
+
+Creating small creative code on applying AI for good.
 
 ---
 layout: image-right
@@ -185,10 +197,10 @@ Modern AI **calls tools** on your behalf.
 
 <div class="card card--lg p-5">
 
-#### Your "Chatbot" can
+#### Modern AI Can:
 
 
-- **Build** an app to monitor customer complaint emails, drafts a response, finds the relevant policy, and flags it, without knowing a single line of code.
+**Build** an app to monitor customer complaint emails, drafts a response, finds the relevant policy, and flags it, without knowing a single line of code.
 
 These require **tool calls**. The AI decides when to use it, what to pass, and what to do with the result, and it can be incredibly powerful.
 
@@ -228,29 +240,30 @@ This is the same architecture powering enterprise agents that read your emails, 
 
 <div class="callout-info callout-info--lg">
 
-### What this means for SMEs
+### What this means for AI Safety
 
-Your competitors, your suppliers, and your clients are already adopting agentic AI.
-
-The question has moved from *"should we use AI?"* to **"how do we use it without exposing our business?"**
+Thousands of **businesses, universities & even governments** are beginning to integrate AI tool use without understanding how it may expose their business.
 
 </div>
-
-
 </v-click>
 
 </div>
 </div>
+
 ---
 layout: image
-
-# the image source
 image: ./claude.png
 ---
 
 ---
 
-# Hype vs. reality
+---
+
+Mexico Study
+
+---
+
+# Is it just hype?
 
 <div class="grid grid-cols-2 gap-12 mt-8">
 <div>
@@ -258,7 +271,6 @@ image: ./claude.png
 
 <v-clicks>
 
-- Only **8.6%** of enterprises have AI agents running in full production
 - The Scale AI Remote Labor Index tested **240 freelance projects** ($140k+ value)...
 
 </v-clicks>
@@ -271,21 +283,24 @@ image: ./claude.png
 </div>
 
 </v-click>
+<v-click>
+(ADD TWITTER POST HERE ABOUT HOW AI IS COMPLETELY CHANGING THE WORLD)
 
+</v-click>
 </div>
 <div>
 
 <v-click>
 
 
-The hype cycle pushes SMEs toward two bad options:
+The current hype cycle pushes us to two bad options:
 
-**Over-invest** in unproven automation, giving AI broad access to business systems without guardrails.
+**Blindly over-leverage ourselves** in dangerous automation, giving AI broad access to business systems without guardrails.
 
-**Ignore it entirely** out of skepticism, while competitors move ahead.
+**Ignore novel technology** out of skepticism, while the world moves ahead.
 
 <div class="callout-info mt-4">
-💡 The smart move is <strong class="text-accent">careful, staged adoption</strong>. Use what's proven, add guardrails and skip the hype.
+For secure AI, necessity lies in <strong class="text-accent">careful, staged adoption</strong>. Use what's proven, add guardrails, skip the hype cycle.
 </div>
 
 </v-click>
@@ -304,8 +319,9 @@ image: ./memento-poster.jpg
 
 ### Permanent anterograde amnesia
 
-The core architecture of LLMs hasn't changed. 
-They work in a similar way to **Leonard Shelby** in *Memento*.
+The core architecture of LLMs hasn't fundamentally changed. 
+
+They work in a similar way to *Memento*. (Dated Reference)
 
 <v-clicks>
 
@@ -318,7 +334,7 @@ They work in a similar way to **Leonard Shelby** in *Memento*.
 <v-click>
 
 <div class="callout-info mt-6">
-<b>AI doesn't remember </b>. It reads the script you hand it, and the context the provider gives. Tools just act to provide it extra context.
+<b>LLMs don't really remember </b>. They process text , with context the provider gives. Tools just act to provide it extra context.
 </div>
 
 </v-click>
@@ -357,7 +373,7 @@ graph LR
 As context length grows, this causes **attention dilution**, critical instructions drown in noise. <br> (CoPilot is worst offender!)
 
 <div class="text-sm text-muted mt-2">
-This gets much worse with agentic systems. Claude Code has a <strong>1 million token</strong> context window. Cowork reads entire folders of files. The more you feed it, the less reliably it follows your rules.
+This gets much worse with agentic systems. Claude Code has a <strong>1 million token</strong> context window. Cowork reads entire folders of files. The more you feed it, the less reliably it follows original rules & guardrails.
 
 </div>
 
@@ -382,15 +398,15 @@ image: ./deepmind-b.jpg
 ---
 
 # Part 2 - The Threat
-### Why LLMs are Insecure
+### Why LLM tool use is still Insecure
 
 <div class="section-subtitle">
-Prompt injection is <span class="text-danger font-bold">baked into</span> how language models work.
+Injection is <span class="text-danger font-bold">baked into</span> how language models work.
 </div>
 
 ---
 
-# The Core Problem: Data = Instructions
+# The Core LLM Issue: Data = Instructions
 
 <div class="mt-8">
 
@@ -409,11 +425,13 @@ Prompt injection is <span class="text-danger font-bold">baked into</span> how la
 <div class="callout-success p-5">
   <div class="font-bold text-success mb-2">Traditional Software</div>
   <div class="text-sm">Code ≠ Data. Clear separation. SQL injection was solvable because we could parameterize inputs.</div>
+  <p> TODO - add short code snippet of being able to parse SQL safely </p>
 </div>
 
 <div class="callout-danger p-5">
   <div class="font-bold text-danger mb-2">Large Language Models</div>
   <div class="text-sm">Instructions = Data = Text. There is <em>no fundamental separation</em>. <br> Microsoft ranked prompt injection <strong>#1</strong> in the <b>OWASP Top 10</b> for LLM applications in 2025.</div>
+  <p> TODO - show impossibility of this being done for a LLM model. </p>
 </div>
 
 </div>
@@ -445,7 +463,9 @@ Prompt injection could make a chatbot say embarrassing things.
 
 **Consequence:** Reputational
 
-The worst case was a rude chatbot or a leaked system prompt.
+The worst case was a leaked system prompt, some examples of lawyers attempting to cite non-existent studies.
+
+(TODO - picture of article)
 
 </div>
 
@@ -455,11 +475,8 @@ The worst case was a rude chatbot or a leaked system prompt.
 
 Prompt injection can make an agent **delete files**, **send emails**, **exfiltrate data**, and **execute code**.
 
-**Consequence:** Fundamental
+**Consequence:** Incredibly dangerous
 
-<v-click>
-
-</v-click>
 
 </div>
 
@@ -513,8 +530,9 @@ Prompt injection can make an agent **delete files**, **send emails**, **exfiltra
 
 </v-click>
 
-<!-- 
-# GTG-1002: The wake-up call
+---
+
+# GTG-1002
 
 <div class="mt-6">
 
@@ -563,7 +581,7 @@ Prompt injection can make an agent **delete files**, **send emails**, **exfiltra
 
 AI based attacks are only going to become more common, especially with agent tooling.
 
-</v-click> -->
+</v-click> 
 
 ---
 
@@ -576,7 +594,9 @@ AI based attacks are only going to become more common, especially with agent too
 <div>
 
 
-An open-source AI assistant that runs locally with potential **full system access**; shell commands, file read/write, messaging integrations.
+An open-source AI assistant that runs locally with **full system access**; shell commands, file read/write, messaging integrations, at any time.
+
+Who here is using Openclaw?
 
 <v-clicks>
 
@@ -611,7 +631,7 @@ An open-source AI assistant that runs locally with potential **full system acces
 
 <div class="callout-danger callout-danger--lg p-5">
 
-### Every lesson in this talk is a lesson Openclaw skipped
+### Every lesson in this talk is a lesson many users integrating Openclaw skipped
 
 <div class="grid grid-cols-1 gap-2 mt-4 text-xs text-muted">
   <div><strong>Context hygiene</strong> — reads emails, chats, web pages, all untrusted</div>
@@ -634,6 +654,9 @@ Google's VP of Security Engineering: <em>"My threat model is not your threat mod
 </div>
 
 </div>
+---
+
+# ADD ANTHROPIC EXAMPLE
 
 ---
 
@@ -690,20 +713,19 @@ layout: image-right
 image: ./deepmind-a.jpg
 ---
 
-# Part 3 - What you can do
-### The SME Playbook
+# Part 3 - What we do in practice
+### Secure AI Deployments
 
 <div class="section-subtitle">
-You don't need a big budget. <br> You need <span class="text-accent font-bold">strict operational hygiene</span> and an understanding of the attack vectors.
+How we integrate strict operational hygiene and an understanding of attack vectors into AI applications.
 </div>
 
 ---
 
-# Action A: Context Hygiene
+# Action 1: Context Hygiene
 
 <div class="mt-6">
 
-### Stop treating AI like a dumping ground.
 
 </div>
 
@@ -714,6 +736,8 @@ You don't need a big budget. <br> You need <span class="text-accent font-bold">s
 #### ❌ The Common Mistake
 
 Dump 50 PDFs into the context window and hope for the best.
+
+Knowledge analysis is general and unfocused. 
 
 **Result:** Context rot, attention dilution, hallucinations, ignored safety rules.
 
@@ -727,6 +751,8 @@ Dump 50 PDFs into the context window and hope for the best.
 
 Use a **Research/Search/RAG capabilities** to find only the most relevant documents first. 
 
+Create strict operational ground truth backing
+
 Feed the AI only the **2–3 specific paragraphs** it needs to answer your exact question.
 
 <div class="highlight-box mt-4">
@@ -737,6 +763,10 @@ Feed the AI only the **2–3 specific paragraphs** it needs to answer your exact
 </div>
 
 </div>
+---
+
+USE EXAMPLE FOR ADAMODE CASE STUDY ON NUCLEAR CITATIONS BACKING
+
 
 ---
 
@@ -765,7 +795,7 @@ This screenshot is the simplest proof I can give you: a citation is necessary, b
 -->
 ---
 
-# Action B: Reduce Vibe Citing
+# Action 2: Reduce Vibe Citing
 
 <div class="mt-6">
 
@@ -777,13 +807,12 @@ This screenshot is the simplest proof I can give you: a citation is necessary, b
 
 <div>
 
-#### The problem
 
 <v-clicks>
 
 <div class="card p-4 mb-3">
   <div class="font-bold text-danger text-sm mb-1">🎭 Vibe Citing</div>
-  <div class="text-xs text-muted">AI <em>generates</em> plausible-looking references. <strong>100+</strong> hallucinated citations passed peer review at NeurIPS 2025.</div>
+  <div class="text-xs text-muted">AI <em>generates</em> plausible-looking references. <strong>100+</strong> hallucinated citations passed peer review at NeurIPS 2025. (An AI will take published papers with hallucinations at face value) </div>
 </div>
 
 <div class="card p-4 mb-3">
@@ -792,7 +821,7 @@ This screenshot is the simplest proof I can give you: a citation is necessary, b
 </div>
 
 <div class="card p-4">
-  <div class="font-bold text-danger text-sm mb-1">🎯 Source Manipulation</div>
+  <div class="font-bold text-danger text-sm mb-1">🤢 Well Poisoning</div>
   <div class="text-xs text-muted">Attackers can poison the sources AI retrieves from - SEO manipulation, adversarial documents, compromised knowledge bases.</div>
 </div>
 
@@ -802,7 +831,6 @@ This screenshot is the simplest proof I can give you: a citation is necessary, b
 
 <div>
 
-#### The fix
 
 <v-click>
 
@@ -814,17 +842,26 @@ This screenshot is the simplest proof I can give you: a citation is necessary, b
   <div class="text-2xl">📄</div>
   <div>
     <div class="font-bold text-sm">Source Documents</div>
-    <div class="text-xs text-muted mt-1">Ground every claim in a retrievable, verified source.  </div>
+    <div class="text-xs text-muted mt-1">Ground every claim in a retrievable, verified source. Ideally, documents sources should be whitelisted for validity. </div>
   </div>
 </div>
 
 <div class="flex items-start gap-3">
   <div class="text-2xl">🔍</div>
   <div>
-    <div class="font-bold text-sm">Independent Verification</div>
-    <div class="text-xs text-muted mt-1">A <strong>non-AI, deterministic</strong> check. Does the source exist? Is it authoritative? Does it actually say what the model claims?</div>
+    <div class="font-bold text-sm">Deterministic Validation</div>
+    <div class="text-xs text-muted mt-1">A more <strong>deterministic</strong> check. Does the source exist? Is it authoritative? Does it actually say what the model claims?</div>
   </div>
 </div>
+
+<div class="flex items-start gap-3">
+  <div class="text-2xl">👩‍⚖️</div>
+  <div>
+    <div class="font-bold text-sm">LLM as Judge (Optional)</div>
+    <div class="text-xs text-muted mt-1">If processing large quantities of data, providing subjective checks of a LLM as a judge can achieve a second, more subjective validation</div>
+  </div>
+</div>
+
 
 <div class="flex items-start gap-3">
   <div class="text-2xl">✅</div>
@@ -844,9 +881,9 @@ This screenshot is the simplest proof I can give you: a citation is necessary, b
 
 </div>
 
+---
 
-
-# Action C: Least-Privilege Principle
+# Action 3: Least-Privilege Principle
 
 <div class="mt-6">
 
@@ -882,64 +919,31 @@ This is the <strong class="text-accent">only reliable defence</strong> against i
 
 ---
 
-# Understand What You're Adopting
+# Action 4: Local Deployments
 
-<div class="mt-4 text-center text-sm text-muted mb-4">A decision framework for SMEs</div>
+All the above steps seek to mitigate, but there will be workarounds.
 
-<div class="">
-```mermaid 
-flowchart LR
-    A["How is your AI connected?"] --> B{"Does it access external tools, search the web, or analyse internal data?"}
-    B -->|No| C["🟢 LOW RISK: Contained AI"]
-    B -->|Yes| D{"Is there human approval before actions?"}
-    D -->|Yes| E["🟡 MEDIUM RISK: Tool-Calling AI"]
-    D -->|No| F{"Does it execute code, browse the web, or manage files without a human?"}
-    F -->|No| E
-    F -->|Yes| G["🛑 HIGH RISK: Autonomous Agent"]
+Case Study - Secure Nuclear LLM Deployment
 
-```
-
-</div>
-
-<v-click>
-<div class="mt-4 text-center text-sm text-muted">
-Most SMEs should be operating in <strong class="text-success">green</strong> and carefully piloting <strong class="text-warning">amber</strong>. <br> Unless you have a deep understanding of the technology, Very few SMEs are ready for <strong class="text-danger">red</strong>.
-</div>
-</v-click>
-
-<!-- 
-# Live Demo — AI in Action
-
-<div class="mt-2">
-
-<iframe
-  src="https://claude.ai"
-  class="w-full"
-  style="height: 420px; box-shadow: var(--shadow-card);"
-  allow="clipboard-read; clipboard-write"
-  sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
-/>
-
-</div> -->
-
-
+This allowed us to deploy a newer model, fine-tune using open source models, and test, evaluate and run a specific pipeline.
 
 ---
 layout: center
 class: text-center
 ---
 
-# Three Rules for Monday Morning
+# Three Rules for Monday (Lunch)
 ### Or a distillation of the last 40 minutes into three points
 <div class="grid grid-cols-3 gap-8 mt-10 max-w-5xl mx-auto text-left">
 
 <div class="callout-success p-6">
   <div class="text-3xl mb-3">🔎</div>
-  <div class="font-bold text-success text-sm mb-3">Audit Tools Like an Auditor</div>
+  <div class="font-bold text-success text-sm mb-3">Understand Tool Usage</div>
   <div class="text-xs text-muted">
-    Every plugin, skill, and MCP server is a third-party entering your business. 
+    Every plugin, skill, and MCP server is a third-party entering your computer. 
+    Treat them like a weird insta DM.
     <br> <strong>Read the source. Check the skill.</strong>
-    <div class="mt-2">If you wouldn't invite this third-party into your Teams, don't let the agent.</div>
+    <div class="mt-2">If you wouldn't install the tool, don't let the agent install it for you.</div>
   </div>
   <br>
   <div class="text-xs">
@@ -959,9 +963,9 @@ class: text-center
   </div>
   <br>
   <div class="text-xs">
-    <b>1Password</b> - Supports secret automation with CLI/SDKs (£6/user/month) <br>
+    <b>1Password</b> - Supports secret automation with CLI/SDKs <br>
   <b>Doppler</b> - Secret management across environment <br>
-  <b>Bitwarden Secrets Manager</b> (£3/user/month) <br>
+  <b>Bitwarden Secrets Manager</b>  <br>
   </div>
 </div>
 
@@ -970,7 +974,7 @@ class: text-center
   <div class="font-bold text-success text-sm mb-3">Verify Every Claim Independently</div>
   <div class="text-xs text-muted">
     Don't blindly trust the output. Every factual claim needs a <strong>deterministic check outside the model</strong>.
-    <div class="mt-2">If your AI can't relay where the answer is from, it's just a probabilistic guess.</div>
+    <div class="mt-2">If your AI can't relay where the answer is from, it's just vibes, nothing more.</div>
   </div>
   <br>
   <div class="text-xs">
@@ -983,12 +987,11 @@ class: text-center
 </div>
 
 <v-click>
-
-<div class="mt-8 text-sm text-muted">
-These are rules you can implement <strong>today</strong>, regardless of budget or team size.
-</div>
-
 </v-click>
+---
+
+# TODO - add a small screen of the it was revealed to me in a dream meme
+
 
 ---
 layout: center
