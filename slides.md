@@ -69,10 +69,7 @@ RSA Fellow · IBM Recognised Speaker
   <div class="font-bold text-accent text-sm">Energy System Modelling for Industrial Decarbonisation</div>
   <div class="text-xs text-muted mt-1">Building AI for modelling industrial decarbonisation for the Solent area.</div>
 </div>
-<!-- <div class="card">
-  <div class="font-bold text-accent text-sm">Founder @ GeoChip</div>
-  <div class="text-xs text-muted mt-1">GeoChip brings locations to life through innovative geospatial experiences.</div>
-</div> -->
+
 
 <div class="card">
   <div class="font-bold text-accent text-sm">Other Credentials</div>
@@ -84,18 +81,40 @@ RSA Fellow · IBM Recognised Speaker
 </div>
 </div>
 ---
+layout: image-right
+image: https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1200
+---
 
 # My Professional Career (AdaMode)
 
-Deploying Human in The Loop AI for secure Civil Nuclear deployments
+<div class="text-sm mt-4">
 
+Over 5 years of experience in deploying AI applications, from visual analysis models to LLMs
 
+- Deployment of more "traditional" AI applications (Custom timeseries models, auto-regression pipelines)
+- Developing applications for predictive maintenence of Wind Turbines - demonstrating ability to analyse wind turbine failures early.
+- First of it's kind deployments within traditional ML for the civil nuclear space - analysis and early detection of failures within complex systems.
+- Deploying human-in-the-loop AI Applications specifically seeking to augment and improve operator capabilities, rather than replacing them.
+
+</div>
+---
+layout: image-left
+image: ./urban_renewal.png
 ---
 
-# My Un-Professional Career ()
+# My Un-Professional Career 
 
-Creating small creative code on applying AI for good.
+Creating creative code on applying AI/Tech for good. 
 
+<v-clicks>
+
+- Urban Renewal: workshop tool for optimistic city planning within the area, allowing the public to assist and provide re-development capabilities.
+
+- LLM based analysis of cancelled renewable projects in the UK: allows analysis of organised NIMBY groups within the UK, and reasons for failure. (nimby.bemben.co.uk)
+
+- Immersive theatre show all about the Willy Wonka Chocolate Factory incident & effects of GenAI (Trainwrecks @ Croydon Theatre)
+
+</v-clicks>
 ---
 layout: image-right
 image: ./deepmind-c.jpg
@@ -255,11 +274,8 @@ layout: image
 image: ./claude.png
 ---
 
----
 
----
 
-Mexico Study
 
 ---
 
@@ -283,10 +299,7 @@ Mexico Study
 </div>
 
 </v-click>
-<v-click>
-(ADD TWITTER POST HERE ABOUT HOW AI IS COMPLETELY CHANGING THE WORLD)
 
-</v-click>
 </div>
 <div>
 
@@ -321,7 +334,7 @@ image: ./memento-poster.jpg
 
 The core architecture of LLMs hasn't fundamentally changed. 
 
-They work in a similar way to *Memento*. (Dated Reference)
+They work in a similar way to *Memento*. 
 
 <v-clicks>
 
@@ -349,6 +362,7 @@ They work in a similar way to *Memento*. (Dated Reference)
 <div class="mt-8">
 
 ```mermaid {scale: 0.75}
+%%{init: {'theme': 'base', 'themeVariables': {'background': '#0a0a0a', 'primaryColor': '#141414', 'primaryTextColor': '#e0e0e0', 'primaryBorderColor': 'rgba(255,255,255,0.15)', 'lineColor': 'rgba(255,255,255,0.35)', 'edgeLabelBackground': '#111111', 'tertiaryColor': '#1a1a1a'}}}%%
 graph LR
     A[📄 50 PDFs dumped<br/>into prompt] --> B[📏 Context window<br/>stretched thin]
     F[🗣️ Incredibly Long Chats] --> B
@@ -356,12 +370,12 @@ graph LR
     C --> D[⚠️ Safety instructions<br/>ignored]
     C --> E[🤥 Hallucinated facts]
 
-    style A fill:#fafafa,stroke:#d65321
-    style F fill:#fafafa,stroke:#d65321
-    style B fill:#fafafa,stroke:#d65321
-    style C fill:#fafafa,stroke:#dc2626
-    style D fill:#fef2f2,stroke:#dc2626
-    style E fill:#fef2f2,stroke:#dc2626
+    style A fill:#141414,stroke:#ff6b35,stroke-width:1.5px,color:#e0e0e0
+    style F fill:#141414,stroke:#ff6b35,stroke-width:1.5px,color:#e0e0e0
+    style B fill:#141414,stroke:#ff6b35,stroke-width:1.5px,color:#e0e0e0
+    style C fill:#1a0a0a,stroke:#f87171,stroke-width:1.5px,color:#e0e0e0
+    style D fill:#2a0808,stroke:#f87171,stroke-width:1.5px,color:#fca5a5
+    style E fill:#2a0808,stroke:#f87171,stroke-width:1.5px,color:#fca5a5
 ```
 
 </div>
@@ -370,7 +384,7 @@ graph LR
 
 <div class="mt-6 text-center">
 
-As context length grows, this causes **attention dilution**, critical instructions drown in noise. <br> (CoPilot is worst offender!)
+As context length grows, this causes **attention dilution**, critical instructions drown in noise. 
 
 <div class="text-sm text-muted mt-2">
 This gets much worse with agentic systems. Claude Code has a <strong>1 million token</strong> context window. Cowork reads entire folders of files. The more you feed it, the less reliably it follows original rules & guardrails.
@@ -425,13 +439,34 @@ Injection is <span class="text-danger font-bold">baked into</span> how language 
 <div class="callout-success p-5">
   <div class="font-bold text-success mb-2">Traditional Software</div>
   <div class="text-sm">Code ≠ Data. Clear separation. SQL injection was solvable because we could parameterize inputs.</div>
-  <p> TODO - add short code snippet of being able to parse SQL safely </p>
+
+```python
+# ❌ Vulnerable
+query = f"SELECT * FROM users
+  WHERE id = {user_input}"
+
+# ✅ Parameterised — data stays data
+cursor.execute(
+  "SELECT * FROM users WHERE id = ?",
+  (user_input,)
+)
+```
+
 </div>
 
 <div class="callout-danger p-5">
   <div class="font-bold text-danger mb-2">Large Language Models</div>
   <div class="text-sm">Instructions = Data = Text. There is <em>no fundamental separation</em>. <br> Microsoft ranked prompt injection <strong>#1</strong> in the <b>OWASP Top 10</b> for LLM applications in 2025.</div>
-  <p> TODO - show impossibility of this being done for a LLM model. </p>
+
+```python
+# Everything is one token stream.
+prompt = f"""
+You are a helpful assistant. 
+User data: {user_data}
+Context: {context}
+"""
+```
+
 </div>
 
 </div>
@@ -465,7 +500,7 @@ Prompt injection could make a chatbot say embarrassing things.
 
 The worst case was a leaked system prompt, some examples of lawyers attempting to cite non-existent studies.
 
-(TODO - picture of article)
+<img src='./lawyer_image.png'></img>
 
 </div>
 
@@ -476,6 +511,8 @@ The worst case was a leaked system prompt, some examples of lawyers attempting t
 Prompt injection can make an agent **delete files**, **send emails**, **exfiltrate data**, and **execute code**.
 
 **Consequence:** Incredibly dangerous
+
+<img src='./mac_mini.png'></img>
 
 
 </div>
@@ -519,6 +556,8 @@ Prompt injection can make an agent **delete files**, **send emails**, **exfiltra
   <div class="text-3xl mb-3">🗂️</div>
   <div class="font-bold mb-2">Desktop Agent: File Exfiltration</div>
   <div class="text-sm text-muted">A poisoned "tool" library tricks the desktop agent into sending private data through a whitelisted API domain. <strong class="text-danger">This was demonstrated against Claude in January 2026.</strong></div>
+
+  
 </div>
 
 </v-click>
@@ -530,6 +569,50 @@ Prompt injection can make an agent **delete files**, **send emails**, **exfiltra
 
 </v-click>
 
+---
+layout: center
+---
+
+
+# But it's not just AI being exploited - AI can be used to exploit vulnerabilities within pre-existing systems
+
+---
+
+# Mexico: Claude Used in Government Data Breach
+
+<div class="grid grid-cols-2 gap-10 mt-6">
+<div>
+
+An attacker used Claude to breach multiple Mexican government agencies,
+ submitting **Spanish-language** prompts and using jailbreak techniques to extract operational hacking guidance.
+
+Institutions hit included the federal tax authority, the national electoral institute, state governments in Jalisco, Michoacán and Tamaulipas, Mexico City's civil registry, and Monterrey's water utility.
+
+<div class="text-xs text-muted mt-3">Gambit Security, February 2025 · Anthropic confirmed disruption and account bans</div>
+
+</div>
+<div>
+
+<div class="grid grid-cols-2 gap-4">
+
+<div class="callout-danger text-center p-4">
+  <div class="stat-value stat-value--danger text-3xl">150 GB</div>
+  <div class="stat-label mt-1">government data stolen</div>
+</div>
+
+<div class="callout-danger text-center p-4">
+  <div class="stat-value stat-value--danger text-3xl">195M</div>
+  <div class="stat-label mt-1">taxpayer records exposed</div>
+</div>
+
+</div>
+
+<div class="card mt-4 text-xs text-muted">
+ChatGPT produced thousands of reports during the campaign with ready-to-execute plans specifying which internal targets to hit next and which credentials to use. Both Anthropic and OpenAI banned the accounts after the research was published.
+</div>
+
+</div>
+</div>
 ---
 
 # GTG-1002
@@ -654,9 +737,6 @@ Google's VP of Security Engineering: <em>"My threat model is not your threat mod
 </div>
 
 </div>
----
-
-# ADD ANTHROPIC EXAMPLE
 
 ---
 
@@ -713,7 +793,7 @@ layout: image-right
 image: ./deepmind-a.jpg
 ---
 
-# Part 3 - What we do in practice
+# Part 3 - What can we do in practice
 ### Secure AI Deployments
 
 <div class="section-subtitle">
@@ -722,7 +802,7 @@ How we integrate strict operational hygiene and an understanding of attack vecto
 
 ---
 
-# Action 1: Context Hygiene
+# Context Hygiene
 
 <div class="mt-6">
 
@@ -765,7 +845,40 @@ Feed the AI only the **2–3 specific paragraphs** it needs to answer your exact
 </div>
 ---
 
-USE EXAMPLE FOR ADAMODE CASE STUDY ON NUCLEAR CITATIONS BACKING
+# Grounding retrieval in practice (AdaMode Case-Study)
+### Nuclear legislation analysis with enforced citation
+
+<div class="grid grid-cols-2 gap-10 mt-6">
+<div>
+<b> The Problem: Small Modular Reactors need to be repeatable. It's really difficult to build repeatable nuclear sites. </b>
+
+Nuclear legislation is heavily cross-referenced, with defined terms that shift meaning depending on where in the Act you're reading. Legislation also differs between countries, making effective deployment for SMRs an incredibly difficult process.
+
+
+The application requires the model to quote retrieved text directly and include the citation in a structured output field. The quote field is validated against the source chunk — if it doesn't appear there, the response is rejected before it reaches the user.
+
+</div>
+<div>
+
+```json
+{
+  "answer": "...",
+  "supporting_quote": "The licensee shall...",
+  "citation": "s.4(2)(b) Energy Act 2013",
+  "confidence": "high"
+}
+```
+
+<div class="card mt-4 text-xs text-muted">
+If no retrieved chunk supports the answer, the model returns <code>null</code> on the citation field and flags the response for review rather than paraphrasing from memory. The model's answers are bounded by what was actually retrieved. It cannot fill gaps from training data.
+</div>
+
+<div class="card mt-4 text-xs">
+We additionally integrated a Judge LLM to verify against a list of model responses. This helped create an evaluative framework for the answers, alongside a list of model responses from verified experts in the field.
+</div>
+
+</div>
+</div>
 
 
 ---
@@ -795,7 +908,7 @@ This screenshot is the simplest proof I can give you: a citation is necessary, b
 -->
 ---
 
-# Action 2: Reduce Vibe Citing
+# Remove Vibe Citing
 
 <div class="mt-6">
 
@@ -880,10 +993,15 @@ This screenshot is the simplest proof I can give you: a citation is necessary, b
 </div>
 
 </div>
+---
+layout: center
+---
+# Maintaining Grounding within rapidly evolving AI
+How can we take advantage of the benefits of AI tools, without exposing our risk?
 
 ---
 
-# Action 3: Least-Privilege Principle
+# Least-Privilege Principles
 
 <div class="mt-6">
 
@@ -894,6 +1012,7 @@ This screenshot is the simplest proof I can give you: a citation is necessary, b
 <div class="mt-8">
 
 ```mermaid {scale: 0.7}
+%%{init: {'theme': 'base', 'themeVariables': {'background': '#0a0a0a', 'primaryColor': '#141414', 'primaryTextColor': '#e0e0e0', 'primaryBorderColor': 'rgba(255,255,255,0.15)', 'lineColor': 'rgba(255,255,255,0.35)', 'edgeLabelBackground': '#111111', 'tertiaryColor': '#1a1a1a'}}}%%
 graph TB
     AI[AI Agent] --> G{Gateway}
     G -->|✅ Whitelisted API| V[Internal Database]
@@ -902,13 +1021,13 @@ graph TB
     G -->|❌ BLOCKED| Y[Random Web Links]
     G -->|👤 Human Approval| Z[External Request]
 
-    style AI fill:#fafafa,stroke:#d65321
-    style G fill:#fafafa,stroke:#d97706
-    style V fill:#f0fdf4,stroke:#16a34a
-    style W fill:#f0fdf4,stroke:#16a34a
-    style X fill:#fef2f2,stroke:#dc2626
-    style Y fill:#fef2f2,stroke:#dc2626
-    style Z fill:#fafafa,stroke:#d97706
+    style AI fill:#141414,stroke:#ff6b35,stroke-width:1.5px,color:#e0e0e0
+    style G fill:#1a1200,stroke:#fbbf24,stroke-width:1.5px,color:#fde68a
+    style V fill:#081a0e,stroke:#4ade80,stroke-width:1.5px,color:#86efac
+    style W fill:#081a0e,stroke:#4ade80,stroke-width:1.5px,color:#86efac
+    style X fill:#2a0808,stroke:#f87171,stroke-width:1.5px,color:#fca5a5
+    style Y fill:#2a0808,stroke:#f87171,stroke-width:1.5px,color:#fca5a5
+    style Z fill:#1a1200,stroke:#fbbf24,stroke-width:1.5px,color:#fde68a
 ```
 
 </div>
@@ -919,20 +1038,44 @@ This is the <strong class="text-accent">only reliable defence</strong> against i
 
 ---
 
-# Action 4: Local Deployments
+# Local Deployment in Sellafield (AdaMode Case-Study)
 
-All the above steps seek to mitigate, but there will be workarounds.
+<div class="grid grid-cols-2 gap-10 mt-6">
+<div>
+<v-clicks>
+Sellafield runs one of the largest nuclear decommissioning programs in the world. 11,000 staff, 500+ facilities, some active since the 1950s.
 
-Case Study - Secure Nuclear LLM Deployment
+Every off-normal event generates a Condition Report. Each one needs to be read, categorised, and Trend Coded before anyone can track patterns across site.
 
-This allowed us to deploy a newer model, fine-tune using open source models, and test, evaluate and run a specific pipeline.
+The data was formally classified. That ruled out any cloud-based model.
+</v-clicks>
+
+</div>
+<div>
+<v-clicks>
+
+We built on-premises hardware from scratch and tested several open-source LLMs against real accuracy requirements and real hardware limits.
+
+<div class="card mt-4 mb-4">
+  <div class="stat-value text-center text-accent">< 1 second</div>
+  <div class="stat-label text-center mt-1">per Condition Report, at human-level accuracy</div>
+</div>
+
+We also built a dashboard so the performance team could see trends as they emerged. That work is heading into production now.
+</v-clicks>
+</div>
+</div>
+
+<div class="callout-success mt-4 text-sm text-center">
+When cloud is ruled out by classification policy, you build on-premises or you ship nothing. <br> LLM capabilities are rapidly accelerating, making local models incredibly powerful for specific applications.
+</div>
 
 ---
 layout: center
 class: text-center
 ---
 
-# Three Rules for Monday (Lunch)
+# Three Rules for Monday 
 ### Or a distillation of the last 40 minutes into three points
 <div class="grid grid-cols-3 gap-8 mt-10 max-w-5xl mx-auto text-left">
 
@@ -989,9 +1132,23 @@ class: text-center
 <v-click>
 </v-click>
 ---
+layout: center
+---
+# A lesson in two parts
 
-# TODO - add a small screen of the it was revealed to me in a dream meme
+<div class="grid grid-cols-2 gap-10 mt-8 items-start max-w-4xl mx-auto">
 
+<div class="text-center">
+  <img src="./machine_can_never.webp" class="mx-auto rounded shadow-lg" style="max-height: 340px;" />
+  <div class="text-xs text-muted mt-3">IBM internal slide, c. 1979</div>
+</div>
+
+<div class="text-center">
+  <img src="./openai_war_agreement.png" class="mx-auto rounded shadow-lg" style="max-height: 340px;" />
+  <div class="text-xs text-muted mt-3">OpenAI — US government AI agreement, 2025</div>
+</div>
+
+</div>
 
 ---
 layout: center
