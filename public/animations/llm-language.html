@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM Language Processing</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#000000;--text:#D9D4C6;--muted:#8C92A2;
+    --hairline:rgba(217,212,198,.12);
+    --verm:#E0511D;--verm-s:rgba(224,81,29,.15);
+    --blue:#5B8DB8;--blue-s:rgba(91,141,184,.15);
+    --green:#6BAE75;--green-s:rgba(107,174,117,.15);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:100%;height:100%;overflow:hidden;background:var(--ink);font-family:'IBM Plex Mono',monospace;-webkit-font-smoothing:antialiased}
+
+  .wrap{
+    height:100%;
+    display:grid;
+    grid-template-rows:auto 1fr auto;
+    padding:14px 16px;
+    gap:10px;
+  }
+
+  /* ── header ── */
+  .hdr{
+    font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--muted);padding-bottom:10px;border-bottom:1px solid var(--hairline);
+  }
+
+  /* ── main three-column grid ── */
+  .main{
+    display:grid;
+    grid-template-columns:1fr 52px 1fr;
+    gap:0;
+    min-height:0;
+  }
+
+  /* ── input column ── */
+  .in-col{
+    padding-right:14px;
+    display:flex;flex-direction:column;gap:8px;
+  }
+  .col-label{
+    font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+    flex-shrink:0;
+  }
+  .text-block{
+    font-family:'IBM Plex Serif',serif;
+    font-size:11.5px;line-height:1.85;color:var(--text);
+    opacity:0;transition:opacity .7s;
+  }
+  .text-block.show{opacity:1}
+
+  .tok{display:inline;border-radius:2px;padding:0 1px;transition:background .5s,color .5s}
+  .tok.lit-ob{background:var(--verm-s);color:var(--verm)}
+  .tok.lit-ac{background:var(--blue-s);color:var(--blue)}
+  .tok.lit-sc{background:var(--green-s);color:var(--green)}
+
+  /* ── center column: arrow + LLM box ── */
+  .mid-col{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:6px;position:relative;
+  }
+  .flow-arrow{
+    font-size:11px;color:var(--hairline);letter-spacing:-2px;
+    transition:color .4s;user-select:none;
+  }
+  .flow-arrow.lit{color:var(--muted)}
+
+  .llm-box{
+    width:44px;height:44px;
+    border:1px solid var(--hairline);
+    border-radius:3px;
+    display:flex;align-items:center;justify-content:center;
+    flex-direction:column;gap:3px;
+    transition:border-color .4s,box-shadow .4s;
+  }
+  .llm-box.pulse{
+    border-color:var(--verm);
+    box-shadow:0 0 14px rgba(224,81,29,.25);
+  }
+  .dots{display:grid;grid-template-columns:repeat(3,5px);gap:2.5px}
+  .dot{
+    width:5px;height:5px;border-radius:50%;
+    background:rgba(217,212,198,.1);
+    transition:background .15s;
+  }
+  .dot.on{background:var(--verm)}
+  .llm-tag{
+    font-size:7px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--muted);margin-top:4px;text-align:center;
+  }
+
+  /* ── output column ── */
+  .out-col{
+    padding-left:14px;border-left:1px solid var(--hairline);
+    display:flex;flex-direction:column;gap:0;
+  }
+  .out-item{
+    opacity:0;transform:translateX(7px);
+    transition:opacity .45s,transform .45s;
+    padding:8px 0;border-bottom:1px solid var(--hairline);
+  }
+  .out-item:last-child{border-bottom:none}
+  .out-item.show{opacity:1;transform:translateX(0)}
+
+  .out-tag{
+    font-size:7.5px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:3px;
+  }
+  .out-tag.ob{color:var(--verm)}
+  .out-tag.ac{color:var(--blue)}
+  .out-tag.sc{color:var(--green)}
+  .out-tag.nt{color:var(--muted)}
+  .out-val{
+    font-family:'IBM Plex Serif',serif;
+    font-size:11px;line-height:1.55;color:var(--text);
+  }
+
+  /* ── legend ── */
+  .legend{
+    display:flex;gap:18px;
+    padding-top:10px;border-top:1px solid var(--hairline);
+    opacity:0;transition:opacity .5s;
+  }
+  .legend.show{opacity:1}
+  .leg{display:flex;align-items:center;gap:5px;font-size:7.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .leg-pip{width:8px;height:8px;border-radius:1px}
+  .leg-pip.ob{background:var(--verm)}
+  .leg-pip.ac{background:var(--blue)}
+  .leg-pip.sc{background:var(--green)}
+
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="main">
+    <!-- Input -->
+    <div class="in-col">
+      <div class="col-label">input · complex language</div>
+      <div class="text-block" id="inputText"></div>
+    </div>
+
+    <!-- Center -->
+    <div class="mid-col">
+      <div class="flow-arrow" id="arrowIn">→</div>
+      <div class="llm-box" id="llmBox">
+        <div class="dots" id="dots"></div>
+      </div>
+      <div class="llm-tag">LLM</div>
+      <div class="flow-arrow" id="arrowOut">→</div>
+    </div>
+
+    <!-- Output -->
+    <div class="out-col">
+      <div class="col-label" style="margin-bottom:8px">output · structured reading</div>
+      <div id="outputItems"></div>
+    </div>
+  </div>
+
+  <div class="legend" id="legend">
+    <div class="leg"><div class="leg-pip ob"></div>obligation</div>
+    <div class="leg"><div class="leg-pip ac"></div>activity</div>
+    <div class="leg"><div class="leg-pip sc"></div>scope</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const SEGMENTS=[
+    {t:'The licensee ',g:null},
+    {t:'shall make and implement',g:'ob'},
+    {t:' adequate ',g:null},
+    {t:'arrangements',g:'ob'},
+    {t:' for the ',g:null},
+    {t:'regular and systematic examination, maintenance and testing',g:'ac'},
+    {t:' of ',g:null},
+    {t:'all plant which may affect safety',g:'sc'},
+    {t:'.',g:null},
+  ];
+
+  const OUTPUTS=[
+    {tag:'Obligation',cls:'ob',val:'Make adequate arrangements — the licensee defines what "adequate" means.'},
+    {tag:'Activity',cls:'ac',val:'Examine · maintain · test — no fixed interval.'},
+    {tag:'Scope',cls:'sc',val:'All safety-affecting plant — broad and open-ended.'},
+    {tag:'Regulatory style',cls:'nt',val:'Goal-setting: outcome required, method left to operator.'},
+  ];
+
+  // Build DOM
+  const inputEl=document.getElementById('inputText');
+  SEGMENTS.forEach(seg=>{
+    const s=document.createElement('span');
+    s.textContent=seg.t;
+    if(seg.g){s.className='tok';s.dataset.g=seg.g;}
+    inputEl.appendChild(s);
+  });
+
+  const outContainer=document.getElementById('outputItems');
+  OUTPUTS.forEach((o,i)=>{
+    const d=document.createElement('div');
+    d.className='out-item';d.id='oi'+i;
+    d.innerHTML=`<div class="out-tag ${o.cls}">${o.tag}</div><div class="out-val">${o.val}</div>`;
+    outContainer.appendChild(d);
+  });
+
+  const dotsEl=document.getElementById('dots');
+  for(let i=0;i<9;i++){
+    const d=document.createElement('div');d.className='dot';dotsEl.appendChild(d);
+  }
+  const dotEls=[...dotsEl.querySelectorAll('.dot')];
+
+  const llmBox=document.getElementById('llmBox');
+  const arrowIn=document.getElementById('arrowIn');
+  const arrowOut=document.getElementById('arrowOut');
+  const legend=document.getElementById('legend');
+
+  let dotTimer=null;
+  function startDots(){
+    stopDots();
+    dotTimer=setInterval(()=>{
+      dotEls.forEach(d=>d.classList.remove('on'));
+      const lit=new Set();
+      while(lit.size<3)lit.add(Math.floor(Math.random()*9));
+      lit.forEach(i=>dotEls[i].classList.add('on'));
+    },160);
+  }
+  function stopDots(){
+    if(dotTimer)clearInterval(dotTimer);
+    dotEls.forEach(d=>d.classList.remove('on'));
+  }
+
+  function w(ms){return new Promise(r=>setTimeout(r,ms));}
+
+  function reset(){
+    inputEl.classList.remove('show');
+    inputEl.querySelectorAll('.tok').forEach(t=>t.className='tok');
+    llmBox.classList.remove('pulse');
+    arrowIn.classList.remove('lit');
+    arrowOut.classList.remove('lit');
+    stopDots();
+    document.querySelectorAll('.out-item').forEach(el=>{el.classList.remove('show');});
+    legend.classList.remove('show');
+  }
+
+  async function run(){
+    reset();
+    await w(500);
+
+    // 1 — text fades in
+    inputEl.classList.add('show');
+    await w(1100);
+
+    // 2 — highlight groups one by one
+    inputEl.querySelectorAll('[data-g="ob"]').forEach(t=>t.classList.add('lit-ob'));
+    await w(800);
+    inputEl.querySelectorAll('[data-g="ac"]').forEach(t=>t.classList.add('lit-ac'));
+    await w(800);
+    inputEl.querySelectorAll('[data-g="sc"]').forEach(t=>t.classList.add('lit-sc'));
+    await w(700);
+
+    // 3 — flow into LLM
+    arrowIn.classList.add('lit');
+    await w(300);
+    llmBox.classList.add('pulse');
+    startDots();
+    await w(1400);
+
+    // 4 — output flows out
+    arrowOut.classList.add('lit');
+    legend.classList.add('show');
+    for(let i=0;i<OUTPUTS.length;i++){
+      document.getElementById('oi'+i).classList.add('show');
+      await w(480);
+    }
+
+    // 5 — hold
+    await w(3200);
+
+    // loop
+    run();
+  }
+
+  run();
+})();
+</script>
+</body>
+</html>

@@ -1,4 +1,5 @@
 ---
+hideInToc: true
 theme: default
 title: "Integrity by Design"
 info: |
@@ -15,9 +16,11 @@ fonts:
   sans: "DM Sans"
   serif: "Playfair Display"
   mono: "JetBrains Mono"
+
 ---
 
-# Integrity by Design
+
+# How Data Shapes AI
 
 <div class="text-2xl text-secondary font-light mt-2 mb-8">
 Deploying AI in Secure Business Environments
@@ -33,6 +36,8 @@ RSA Fellow · IBM Recognised Speaker
 </div> -->
 
 ---
+hideInToc: true
+---
 
 # Who am I?
 
@@ -46,21 +51,21 @@ RSA Fellow · IBM Recognised Speaker
 <b>Senior Software Engineer & Speaker on AI Safety </b> Developing secure AI Applications for the Civil Nuclear sector.
 
 
-<div class="mt-2 text-sm text-muted">
-I care about AI Adoption - and believe we need to achieve it in a way that works, looking past the hype cycle.
-</div>
+
 
 </div>
 <div>
 
+
+
 <div class="grid grid-cols-1 gap-3 mt-2">
 
 <div class="card">
-  <div class="font-bold text-accent text-sm">Senior Software Engineer @ AdaMode</div>
+  <div class="font-bold text-accent text-md">Senior Software Engineer @ AdaMode</div>
   <div class="text-xs text-muted mt-1">Ada Mode builds human-in-the-loop AI in Civil Nuclear for machine health and industrial process optimisation.</div>
 </div>
 
-<div class="card">
+<!-- <div class="card">
   <div class="font-bold text-accent text-sm">Human-In-The-Loop AI in secure Civil Nuclear</div>
   <div class="text-xs text-muted mt-1">Built secure AI development for critical civil nuclear decomissioning applications.</div>
 </div>
@@ -68,35 +73,83 @@ I care about AI Adoption - and believe we need to achieve it in a way that works
 <div class="card">
   <div class="font-bold text-accent text-sm">Energy System Modelling for Industrial Decarbonisation</div>
   <div class="text-xs text-muted mt-1">Building AI for modelling industrial decarbonisation for the Solent area.</div>
-</div>
-<!-- <div class="card">
-  <div class="font-bold text-accent text-sm">Founder @ GeoChip</div>
-  <div class="text-xs text-muted mt-1">GeoChip brings locations to life through innovative geospatial experiences.</div>
 </div> -->
 
+
 <div class="card">
-  <div class="font-bold text-accent text-sm">Other Credentials</div>
-  <div class="text-xs text-muted mt-1">Master in Computer Science · RSA Fellow · IBM Recognised Speaker · Active Builder of AI  · Leading Creative Technology revival in Southampton </div>
+  <div class="font-bold text-accent text-sm">Master in Computer Science @ Sheffield University</div>
+  <div class="text-xs text-muted mt-1">Core Focus on AI & Deep Learning </div>
+</div>
+
+
+
+<div class="card">
+  <div class="font-bold text-accent text-sm">IBM Recognised Speaker</div>
+</div>
+
+<div class="card">
+  <div class="font-bold text-accent text-sm">Co-Founder of Southern Creative Catalyst</div>
+  <div class="text-xs text-muted mt-1">Leading Creative Tech revival in Hampshire</div>
+</div>
 </div>
 
 </div>
-
 </div>
-</div>
-
 ---
+hideInToc: true
 layout: image-right
-image: ./deepmind-c.jpg
+image: https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1200
 ---
 
-# Part 1 - The Background
-### AI Is Leaving the Chat Window
+# My Professional Career (AdaMode)
 
-<div class="section-subtitle">
-The shift from <span class="text-accent">autocomplete</span> to <span class="text-danger font-bold">autonomous action</span>, and why SMEs need to pay attention.
+<div class="text-sm mt-4">
+<v-clicks>
+
+Over 5 years of experience in deploying AI applications, from visual analysis models to LLMs
+
+- Deployment of more "Traditional" AI applications (Timeseries prediction models, auto-regression pipelines)
+
+- Deploying of LLMs for analysis of complicated civil nuclear legislation.
+
+- First of it's kind deployments within traditional ML for the Civil Nuclear space - Early detection of failures within complex systems.
+
+- Deploying human-in-the-loop AI Applications specifically seeking to augment and improve operator capabilities, rather than replacing them.
+
+</v-clicks>
+
 </div>
 
 ---
+layout: center
+hideInToc: true
+
+---
+
+# Opinions in this talk are my Own, not AdaMode's. 
+This talk is a mixture between practical lessons in AI & opinions about the shape of it.
+As such, I may have opinions that don't reflect on the business.
+
+---
+
+# What this talk will go through
+
+- Intro level explanation of concepts within AI 
+- Case studies where we've introduced AI into secure environments
+- Limitations of LLMs within data analysis
+- Quick dive into the effects of current LLM architectures
+- Few examples of why certain attacks still work on LLMs
+
+<br>
+
+### What this talk won't go through
+
+- Detailed results & methodology for projects (Available on ada-mode.com)
+- Deep integration & deployment discussion
+- Complex mathematical principles 
+
+---
+
 
 # A Brief History of AI 
 
@@ -106,8 +159,17 @@ The shift from <span class="text-accent">autocomplete</span> to <span class="tex
 <v-click>
 
 <div class="card text-center">
-  <div class="font-bold text-accent text-sm">1951–2022</div>
-  <div class="text-xs text-muted mt-2"><strong>Self-Contained AI/ML</strong><br/>ML/AI models running for specific/direct applications. Incredibly specific applications requiring direct expertise. </div>
+  <div class="font-bold text-accent text-sm">1951–2006</div>
+  <div class="text-xs text-muted mt-2"><strong>Self-Contained AI/ML</strong><br/>ML/AI models running for specific/direct applications. Specific applications requiring direct expertise. </div>
+</div>
+
+</v-click>
+
+<v-click>
+
+<div class="card text-center">
+  <div class="font-bold text-accent text-sm">2006-2022</div>
+  <div class="text-xs text-muted mt-2">Rise of "Deep Learning" and Convolutional Neural Networks. View that replicating intelligence comes from replicating neurons in the brain. </div>
 </div>
 
 </v-click>
@@ -123,19 +185,16 @@ The shift from <span class="text-accent">autocomplete</span> to <span class="tex
 
 <v-click>
 
-<div class="card  text-center">
-  <div class="font-bold text-accent text-sm">2024–2025</div>
-  <div class="text-xs text-muted mt-2"><strong>Rise of Tool-Calling & Agents</strong><br/>AI can now query databases, call APIs, read emails. Increasing context windows allow for more complicated applications.</div>
-</div>
+
 
 </v-click>
 
 <v-click>
 
-<div class="callout-danger text-center">
-  <div class="font-bold text-danger text-sm">2025–Now</div>
-  <div class="text-xs text-muted mt-2"><strong>Autonomous Agents</strong><br/>Claude Code, Cowork, browser agents. AI reads your files, writes code, manages your desktop. <br>
-  Minimal human oversight.</div>
+<div class="callout-danger text-center align-center mx-auto">
+  <div class="font-bold text-danger text-sm">2024–Now</div>
+  <div class="text-xs text-muted mt-2"><strong>Autonomous Agents</strong>Rise of tool calling and agents - ability for AI to query larger datasets 
+ </div>
 </div>
 
 </v-click>
@@ -145,20 +204,26 @@ The shift from <span class="text-accent">autocomplete</span> to <span class="tex
 <v-click>
 
 <div class="mt-6 text-center text-sm text-muted">
-Each step has given AI more <strong class="text-accent">capability</strong> and a larger <strong class="text-danger">attack surface</strong>.
+Each step  requires  <strong class="text-accent">exponentially more data.</strong> 
 </div>
 
 </v-click>
+
+
+---
+hideInToc: true
+
+
 ---
 
-# What This Actually Looks Like
+# What modern AI looks like
 
 <div class="mt-6">
 
 
 </div>
 
-<div class="grid grid-cols-2 gap-10 mt-6">
+<div class="grid grid-cols-2 gap-10 mt-2">
 
 <div>
 
@@ -185,10 +250,10 @@ Modern AI **calls tools** on your behalf.
 
 <div class="card card--lg p-5">
 
-#### Your "Chatbot" can
+#### Modern AI Can:
 
 
-- **Build** an app to monitor customer complaint emails, drafts a response, finds the relevant policy, and flags it, without knowing a single line of code.
+**Build** an app to monitor customer complaint emails, drafts a response, finds the relevant policy, and flags it, without knowing a single line of code.
 
 These require **tool calls**. The AI decides when to use it, what to pass, and what to do with the result, and it can be incredibly powerful.
 
@@ -204,94 +269,356 @@ This is the same architecture powering enterprise agents that read your emails, 
 </div>
 
 </div>
+
+
+
+---
+layout: center
 ---
 
-# Where We Are Now: Rise of the Agents
+# But how did we get here?
 
-<div class="grid grid-cols-2 gap-12 mt-8">
+<div class="text-xl mt-4" style="color:#8C92A2;max-width:640px;line-height:1.6">
+Modern AI is based on the same principles we've seen emerge time and time again within the AI space; more data, used for more generalisable actions.
+
+</div>
+
+---
+
+# Listening to machines
+
+<div class="grid grid-cols-2 gap-8 mt-4">
 <div>
 
-### By the numbers
+<p style="color:#D9D4C6;font-size:1rem;line-height:1.7">An autoregressive model predicts based on one (general) principle: <br> <strong>the recent past of a signal is the best guide to its next value.</strong> Take a sliding window of recent readings, learn a weighted combination, and you have a forecast.</p>
+
+<div class="callout-info mt-6" style="font-size:0.85rem">
+<strong>The sliding window</strong><br>
+y<sub>t−3</sub> · y<sub>t−2</sub> · y<sub>t−1</sub> → ŷ<sub>t</sub><br>
+<span style="color:var(--c-text-muted)">prediction = weighted sum · the weights are what training learns</span>
+</div>
+
+</div>
+<div>
+
+<iframe src="/animations/hero-spark.html" class="animation-frame" title="Sine-wave signal and prediction traces"></iframe>
+
+</div>
+</div>
+
+---
+layout: iframe-right
+url: /animations/strip-chart.html
+---
+
+# Complexity in Practice
+
+<div style="font-size:0.9rem;color:var(--c-text-secondary);margin-bottom:0.75rem">
+But that's not really a great indicator in real life. 
+
+Past performance from a single signal isn't necessarily a great indicator of future results. <br><br> In complex systems - multiple signals, from sensors to operator codes can reach an indicator. And this is where a mixture of models, from autogressive predictors to more complex structures come into place.
+</div>
+
+
+---
+layout: iframe-right
+url: /animations/neural-net.html
+---
+
+
+# How neural networks work
+
+<div>
+
+<p style="color:#D9D4C6;font-size:1rem;line-height:1.7">Numbers are multiplied by weights, summed together, and passed to the next layer. 
+This repeats until we reach a specific state that we can predict. <br> This could be an output signal, a state, or anything that can be mapped by a number </p>
+
+<p style="color:var(--c-text-secondary);font-size:0.9rem;line-height:1.7;margin-top:1rem"> Each time the network gets it wrong, it works backwards and nudges each weight slightly in the right direction. Do that enough times, across enough layers, and it starts picking up complex patterns.</p>
+
+<div class="callout-info mt-6" style="font-size:0.85rem">
+Input → weighted sum → activation → repeat<br>
+</div>
+
+</div>
+<div>
+
+
+</div>
+
+
+---
+
+# Sellafield Waste Vitrification
 
 <v-clicks>
 
-- **Claude Code** went from research preview to **$1 billion** in annualised revenue in six months
-- **Cowork** launched January 2026 and triggered a **$285 billion** stock selloff due to a legal contract review tool
-- **75%** of Anthropic's enterprise customers now use Claude in production
+#### Ada Mode worked with Sellafield engineers to develop a predictive maintenance solution for a complex nuclear waste processing facility. 
+
+WVP is responsible for processing the highly active liquor (HAL) waste into a vitrified glass product that is easier and safer to handle and store
+
+The aim was to be able to raise an alert to WVP operatives, ahead of line blockages or failure events, such that proactive maintenance could be undertaken to prevent the downtime event manifesting.
+
+<b>Ada Mode was able to successfully predict critical downtime events in sufficient time to enable intervention. The model outputs were integrated into a simple dashboard to represent longer-term system integration.</b>
+
+</v-clicks>
+
+
+---
+layout: iframe-right
+url: /animations/lstm.html
+---
+
+# Model Suitability
+
+<div style="font-size:0.9rem;color:var(--c-text-secondary);margin-bottom:0.75rem">
+Different algorithms suit different kinds of data. Sometimes we need to use a mixture of several. 
+</div>
+
+<div class="grid grid-cols-1 gap-1 mt-2">
+
+<div class="card">
+  <div class="font-bold text-accent text-sm">Random Forest</div>
+  <div class="text-xs text-muted mt-1">Hundreds of decision trees, each trained on a different slice of data. The best suited groups of decisions apply - allowing a proof of which decisions went into which groupings. </div>
+</div>
+
+<div class="card">
+  <div class="font-bold text-accent text-sm">Dense Neural Net</div>
+  <div class="text-xs text-muted mt-1">Stacked weighted sums, close to a very complex weighted average than anything else. Good at learning abstract features & complex rules, but no real sense of time.</div>
+</div>
+
+<div class="card">
+  <div class="font-bold text-accent text-sm">LSTM (Long Short-Term Memory)</div>
+  <div class="text-xs text-muted mt-1">Carries information across a sequence. It decides what to keep, what to forget, and what to output at each step. Great for rule where a sequence of values may be more important than a single one.</div>
+</div>
+
+</div>
+
+---
+layout: center
+---
+
+# So how does this apply to words?
+<div class="text-4xl font-light" style="font-style:italic;color:var(--c-text-secondary);line-height:1.5">
+The same core concepts work for both numbers & words - just at a larger scale.
+</div>
+
+
+
+
+
+---
+layout: iframe-left
+url: /animations/token-stream.html
+---
+#  Language Models
+
+<div>
+
+<p style="color:#D9D4C6;font-size:1rem;line-height:1.7">A language model is really just a number model; <strong>A window of recent context with a prediction of what comes next.</strong></p>
+
+<p style="color:var(--c-text-secondary);font-size:0.9rem;line-height:1.7;margin-top:1rem"> With a caveat, rather than using hundreds of signals from something very specific - like a wind turbine or a motor sensor; These will use millions of examples of written language in a specific context</p>
+
+<div class="callout-info mt-4" style="font-size:0.82rem">
+<span style="color:var(--c-text-muted)">These models can be further fine tuned to help connect words together for specific contexts
+</span>
+</div>
+
+</div>
+
+
+---
+layout: iframe-left
+url: /animations/vector-db.html
+---
+
+# How Vectorisation Works
+
+<v-clicks>
+
+<div>
+
+
+<p style="color:#D9D4C6;font-size:1rem;line-height:1.7">Vectorisation converts words into <strong>lists of numbers</strong> coordinates in a high-dimensional space where similar meanings sit closer together.</p>
+
+<div class="callout-info mt-4" style="font-size:0.82rem">
+<strong>"sheet"</strong> in general English, fabric, paper, bedding<br/>
+<strong>"sheet"</strong> in a sailing Context → near rope, halyard, rigging<br/>
+</div>
+
+<p style="color:var(--c-text-secondary);font-size:0.9rem;line-height:1.6;margin-top:1rem">A vector database  finds the <strong>nearest neighbours</strong> within a field. Domain-specific databases cluster terms by how they're <em>actually used</em> in that field.</p>
+
+This can be done with a larger and large corpus of information. If you only knew 18th century sailing terms - you may struggle to work out where to place 'GPS'
+
+</div>
+<div>
+
+
+</div>
+</v-clicks>
+
+
+---
+layout: iframe-right
+url: /animations/attention.html
+---
+
+
+# How Attention works in models (Kind-of)
+
+
+<v-clicks>
+<p style="color:#D9D4C6;font-size:1rem;line-height:1.7">I can't explain the entire architecture of a large language model in this talk. (I was tempted!)</p>
+
+<p style="color:var(--c-text-secondary);font-size:0.9rem;line-height:1.7;margin-top:1rem">But Attention is great for understanding a key concept of how modern LLMs work</p>
+
+<p style="color:var(--c-text-secondary);font-size:0.9rem;line-height:1.7;margin-top:1rem">Before transformers, models read text one token at a time. Each step carried a compressed memory. Long-range context was hard to hold onto.</p>
+
+<p style="color:var(--c-text-secondary);font-size:0.9rem;line-height:1.7;margin-top:1rem">Attention lets every token look at every other token at once and learn a weight: <em>how relevant is this to the current conversation?</em></p>
+</v-clicks>
+
+---
+
+# Local Language Model Deployment 
+
+<div class="grid grid-cols-2 gap-10 mt-6">
+<div>
+<v-clicks>
+Sellafield runs one of the largest nuclear decommissioning programs in the world. 11,000 staff, 500+ facilities, some active since the 1950s.
+
+Every off-normal event generates a Condition Report. Each one needs to be read, categorised, and Trend Coded before anyone can track patterns across site.
+
+The data was formally classified, ruling out any remote frontier model compute
+</v-clicks>
+
+</div>
+<div>
+<v-clicks>
+
+We built on-premises software from scratch and tested several open-source LLMs against real accuracy requirements and real hardware limits.
+
+<div class="card mt-4 mb-4">
+  Demonstration of succesful open source classification using smaller LLM models.
+</div>
+
+<div class="card mt-4 mb-4">
+  Succesful classification of majority of Trend Codes allowing operator time to be saved on more critical work than spreadsheet tagging.
+</div>
+
+</v-clicks>
+</div>
+</div>
+
+
+---
+layout: center
+---
+
+<div class="text-4xl font-light" style="font-style:italic;color:var(--c-text-secondary);line-height:1.5">
+Larger frontier models increase this infrastructure to immense scales - allowing for more complex interactions
+</div>
+
+---
+
+# Reading complex language at scale
+
+<div class="grid grid-cols-2 gap-8 mt-4">
+
+<div>
+
+
+<v-clicks>
+
+<p style="color:#D9D4C6;font-size:1rem;line-height:1.7">Scale the parameter count and context window, and next-token prediction starts doing something that looks like <strong>reading comprehension</strong></p>
+
+<p style="color:var(--c-text-secondary);font-size:0.9rem;line-height:1.7;margin-top:1rem">The same mechanism that predicts the next word can identify <span style="color:#E0511D">what is obligated</span>, <span style="color:#5B8DB8">what activities are required</span>, and <span style="color:#6BAE75">what falls in scope</span> & is able to make infferences on more abstract text & quotes.</p>
+
+<p style="color:var(--c-text-secondary);font-size:0.85rem;line-height:1.6;margin-top:1rem;font-style:italic">The output is leads for experts to verify, and can create more noise & false positives than other implementations.</p>
 
 </v-clicks>
 
 </div>
 <div>
 
-<v-click>
-
-<div class="callout-info callout-info--lg">
-
-### What this means for SMEs
-
-Your competitors, your suppliers, and your clients are already adopting agentic AI.
-
-The question has moved from *"should we use AI?"* to **"how do we use it without exposing our business?"**
-
-</div>
-
-
-</v-click>
+<iframe src="/animations/llm-language.html" class="animation-frame" title="LLM semantic decomposition of regulatory language"></iframe>
 
 </div>
 </div>
----
-layout: image
 
-# the image source
-image: ./claude.png
----
 
 ---
 
-# Hype vs. reality
+# Grounding retrieval in practice (AdaMode Case-Study)
 
-<div class="grid grid-cols-2 gap-12 mt-8">
+<div class="grid grid-cols-2 gap-3 mt-6">
 <div>
+<v-clicks>
+<b> The Problem: Small Modular Reactors need to be repeatable. It's really difficult to build repeatable nuclear sites. </b>
 
+Nuclear legislation is heavily cross-referenced, with defined terms that shift meaning depending on where in the Act you're reading. Legislation also differs between countries, making effective deployment for SMRs an incredibly difficult process.
 
+The application requires the model to quote retrieved text directly and include the citation in a structured output field. 
+
+The quote field is validated against the source chunk, if unavailable, the response is rejected before it reaches the user.
+</v-clicks>
+</div>
+<div>
 <v-clicks>
 
-- Only **8.6%** of enterprises have AI agents running in full production
-- The Scale AI Remote Labor Index tested **240 freelance projects** ($140k+ value)...
+```json
+{
+  "answer": "...",
+  "supporting_quote": "The licensee shall...",
+  "citation": "s.4(2)(b) Energy Act 2013",
+  "confidence": "high"
+}
+```
+
+<div class="card mt-4 text-xs text-muted">
+If no retrieved chunk supports the answer, the model returns <code>null</code> on the citation field and flags the response for review rather than paraphrasing from memory. The model's answers are bounded by what was actually retrieved. It cannot fill gaps from training data.
+</div>
+
+<div class="card mt-4 text-xs">
+We additionally integrated a Judge LLM to verify against a list of model responses. This helped create an evaluative framework for the answers, alongside a list of model responses from verified experts in the field.
+</div>
 
 </v-clicks>
 
-<v-click>
-
-<div class="callout-danger mt-4">
-  <div class="stat-value stat-value--danger text-center">2.5%</div>
-  <div class="stat-label text-center mt-1">...were automated to professional standard. Over 97% of the time, the AI failed. <b>(2.5% for an end-to-end project, is still incredibly impressive)</b></div>
-</div>
-
-</v-click>
-
-</div>
-<div>
-
-<v-click>
-
-
-The hype cycle pushes SMEs toward two bad options:
-
-**Over-invest** in unproven automation, giving AI broad access to business systems without guardrails.
-
-**Ignore it entirely** out of skepticism, while competitors move ahead.
-
-<div class="callout-info mt-4">
-💡 The smart move is <strong class="text-accent">careful, staged adoption</strong>. Use what's proven, add guardrails and skip the hype.
-</div>
-
-</v-click>
-
 </div>
 </div>
+
+
+
+---
+
+# One idea, three levels
+
+<div class="text-secondary mt-1 mb-6" style="font-size:1rem">Each level is the previous one with more context, generalisation & capacity</div>
+
+<div class="grid grid-cols-3 gap-4 mt-2">
+<div class="card">
+  <div class="font-bold text-accent text-sm mb-2">i · Autoregression</div>
+  <div style="font-family:monospace;font-size:0.75rem;color:var(--c-text-secondary);margin-bottom:0.5rem">Signals predicting signals</div>
+  <div class="text-xs text-muted">Deviation from forecast can be predicted. Strongest room for long-term evidence.</div>
+</div>
+<div class="card">
+  <div class="font-bold text-accent text-sm mb-2">ii · Small language model</div>
+  <div style="font-family:monospace;font-size:0.75rem;color:var(--c-text-secondary);margin-bottom:0.5rem">Larger documentation corpus -> smaller codes/trends</div>
+  <div class="text-xs text-muted">Text can contain far more noise than numbers, but tried and tested, especially in a robust, repetitive environment</div>
+</div>
+<div class="card">
+  <div class="font-bold text-accent text-sm mb-2">iii · Large language model</div>
+  <div style="font-family:monospace;font-size:0.75rem;color:var(--c-text-secondary);margin-bottom:0.5rem">Significant context -> higher level analysis</div>
+  <div class="text-xs text-muted">Scaling into more complex & abstract implementations. Tougher to implement, more room for evidence based error</div>
+</div>
+</div>
+
+---
+layout: center
+---
+
+# So LLMs sound great 
+### Why haven't they taken over the world yet?
+
 
 ---
 layout: image-right
@@ -304,8 +631,9 @@ image: ./memento-poster.jpg
 
 ### Permanent anterograde amnesia
 
-The core architecture of LLMs hasn't changed. 
-They work in a similar way to **Leonard Shelby** in *Memento*.
+The core architecture of LLMs hasn't fundamentally changed. 
+
+They work in a similar way to *Memento*. 
 
 <v-clicks>
 
@@ -318,34 +646,32 @@ They work in a similar way to **Leonard Shelby** in *Memento*.
 <v-click>
 
 <div class="callout-info mt-6">
-<b>AI doesn't remember </b>. It reads the script you hand it, and the context the provider gives. Tools just act to provide it extra context.
+<b>LLMs don't really remember </b>. Each stream of text is the token predictor receiving everything before it.
 </div>
 
 </v-click>
 
-
-
-
 ---
 
-# The Danger of Context Rot
+# The limitation of LLM's
 
 <div class="mt-8">
 
 ```mermaid {scale: 0.75}
+%%{init: {'theme': 'base', 'themeVariables': {'background': '#0a0a0a', 'primaryColor': '#141414', 'primaryTextColor': '#e0e0e0', 'primaryBorderColor': 'rgba(255,255,255,0.15)', 'lineColor': 'rgba(255,255,255,0.35)', 'edgeLabelBackground': '#111111', 'tertiaryColor': '#1a1a1a'}}}%%
 graph LR
-    A[📄 50 PDFs dumped<br/>into prompt] --> B[📏 Context window<br/>stretched thin]
-    F[🗣️ Incredibly Long Chats] --> B
+    A[📄 Documents dumped<br/>into agent] --> B[📏 Context window<br/>stretched thin]
+    F[🗣️ Lengthy conversations/context ] --> B
     B --> C[🧠 Attention dilution]
     C --> D[⚠️ Safety instructions<br/>ignored]
     C --> E[🤥 Hallucinated facts]
 
-    style A fill:#fafafa,stroke:#d65321
-    style F fill:#fafafa,stroke:#d65321
-    style B fill:#fafafa,stroke:#d65321
-    style C fill:#fafafa,stroke:#dc2626
-    style D fill:#fef2f2,stroke:#dc2626
-    style E fill:#fef2f2,stroke:#dc2626
+    style A fill:#141414,stroke:#ff6b35,stroke-width:1.5px,color:#e0e0e0
+    style F fill:#141414,stroke:#ff6b35,stroke-width:1.5px,color:#e0e0e0
+    style B fill:#141414,stroke:#ff6b35,stroke-width:1.5px,color:#e0e0e0
+    style C fill:#1a0a0a,stroke:#f87171,stroke-width:1.5px,color:#e0e0e0
+    style D fill:#2a0808,stroke:#f87171,stroke-width:1.5px,color:#fca5a5
+    style E fill:#2a0808,stroke:#f87171,stroke-width:1.5px,color:#fca5a5
 ```
 
 </div>
@@ -354,14 +680,12 @@ graph LR
 
 <div class="mt-6 text-center">
 
-As context length grows, this causes **attention dilution**, critical instructions drown in noise. <br> (CoPilot is worst offender!)
+As context length grows, we get **attention dilution**
 
 <div class="text-sm text-muted mt-2">
-This gets much worse with agentic systems. Claude Code has a <strong>1 million token</strong> context window. Cowork reads entire folders of files. The more you feed it, the less reliably it follows your rules.
+This gets much worse with agentic systems. As LLMs begin to span larger and larger contexts, this can lose track of original capabilities and tasks. Instructions that are written early get lost approaching closer to the context window. A LLM has a hard limit of how much it can know at one time.
 
 </div>
-
-
 
 
 </div>
@@ -376,55 +700,6 @@ This gets much worse with agentic systems. Claude Code has a <strong>1 million t
 <!-- - Verify the information provided by an AI -->
 <!-- </v-clicks> -->
 
----
-layout: image-right
-image: ./deepmind-b.jpg
----
-
-# Part 2 - The Threat
-### Why LLMs are Insecure
-
-<div class="section-subtitle">
-Prompt injection is <span class="text-danger font-bold">baked into</span> how language models work.
-</div>
-
----
-
-# The Core Problem: Data = Instructions
-
-<div class="mt-8">
-
-<div class="card card--lg mb-6">
-  <div class="text-sm text-muted mb-2">NCSC, OWASP, Microsoft, Anthropic — consensus view, 2025</div>
-  <div class="text-xl">
-    LLMs <strong class="text-danger">cannot reliably distinguish</strong> between "data" and "instructions."<br/>
-    It is all just the <strong class="text-accent">next predicted token</strong>.
-  </div>
-</div>
-
-</div>
-
-<div class="grid grid-cols-2 gap-8 mt-4">
-
-<div class="callout-success p-5">
-  <div class="font-bold text-success mb-2">Traditional Software</div>
-  <div class="text-sm">Code ≠ Data. Clear separation. SQL injection was solvable because we could parameterize inputs.</div>
-</div>
-
-<div class="callout-danger p-5">
-  <div class="font-bold text-danger mb-2">Large Language Models</div>
-  <div class="text-sm">Instructions = Data = Text. There is <em>no fundamental separation</em>. <br> Microsoft ranked prompt injection <strong>#1</strong> in the <b>OWASP Top 10</b> for LLM applications in 2025.</div>
-</div>
-
-</div>
-
-<v-click>
-
-<div class="mt-6 text-center text-sm text-muted">
-No model update will fix this. It's a <strong>property of the architecture</strong>. Every document, webpage, email, or API response an LLM reads is a potential attack vector.
-</div>
-
-</v-click>
 
 ---
 
@@ -441,11 +716,13 @@ No model update will fix this. It's a <strong>property of the architecture</stro
 
 ####  The Old World: **Chatbots**
 
-Prompt injection could make a chatbot say embarrassing things.
+Prompt injection could make a chatbot say embarrassing things. 
 
 **Consequence:** Reputational
 
-The worst case was a rude chatbot or a leaked system prompt.
+The worst case is a leaked system prompt, some examples of lazy lawyers attempting to cite non-existent studies.
+
+<img src='./lawyer_image.png'></img>
 
 </div>
 
@@ -455,19 +732,22 @@ The worst case was a rude chatbot or a leaked system prompt.
 
 Prompt injection can make an agent **delete files**, **send emails**, **exfiltrate data**, and **execute code**.
 
-**Consequence:** Fundamental
+**Consequence:** Incredibly dangerous
 
-<v-click>
+McKinsey AI chatbot hacked to potentially access thousands of files. <b>728,000 private files</b> and more than <b>46 million</b> chat logs
 
-</v-click>
+<img src='./mac_mini.png'></img>
+
 
 </div>
 
 </div>
+
+
 
 ---
 
-# Three real scenarios in increasing threat.
+# What can happen with a LLM?.
 
 <div class="mt-6">
 
@@ -501,7 +781,8 @@ Prompt injection can make an agent **delete files**, **send emails**, **exfiltra
 <div class="callout-danger p-5">
   <div class="text-3xl mb-3">🗂️</div>
   <div class="font-bold mb-2">Desktop Agent: File Exfiltration</div>
-  <div class="text-sm text-muted">A poisoned "tool" library tricks the desktop agent into sending private data through a whitelisted API domain. <strong class="text-danger">This was demonstrated against Claude in January 2026.</strong></div>
+  <div class="text-sm text-muted">A poisoned "tool" library tricks the desktop agent into sending private data through a whitelisted API domain. <br> <strong class="text-danger">This was demonstrated against Claude in January 2026.</strong></div>
+
 </div>
 
 </v-click>
@@ -513,482 +794,54 @@ Prompt injection can make an agent **delete files**, **send emails**, **exfiltra
 
 </v-click>
 
-<!-- 
-# GTG-1002: The wake-up call
 
-<div class="mt-6">
 
-<div class="callout-danger callout-danger--lg">
-
-<div class="text-sm text-muted mb-3">Anthropic Disclosure — 14 November 2025</div>
-
-### The first documented case of AI running a cyber espionage campaign with minimal human involvement.
-
-<div class="grid grid-cols-3 gap-6 mt-4">
-
-<div class="text-center">
-  <div class="stat-value stat-value--danger text-4xl">80–90%</div>
-  <div class="stat-label mt-1">of operations executed by AI<br/>without human intervention</div>
-</div>
-
-<div class="text-center">
-  <div class="stat-value stat-value--danger text-4xl">~30</div>
-  <div class="stat-label mt-1">global targets: tech, finance,<br/>government, chemicals</div>
-</div>
-
-<div class="text-center">
-  <div class="stat-value stat-value--danger text-4xl">~20 min</div>
-  <div class="stat-label mt-1">total human involvement<br/>across key attack phases</div>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<v-click>
-
-<div class="mt-4 grid grid-cols-2 gap-6">
-
-<div class="card text-sm">
-<strong>How it worked:</strong> The attackers jailbroke Claude Code, claiming it was doing legitimate defensive security testing.
-</div>
-
-<div class="card text-sm">
-<strong>What it did:</strong> Exploit code generation, credential harvesting, data exfiltration, and full attack documentation. 
-</div>
-
-</div>
-
-AI based attacks are only going to become more common, especially with agent tooling.
-
-</v-click> -->
-
----
-
-# Openclaw: When Every Guardrail Gets Skipped
-
-<div class="mt-6">
-
-<div class="grid grid-cols-2 gap-10">
-
-<div>
-
-
-An open-source AI assistant that runs locally with potential **full system access**; shell commands, file read/write, messaging integrations.
-
-<v-clicks>
-
-<div class="card p-3 mt-4 mb-3">
-  <div class="flex items-center gap-3">
-    <div class="text-2xl font-bold text-danger w-32">1,842</div>
-    <div class="text-xs text-muted">Control panels found online, with 62% unauthenticated (Shodan)</div>
-  </div>
-</div>
-
-<div class="card p-3 mb-3">
-  <div class="flex items-center gap-3">
-    <div class="text-2xl font-bold text-danger w-32">35k</div>
-    <div class="text-xs text-muted">Email addresses leaked due to misconfigured database (Moltbook)</div>
-  </div>
-</div>
-
-<div class="card p-3">
-  <div class="flex items-center gap-3">
-    <div class="text-2xl font-bold text-danger w-32">72 hrs</div>
-    <div class="text-xs text-muted">from adoption to active <strong>infostealer campaign (ClawHavoc)</strong> targeting its config files</div>
-  </div>
-</div>
-
-</v-clicks>
-
-</div>
-
-<div>
-
-<v-click>
-
-<div class="callout-danger callout-danger--lg p-5">
-
-### Every lesson in this talk is a lesson Openclaw skipped
-
-<div class="grid grid-cols-1 gap-2 mt-4 text-xs text-muted">
-  <div><strong>Context hygiene</strong> — reads emails, chats, web pages, all untrusted</div>
-  <div><strong>Verification</strong> — zero provenance on anything it acts on</div>
-  <div><strong>Least privilege</strong> — runs with full user-level system access</div>
-  <div><strong>Tool vetting</strong> — hundreds of malicious skills found in its plugin registry</div>
-  <div><strong>Audit trail</strong> — secrets stored in plaintext markdown</div>
-</div>
-
-<div class="text-xs text-muted mt-4">
-Google's VP of Security Engineering: <em>"My threat model is not your threat model, but it should be. Don't run Clawdbot"</em>
-</div>
-
-</div>
-
-</v-click>
-
-</div>
-
-</div>
-
-</div>
-
----
-
-# AI Lab Response 
-
-<div class="mt-6">
-
-
-</div>
-
-<div class="grid grid-cols-2 gap-8 mt-6">
-
-<div>
-
-Anthropic was the first lab to publish **measurable prompt injection metrics** across multiple agent surfaces.
-
-<v-clicks>
-
-- Models now train against prompt injection. Reinforcement learning exposes Claude to injection attacks in simulated environments before deployment.
-- Classifiers now scan untrusted content <strong>before</strong> it enters the context window. Claude Opus 4.5 reduced successful browser injection to <strong>1.4%</strong> — down from 10.8%.
-
-- Anthropic published the first <strong>measurable prompt injection benchmarks</strong> across agent surfaces. External red teams confirmed lowest injection rates across 23 models.
-
-</v-clicks>
-
-</div>
-
-<div>
-
-<v-click>
-
-<div class="callout-info callout-info--lg">
-
-### But these are only guardrails
-
-Anthropic themselves say:
-
-*"The web is an adversarial environment... Prompt injection remains an active area of research."*
-
-<div class="callout-danger p-3 mt-4 text-sm">
-⚠️ If the companies that <em>build</em> these models says the problem isn't solved, your business cannot assume it is.
-</div>
-
-</div>
-
-</v-click>
-
-</div>
-</div>
-
-
----
-layout: image-right
-image: ./deepmind-a.jpg
----
-
-# Part 3 - What you can do
-### The SME Playbook
-
-<div class="section-subtitle">
-You don't need a big budget. <br> You need <span class="text-accent font-bold">strict operational hygiene</span> and an understanding of the attack vectors.
-</div>
-
----
-
-# Action A: Context Hygiene
-
-<div class="mt-6">
-
-### Stop treating AI like a dumping ground.
-
-</div>
-
-<div class="grid grid-cols-2 gap-8 mt-6">
-
-<div class="callout-danger callout-danger--lg">
-
-#### ❌ The Common Mistake
-
-Dump 50 PDFs into the context window and hope for the best.
-
-**Result:** Context rot, attention dilution, hallucinations, ignored safety rules.
-
-<div class="text-xs text-muted mt-3">This is even more dangerous with agentic tools that can <em>act</em> on hallucinated conclusions.</div>
-
-</div>
-
-<div class="callout-success callout-success--lg">
-
-#### ✅ Research Modes & Grounding
-
-Use a **Research/Search/RAG capabilities** to find only the most relevant documents first. 
-
-Feed the AI only the **2–3 specific paragraphs** it needs to answer your exact question.
-
-<div class="highlight-box mt-4">
-  <div class="stat-value--success">Significant Reduction in Hallucinations</div>
-  <div class="stat-label">https://arxiv.org/abs/2404.08189</div>
-</div>
-
-</div>
-
-</div>
-
----
-
-# But A Citation Doesn't Make It True
-
-<div class="text-lg text-secondary font-light mt-4 mb-8">
-I convinced Google's AI I was a famous actor using nothing but my own website.
-</div>
-
-<img src="/google-actor-screenshot.png" class="rounded shadow-lg mx-auto" style="max-height: 380px;" />
-
-<!--
-SPEAKER NOTES:
-
-Let this land. Don't rush past it.
-
-This is real. I wrote a claim on my personal website and Google's AI Overview picked it up and presented it as fact. The source was real. The URL resolved. The citation was valid. The claim was complete fiction.
-
-The system worked as designed — it found a source, it cited it, it presented it with authority. It just had no way to evaluate whether the source was trustworthy.
-
-GPTZero coined the term "vibe citing" for this. AI doesn't retrieve references — it generates things that look like references. At NeurIPS 2025, over 100 fabricated citations passed peer review at the world's most prestigious AI conference. If the best AI researchers can't spot this, your team won't either.
-
-This screenshot is the simplest proof I can give you: a citation is necessary, but it is not sufficient.
-
-[NEXT SLIDE for the fix]
--->
----
-
-# Action B: Reduce Vibe Citing
-
-<div class="mt-6">
-
-### Citations are not sufficient.
-
-</div>
-
-<div class="grid grid-cols-2 gap-10 mt-8">
-
-<div>
-
-#### The problem
-
-<v-clicks>
-
-<div class="card p-4 mb-3">
-  <div class="font-bold text-danger text-sm mb-1">🎭 Vibe Citing</div>
-  <div class="text-xs text-muted">AI <em>generates</em> plausible-looking references. <strong>100+</strong> hallucinated citations passed peer review at NeurIPS 2025.</div>
-</div>
-
-<div class="card p-4 mb-3">
-  <div class="font-bold text-warning text-sm mb-1">📎 RAG ≠ Truth</div>
-  <div class="text-xs text-muted">Retrieval grounds the model but it faithfully cites <em>whatever is in the index</em>. <b>Garbage in, cited garbage out</b></div>
-</div>
-
-<div class="card p-4">
-  <div class="font-bold text-danger text-sm mb-1">🎯 Source Manipulation</div>
-  <div class="text-xs text-muted">Attackers can poison the sources AI retrieves from - SEO manipulation, adversarial documents, compromised knowledge bases.</div>
-</div>
-
-</v-clicks>
-
-</div>
-
-<div>
-
-#### The fix
-
-<v-click>
-
-<div class="callout-success callout-success--lg p-5">
-
-<div class="grid grid-cols-1 gap-5">
-
-<div class="flex items-start gap-3">
-  <div class="text-2xl">📄</div>
-  <div>
-    <div class="font-bold text-sm">Source Documents</div>
-    <div class="text-xs text-muted mt-1">Ground every claim in a retrievable, verified source.  </div>
-  </div>
-</div>
-
-<div class="flex items-start gap-3">
-  <div class="text-2xl">🔍</div>
-  <div>
-    <div class="font-bold text-sm">Independent Verification</div>
-    <div class="text-xs text-muted mt-1">A <strong>non-AI, deterministic</strong> check. Does the source exist? Is it authoritative? Does it actually say what the model claims?</div>
-  </div>
-</div>
-
-<div class="flex items-start gap-3">
-  <div class="text-2xl">✅</div>
-  <div>
-    <div class="font-bold text-sm">Verified Output</div>
-    <div class="text-xs text-muted mt-1">Only then does the claim reach your user. No verification, no output. </div>
-  </div>
-</div>
-
-</div>
-
-</div>
-
-</v-click>
-
-</div>
-
-</div>
-
-
-
-# Action C: Least-Privilege Principle
-
-<div class="mt-6">
-
-### The more an Agent can do, the less you should trust it to do alone.
-
-</div>
-
-<div class="mt-8">
-
-```mermaid {scale: 0.7}
-graph TB
-    AI[AI Agent] --> G{Gateway}
-    G -->|✅ Whitelisted API| V[Internal Database]
-    G -->|✅ Whitelisted API| W[Approved Service]
-    G -->|❌ BLOCKED| X[Unvetted External API]
-    G -->|❌ BLOCKED| Y[Random Web Links]
-    G -->|👤 Human Approval| Z[External Request]
-
-    style AI fill:#fafafa,stroke:#d65321
-    style G fill:#fafafa,stroke:#d97706
-    style V fill:#f0fdf4,stroke:#16a34a
-    style W fill:#f0fdf4,stroke:#16a34a
-    style X fill:#fef2f2,stroke:#dc2626
-    style Y fill:#fef2f2,stroke:#dc2626
-    style Z fill:#fafafa,stroke:#d97706
-```
-
-</div>
-
-<div class="text-center mt-4 text-sm">
-This is the <strong class="text-accent">only reliable defence</strong> against indirect prompt injection. Anthropic themselves tell Cowork users to <em>"be cautious about granting access to sensitive information"</em> and to create <strong>dedicated folders with non-sensitive data</strong>.
-</div>
-
----
-
-# Understand What You're Adopting
-
-<div class="mt-4 text-center text-sm text-muted mb-4">A decision framework for SMEs</div>
-
-<div class="">
-```mermaid 
-flowchart LR
-    A["How is your AI connected?"] --> B{"Does it access external tools, search the web, or analyse internal data?"}
-    B -->|No| C["🟢 LOW RISK: Contained AI"]
-    B -->|Yes| D{"Is there human approval before actions?"}
-    D -->|Yes| E["🟡 MEDIUM RISK: Tool-Calling AI"]
-    D -->|No| F{"Does it execute code, browse the web, or manage files without a human?"}
-    F -->|No| E
-    F -->|Yes| G["🛑 HIGH RISK: Autonomous Agent"]
-
-```
-
-</div>
-
-<v-click>
-<div class="mt-4 text-center text-sm text-muted">
-Most SMEs should be operating in <strong class="text-success">green</strong> and carefully piloting <strong class="text-warning">amber</strong>. <br> Unless you have a deep understanding of the technology, Very few SMEs are ready for <strong class="text-danger">red</strong>.
-</div>
-</v-click>
-
-<!-- 
-# Live Demo — AI in Action
-
-<div class="mt-2">
-
-<iframe
-  src="https://claude.ai"
-  class="w-full"
-  style="height: 420px; box-shadow: var(--shadow-card);"
-  allow="clipboard-read; clipboard-write"
-  sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
-/>
-
-</div> -->
 
 
 
 ---
 layout: center
-class: text-center
+---
+# Maintaining Understanding within rapidly evolving AI
+How can we take advantage of the benefits of AI, without exposing our risk?
+
+<v-clicks>
+
+- By keeping a core understanding of how modern AI works and where it came from. 
+  - All of a sudden, a tool call to google calendar doesn't seem as magical, it's a stream of text analysed by a frozen in time model.
+  - You should understand the tools you use, as we're only seeing more and more dangers.
+
+</v-clicks>
+
+---
+layout: center
 ---
 
-# Three Rules for Monday Morning
-### Or a distillation of the last 40 minutes into three points
-<div class="grid grid-cols-3 gap-8 mt-10 max-w-5xl mx-auto text-left">
+# A lesson in three parts
 
-<div class="callout-success p-6">
-  <div class="text-3xl mb-3">🔎</div>
-  <div class="font-bold text-success text-sm mb-3">Audit Tools Like an Auditor</div>
-  <div class="text-xs text-muted">
-    Every plugin, skill, and MCP server is a third-party entering your business. 
-    <br> <strong>Read the source. Check the skill.</strong>
-    <div class="mt-2">If you wouldn't invite this third-party into your Teams, don't let the agent.</div>
-  </div>
-  <br>
-  <div class="text-xs">
-  <b>spikee.ai</b> - Assess your prompt for injection (free & open source) <br>
-  <b>Nova Proximity</b> - Assess MCP & Skills for security (free & open source)  <br>
-  <b>MCP Inspector</b> - Assess security of skills (free) <br>
-  </div>
+<div class="grid grid-cols-2 gap-10 mt-8 items-start max-w-4xl mx-auto">
+
+<div class="text-center">
+  <img src="./machine_can_never.webp" class="mx-auto rounded shadow-lg" style="max-height: 340px;" />
+  <div class="text-xs text-muted mt-3">IBM internal slide, c. 1979</div>
 </div>
 
-<div class="callout-success p-6">
-  <div class="text-3xl mb-3">🔐</div>
-  <div class="font-bold text-success text-sm mb-3">Agents Must Never See Your Secrets</div>
-  <div class="text-xs text-muted">
-    Private keys and credentials should <strong>never exist inside an agents context</strong>.
-    <div class="mt-2">Use secret managers & least privilege rules. 
-    Don't give an LLM keys to the vault.</div>
-  </div>
-  <br>
-  <div class="text-xs">
-    <b>1Password</b> - Supports secret automation with CLI/SDKs (£6/user/month) <br>
-  <b>Doppler</b> - Secret management across environment <br>
-  <b>Bitwarden Secrets Manager</b> (£3/user/month) <br>
-  </div>
-</div>
-
-<div class="callout-success p-6">
-  <div class="text-3xl mb-3">✅</div>
-  <div class="font-bold text-success text-sm mb-3">Verify Every Claim Independently</div>
-  <div class="text-xs text-muted">
-    Don't blindly trust the output. Every factual claim needs a <strong>deterministic check outside the model</strong>.
-    <div class="mt-2">If your AI can't relay where the answer is from, it's just a probabilistic guess.</div>
-  </div>
-  <br>
-  <div class="text-xs">
-    <b>GPTZero Source Finder</b> - Checks whether citations are real/hallucinated (free tier available) <br>
-  <b>LLM Guard</b> - Scans inputs/outputs for hallucinated content (free, open-source) <br>
-  <b>Just check manually</b> (time) <br>
-  </div>
+<div class="text-center">
+  <img src="./openai_war_agreement.png" class="mx-auto rounded shadow-lg" style="max-height: 340px;" />
+  <div class="text-xs text-muted mt-3">OpenAI — US government AI agreement, 2025</div>
 </div>
 
 </div>
 
-<v-click>
+---
 
-<div class="mt-8 text-sm text-muted">
-These are rules you can implement <strong>today</strong>, regardless of budget or team size.
+
+
+<div class="text-center">
+  <img src="./drone-kill.png" class="mx-auto rounded shadow-lg" style="max-height: 340px;" />
+  <div class="text-xs text-muted mt-3">We're in a new frontier</div>
 </div>
 
-</v-click>
 
 ---
 layout: center
@@ -997,9 +850,7 @@ class: text-center
 
 # Thank You
 
-<div class="text-2xl text-secondary mt-4">
-Integrity by Design
-</div>
+
 
 This presentation will be made available on my substack & linkedin
 
@@ -1015,14 +866,16 @@ AdaMode
 </div>
 
 <div class="mt-1 text-xs text-faint">
-RSA Fellow · IBM Recognised Speaker
+Senior Software Engineer · RSA Fellow · IBM Recognised Speaker
 </div>
 
 </div>
 <div class="text-center">
 
-<img src="/qr-code.png" class="w-32 h-32 mx-auto" alt="QR code to Substack" />
-<div class="text-xs text-muted mt-2">ends.substack.com</div>
+For more information about Adamode and what we do: <br> <a>ada-mode.com</a>
+
+Or contact me directly:
+
 <img src="/qr-code-2.png" class="w-32 h-32 mx-auto" alt="QR code to Substack" />
 <div class="text-xs text-muted mt-2">linkedin.com/in/bemben</div>
 </div>
@@ -1065,7 +918,7 @@ RSA Fellow · IBM Recognised Speaker
 
 #### Hallucination & Citation Integrity
 
-- **RAG Hallucination Reduction** — Shuster et al., arXiv:2404.08189, 2024
+- **RAG Hallucination Reduction** — Bechard et al., arXiv:2404.08189, 2024
 - **NeurIPS 2025 Fabricated Citations** — GPTZero / academic integrity reporting, 2025
 
 #### Images

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strip Chart — Anomaly Detector</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#000000;--paper:#000000;--paper-dim:#000000;--paper-line:rgba(20,24,31,.10);
+    --paper-ink:#2A2620;--verm:#E0511D;--verm-soft:rgba(0, 0, 0, 0.14);
+    --trace:#56808D;--text:#D9D4C6;--muted:#8C92A2;--hairline:rgba(217,212,198,.14);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:100%;height:100%;overflow:hidden;background:var(--ink);font-family:'IBM Plex Serif',Georgia,serif;-webkit-font-smoothing:antialiased}
+  .wrap{height:100%;display:flex;flex-direction:column;padding:16px}
+  .panel{background:var(--paper);color:var(--paper-ink);border-radius:3px;flex:1;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 1px 0 rgba(0,0,0,.4),inset 0 0 0 1px rgba(20,24,31,.18)}
+  .panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:10px 16px;border-bottom:1px solid var(--paper-line);flex-shrink:0}
+  .panel-title{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#5d564a}
+  .controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .readout{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;padding:4px 10px;border-radius:2px;border:1px solid rgba(20,24,31,.25)}
+  .readout.ok{color:#4a6b3f;border-color:rgba(74,107,63,.45)}
+  .readout.alert{color:var(--verm);border-color:var(--verm);background:var(--verm-soft);animation:blink 1s steps(2) infinite}
+  @keyframes blink{50%{opacity:.55}}
+  button{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;padding:6px 13px;border:1px solid var(--paper-ink);background:transparent;color:var(--paper-ink);cursor:pointer;border-radius:2px;transition:all .2s;text-transform:uppercase}
+  button:hover{background:var(--paper-ink);color:var(--paper)}
+  button.primary{background:var(--verm);border-color:var(--verm);color:var(--paper)}
+  button.primary:hover{background:#c2410f;border-color:#c2410f}
+  canvas{display:block;width:100%;flex:1}
+  .panel-foot{padding:10px 16px;border-top:1px solid var(--paper-line);flex-shrink:0}
+  .note{font-family:'IBM Plex Mono',monospace;font-size:10px;color:#6e675a;line-height:1.6}
+  @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="panel">
+    <div class="panel-head">
+      <div class="controls">
+        <span id="arStatus" class="readout ok">RESIDUAL 0.00 · NOMINAL</span>
+      </div>
+    </div>
+    <canvas id="stripChart" aria-label="Live strip chart: actual sensor signal, model prediction band, and residual track with alert threshold"></canvas>
+    <div class="panel-foot">
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  const cv = document.getElementById('stripChart');
+  const ctx = cv.getContext('2d');
+  const status = document.getElementById('arStatus');
+  const faultBtn = document.getElementById('faultBtn');
+  const resetBtn = document.getElementById('resetBtn');
+
+  const N = 360;
+  let data=[], pred=[], res=[];
+  let t=0, fault=false, drift=0, alerted=false, alertX=null;
+  const THRESH = 0.16;
+
+  function sample(){
+    let v = 0.45*Math.sin(t*0.045) + 0.18*Math.sin(t*0.013+1.3) + (Math.random()-0.5)*0.06;
+    if(fault){
+      drift += 0.0016 + Math.random()*0.0011;
+      v += drift + (Math.random()-0.5)*0.05*Math.min(drift*8,1);
+    }
+    return v;
+  }
+  function predict(){
+    const n=data.length;
+    if(n<3) return data[n-1]??0;
+    const a=data[n-1],b=data[n-2],c2=data[n-3];
+    return a+((a-b)*0.6+(b-c2)*0.25+(t*0.0002));
+  }
+  function step(){
+    const p=predict(), v=sample();
+    data.push(v); pred.push(p);
+    const r=Math.abs(v-p);
+    const prev=res.length?res[res.length-1]:0;
+    res.push(prev*0.85+r*0.1);
+    if(data.length>N){data.shift();pred.shift();res.shift();if(alertX!==null)alertX--;}
+    t++;
+    const rr=res[res.length-1];
+    if(rr>THRESH&&!alerted){alerted=true;alertX=data.length-1;}
+    if(alerted){
+      status.textContent='RESIDUAL '+rr.toFixed(2)+' · ALERT — INTERVENE';
+      status.className='readout alert';
+    } else {
+      status.textContent='RESIDUAL '+rr.toFixed(2)+' · NOMINAL';
+      status.className='readout ok';
+    }
+  }
+
+  let W,H;
+  function size(){
+    const r=cv.getBoundingClientRect();
+    W=cv.width=r.width*devicePixelRatio;
+    H=cv.height=r.height*devicePixelRatio;
+  }
+  size(); addEventListener('resize',()=>{size();draw();});
+
+  function yMap(v,top,hgt){return top+hgt/2-v*hgt*0.62;}
+
+  function draw(){
+    if(!W||!H) return;
+    const dp=devicePixelRatio;
+    ctx.clearRect(0,0,W,H);
+    const mainTop=18*dp, mainH=Math.floor(H*0.6);
+    const resTop=mainTop+mainH+28*dp, resH=Math.floor(H*0.25);
+    const xStep=W/(N-1);
+
+    // grid
+    ctx.strokeStyle='rgba(20,24,31,.08)';ctx.lineWidth=1;
+    for(let gx=0;gx<W;gx+=40*dp){ctx.beginPath();ctx.moveTo(gx,0);ctx.lineTo(gx,H);ctx.stroke();}
+    for(let gy=0;gy<H;gy+=28*dp){ctx.beginPath();ctx.moveTo(0,gy);ctx.lineTo(W,gy);ctx.stroke();}
+
+    // labels
+    ctx.fillStyle='rgba(20,24,31,.45)';
+    ctx.font=(9*dp)+'px "IBM Plex Mono",monospace';
+    ctx.fillText('SIGNAL',12*dp,14*dp);
+    ctx.fillText('RESIDUAL',12*dp,(resTop/dp-6)*dp);
+    ctx.strokeStyle='rgba(20,24,31,.2)';
+    const divY=mainTop+mainH+14*dp;
+    ctx.beginPath();ctx.moveTo(0,divY);ctx.lineTo(W,divY);ctx.stroke();
+
+    // prediction band
+    if(pred.length>2){
+      ctx.fillStyle='rgba(224,81,29,.10)';
+      ctx.beginPath();
+      pred.forEach((p,i)=>{const x=i*xStep,y=yMap(p,mainTop,mainH)-10*dp;i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
+      for(let i=pred.length-1;i>=0;i--){ctx.lineTo(i*xStep,yMap(pred[i],mainTop,mainH)+10*dp);}
+      ctx.closePath();ctx.fill();
+
+      ctx.strokeStyle='#E0511D';ctx.lineWidth=1.4*dp;
+      ctx.setLineDash([6*dp,5*dp]);
+      ctx.beginPath();
+      pred.forEach((p,i)=>{const x=i*xStep,y=yMap(p,mainTop,mainH);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
+      ctx.stroke();ctx.setLineDash([]);
+    }
+
+    // actual trace
+    ctx.strokeStyle='#2F5560';ctx.lineWidth=2*dp;
+    ctx.beginPath();
+    data.forEach((v,i)=>{const x=i*xStep,y=yMap(v,mainTop,mainH);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
+    ctx.stroke();
+
+    // residual track
+    const ry=v=>resTop+resH-Math.min(v/0.4,1)*resH;
+    ctx.strokeStyle='rgba(224,81,29,.75)';ctx.lineWidth=1*dp;
+    ctx.setLineDash([3*dp,4*dp]);
+    ctx.beginPath();ctx.moveTo(0,ry(THRESH));ctx.lineTo(W,ry(THRESH));ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='rgba(224,81,29,.8)';
+    ctx.font=(9*dp)+'px "IBM Plex Mono",monospace';
+    ctx.fillText('ALERT THRESHOLD',W-120*dp,ry(THRESH)-4*dp);
+
+    ctx.strokeStyle='#5d564a';ctx.lineWidth=1.6*dp;
+    ctx.beginPath();
+    res.forEach((v,i)=>{const x=i*xStep,y=ry(v);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
+    ctx.stroke();
+
+    // alert flag
+    if(alertX!==null&&alertX>=0){
+      const x=alertX*xStep;
+      ctx.strokeStyle='#E0511D';ctx.lineWidth=1.4*dp;
+      ctx.beginPath();ctx.moveTo(x,mainTop);ctx.lineTo(x,resTop+resH);ctx.stroke();
+      ctx.fillStyle='#E0511D';
+      ctx.font=(9*dp)+'px "IBM Plex Mono",monospace';
+      const lx=Math.min(x+6*dp,W-240*dp);
+      ctx.fillText('▲ ANOMALY — MAINTENANCE WINDOW OPENS',lx,mainTop+12*dp);
+    }
+  }
+
+  for(let i=0;i<N;i++) step();
+  alerted=false;alertX=null;
+
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let last=0;
+  function loop(ts){
+    if(ts-last>33){step();draw();last=ts;}
+    requestAnimationFrame(loop);
+  }
+  if(reduced){
+    fault=true;for(let i=0;i<260;i++)step();draw();
+  } else {
+    requestAnimationFrame(loop);
+  }
+
+  faultBtn.addEventListener('click',()=>{fault=true;});
+  resetBtn.addEventListener('click',()=>{
+    fault=false;drift=0;alerted=false;alertX=null;
+    data=[];pred=[];res=[];t=0;
+    for(let i=0;i<N;i++)step();
+    alerted=false;alertX=null;
+    if(reduced)draw();
+  });
+})();
+</script>
+</body>
+</html>

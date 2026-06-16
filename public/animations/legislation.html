@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Legislation Pairing</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14181F;--paper:#EFE6D0;--paper-dim:#E4D9BF;--paper-line:rgba(20,24,31,.10);
+    --paper-ink:#2A2620;--verm:#E0511D;--verm-soft:rgba(224,81,29,.14);
+    --text:#D9D4C6;--muted:#8C92A2;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:100%;height:100%;overflow:hidden;background:var(--ink);font-family:'IBM Plex Serif',Georgia,serif;-webkit-font-smoothing:antialiased}
+  .wrap{height:100%;display:flex;flex-direction:column;padding:14px}
+  .panel{background:var(--paper);color:var(--paper-ink);border-radius:3px;flex:1;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 1px 0 rgba(0,0,0,.4),inset 0 0 0 1px rgba(20,24,31,.18)}
+  .panel-head{padding:10px 16px;border-bottom:1px solid var(--paper-line);flex-shrink:0}
+  .panel-title{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#5d564a}
+  .law{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--paper-line);flex:1;overflow:hidden}
+  .law-col{background:var(--paper);padding:12px 14px;overflow-y:auto}
+  .law-col h4{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#5d564a;margin-bottom:10px}
+  .clause{
+    font-family:'IBM Plex Serif',serif;font-size:12.5px;line-height:1.55;padding:10px 11px;margin-bottom:8px;
+    border:1px solid rgba(20,24,31,.16);border-radius:2px;cursor:pointer;background:rgba(255,255,255,.35);
+    transition:all .2s;color:#3a352c;
+  }
+  .clause:hover{background:rgba(255,255,255,.7)}
+  .clause.lit{border-color:var(--verm);box-shadow:inset 0 0 0 1px var(--verm);background:rgba(255,255,255,.7)}
+  .clause .cref{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.12em;color:#8a8272;display:block;margin-bottom:5px}
+  .law-note{
+    padding:12px 14px;border-top:1px solid var(--paper-line);background:var(--paper-dim);
+    font-size:12.5px;line-height:1.6;color:#3a352c;min-height:72px;flex-shrink:0;
+  }
+  .law-note .ln-tag{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--verm);display:block;margin-bottom:6px}
+  @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="panel">
+    <div class="panel-head">
+      <span class="panel-title">Fig. 3 — two regulatory philosophies · click any clause to find its counterpart</span>
+    </div>
+    <div class="law" id="lawGrid">
+      <div class="law-col">
+        <h4>United Kingdom · goal-setting</h4>
+        <div id="ukCol"></div>
+      </div>
+      <div class="law-col">
+        <h4>United States · prescriptive</h4>
+        <div id="usCol"></div>
+      </div>
+    </div>
+    <div class="law-note" id="lawNote">
+      <span class="ln-tag">Model commentary</span>
+      Select a clause on either side. The model pairs it with its counterpart and explains how the two regimes diverge. <i>(Clauses are illustrative paraphrases, not statutory text.)</i>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  const PAIRS=[
+    {
+      uk:{ref:'LICENCE CONDITION — MAINTENANCE',text:'The licensee shall make and implement adequate arrangements for the regular and systematic examination, maintenance and testing of all plant which may affect safety.'},
+      us:{ref:'CFR-STYLE RULE — VALVE TESTING',text:'Each safety-related valve shall be exercised and tested at intervals not exceeding 92 days, in accordance with the methods and acceptance criteria of the approved in-service testing programme.'},
+      note:'Same intent — keep safety plant working — expressed in opposite grammars. The UK clause sets a goal and makes the licensee prove their arrangements are "adequate"; the US clause encodes the arrangement itself: a fixed interval, a named programme, defined acceptance criteria. A model cross-walking the two must recognise that one prescriptive rule may satisfy a fraction of one goal-setting duty.'
+    },
+    {
+      uk:{ref:'LICENCE CONDITION — INCIDENTS',text:'The licensee shall make arrangements for the notification, recording, investigation and reporting of incidents occurring on the site.'},
+      us:{ref:'CFR-STYLE RULE — EVENT NOTIFICATION',text:'The licensee shall notify the regulator within one hour of any event meeting the criteria enumerated in paragraphs (a)(1) through (a)(9), followed by a written report within 60 days.'},
+      note:'The UK duty is open-textured: it covers every incident class through one obligation to have arrangements. The US rule is a decision table — enumerated criteria, clock-based deadlines. The LLM\'s useful output here is the mapping: which enumerated US criteria fall inside the UK arrangement, and which UK incident classes have no prescriptive US analogue.'
+    },
+    {
+      uk:{ref:'LICENCE CONDITION — COMPETENCE',text:'Only suitably qualified and experienced persons shall perform any duties which may affect the safety of operations on the site.'},
+      us:{ref:'CFR-STYLE RULE — OPERATOR LICENSING',text:'Reactor operators shall hold a licence renewed at six-year intervals and shall complete a requalification programme delivered on a continuous 24-month cycle.'},
+      note:'"Suitably qualified and experienced persons" — SQEP — is a famous goal-setting phrase: the licensee defines and defends what qualified means. The US equivalent is a licensing apparatus with renewal periods and training cycles fixed in regulation. The comparison surfaces a deep difference in where judgement is allowed to live: with the operator, or with the rulebook.'
+    }
+  ];
+
+  const ukCol=document.getElementById('ukCol');
+  const usCol=document.getElementById('usCol');
+  const note=document.getElementById('lawNote');
+
+  function light(i){
+    document.querySelectorAll('.clause').forEach(c=>c.classList.remove('lit'));
+    document.querySelectorAll('.clause[data-i="'+i+'"]').forEach(c=>c.classList.add('lit'));
+    note.innerHTML='<span class="ln-tag">Model commentary · pair '+(i+1)+' of '+PAIRS.length+'</span>'+PAIRS[i].note;
+  }
+
+  PAIRS.forEach((p,i)=>{
+    const u=document.createElement('div');
+    u.className='clause';u.dataset.i=i;u.tabIndex=0;
+    u.innerHTML='<span class="cref">'+p.uk.ref+'</span>'+p.uk.text;
+    const s=document.createElement('div');
+    s.className='clause';s.dataset.i=i;s.tabIndex=0;
+    s.innerHTML='<span class="cref">'+p.us.ref+'</span>'+p.us.text;
+    [u,s].forEach(el=>{
+      el.addEventListener('click',()=>light(i));
+      el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();light(i);}});
+    });
+    ukCol.appendChild(u);usCol.appendChild(s);
+  });
+})();
+</script>
+</body>
+</html>

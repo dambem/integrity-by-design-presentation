@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attention</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:100%;height:100%;overflow:hidden;background:#000}
+  canvas{display:block;width:100%;height:100%}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+(function(){
+  const c = document.getElementById('c');
+  const ctx = c.getContext('2d');
+  const dpr = devicePixelRatio;
+  let w, h, t = 0, lastSwitch = 0, queryIdx = 0, fadeIn = 0;
+
+  function resize(){
+    w = c.width = window.innerWidth * dpr;
+    h = c.height = window.innerHeight * dpr;
+  }
+  resize();
+  addEventListener('resize', resize);
+
+  const tokens = ['The', 'valve', 'failed', 'because', 'it', 'was', 'corroded'];
+
+  // attention weights [query][key] — hand-crafted to be semantically meaningful
+  const attn = [
+    [0.44, 0.28, 0.12, 0.06, 0.05, 0.03, 0.02], // The     → valve
+    [0.10, 0.50, 0.18, 0.05, 0.10, 0.03, 0.04], // valve   → valve
+    [0.05, 0.34, 0.22, 0.10, 0.10, 0.05, 0.14], // failed  → valve, corroded
+    [0.05, 0.10, 0.28, 0.27, 0.13, 0.07, 0.10], // because → failed, because
+    [0.04, 0.46, 0.16, 0.10, 0.13, 0.06, 0.05], // it      → valve  ← key example
+    [0.05, 0.11, 0.15, 0.10, 0.16, 0.18, 0.25], // was     → corroded
+    [0.04, 0.24, 0.20, 0.06, 0.21, 0.10, 0.15], // corroded→ valve, it
+  ];
+
+  const HOLD = 2.8; // seconds per token
+  const FADE = 0.45; // fade in duration
+
+  function tokenX(i){
+    const pad = w * 0.07;
+    return pad + (w - pad * 2) * (i / (tokens.length - 1));
+  }
+
+  function draw(){
+    ctx.clearRect(0, 0, w, h);
+
+    // advance query
+    if(t - lastSwitch > HOLD){
+      lastSwitch = t;
+      queryIdx = (queryIdx + 1) % tokens.length;
+      fadeIn = 0;
+    }
+    fadeIn = Math.min(1, (t - lastSwitch) / FADE);
+
+    const q = queryIdx;
+    const weights = attn[q];
+    const maxW = Math.max(...weights.filter((_, i) => i !== q));
+    const topK = weights.indexOf(maxW); // highest-attention target
+
+    const ty = h * 0.50;
+    const n = tokens.length;
+
+    // --- arcs ---
+    for(let k = 0; k < n; k++){
+      if(k === q) continue;
+      const w_val = weights[k];
+      const norm = w_val / maxW;
+      const alpha = norm * 0.72 * fadeIn;
+      const lw = (0.5 + norm * 2.5) * dpr;
+      const x1 = tokenX(q), x2 = tokenX(k);
+      const arcH = Math.abs(x2 - x1) * 0.55 + h * 0.05;
+      const my = ty - arcH;
+      const isTop = k === topK;
+      const col = isTop
+        ? `rgba(224,81,29,${alpha})`
+        : `rgba(86,128,141,${alpha * 0.9})`;
+      ctx.strokeStyle = col;
+      ctx.lineWidth = lw;
+      ctx.beginPath();
+      ctx.moveTo(x1, ty);
+      ctx.quadraticCurveTo((x1 + x2) / 2, my, x2, ty);
+      ctx.stroke();
+
+      // weight label on strongest arc
+      if(isTop && fadeIn > 0.6){
+        const lx = (x1 + x2) / 2;
+        const ly = my - 7 * dpr;
+        ctx.font = `${8.5 * dpr}px IBM Plex Mono`;
+        ctx.fillStyle = `rgba(224,81,29,${(fadeIn - 0.6) / 0.4 * 0.8})`;
+        ctx.textAlign = 'center';
+        ctx.fillText((w_val).toFixed(2), lx, ly);
+      }
+    }
+
+    // --- token boxes ---
+    ctx.font = `${11 * dpr}px IBM Plex Mono`;
+    for(let i = 0; i < n; i++){
+      const tx = tokenX(i);
+      const label = tokens[i];
+      const tw = ctx.measureText(label).width;
+      const bw = tw + 20 * dpr;
+      const bh = 30 * dpr;
+      const isQ  = i === q;
+      const isTop = i === topK && i !== q;
+      const norm = weights[i] / maxW;
+
+      let fill, stroke, text;
+      if(isQ){
+        fill   = 'rgba(224,81,29,0.14)';
+        stroke = 'rgba(224,81,29,0.9)';
+        text   = 'rgba(224,81,29,1)';
+      } else if(isTop){
+        fill   = `rgba(86,128,141,${0.08 * fadeIn})`;
+        stroke = `rgba(86,128,141,${0.7 * fadeIn})`;
+        text   = `rgba(255,255,255,${0.85 * fadeIn + 0.1})`;
+      } else {
+        fill   = `rgba(86,128,141,0.03)`;
+        stroke = `rgba(86,128,141,${0.15 + norm * 0.25 * fadeIn})`;
+        text   = `rgba(255,255,255,${0.2 + norm * 0.4 * fadeIn})`;
+      }
+
+      ctx.fillStyle = fill;
+      ctx.fillRect(tx - bw / 2, ty - bh / 2, bw, bh);
+      ctx.strokeStyle = stroke;
+      ctx.lineWidth = isQ ? 1.5 * dpr : dpr;
+      ctx.strokeRect(tx - bw / 2, ty - bh / 2, bw, bh);
+
+      ctx.fillStyle = text;
+      ctx.textAlign = 'center';
+      ctx.fillText(label, tx, ty + 4 * dpr);
+    }
+
+    // --- query marker ---
+    ctx.font = `${8 * dpr}px IBM Plex Mono`;
+    ctx.fillStyle = `rgba(224,81,29,0.65)`;
+    ctx.textAlign = 'center';
+    ctx.fillText('query', tokenX(q), ty - 22 * dpr);
+
+    // --- annotation ---
+    if(fadeIn > 0.5 && topK !== q){
+      const a = (fadeIn - 0.5) / 0.5;
+      ctx.font = `${9 * dpr}px IBM Plex Mono`;
+      ctx.fillStyle = `rgba(255,255,255,${a * 0.45})`;
+      ctx.textAlign = 'center';
+      ctx.fillText(
+        `"${tokens[q]}" attends most to "${tokens[topK]}"`,
+        w / 2, ty + 38 * dpr
+      );
+    }
+
+    // --- footer ---
+    ctx.font = `${8 * dpr}px IBM Plex Mono`;
+    ctx.fillStyle = 'rgba(255,255,255,0.2)';
+    ctx.textAlign = 'center';
+
+    t += 0.016;
+    requestAnimationFrame(draw);
+  }
+
+  draw();
+})();
+</script>
+</body>
+</html>
