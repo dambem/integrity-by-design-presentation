@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Three Sizes of Model — Signals, Sentences, Statutes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:        #14181F;
+    --ink-2:      #1C222C;
+    --ink-3:      #242C38;
+    --paper:      #EFE6D0;
+    --paper-dim:  #E4D9BF;
+    --paper-line: rgba(20,24,31,.10);
+    --paper-ink:  #2A2620;
+    --verm:       #E0511D;
+    --verm-soft:  rgba(224,81,29,.14);
+    --trace:      #56808D;
+    --text:       #D9D4C6;
+    --muted:      #8C92A2;
+    --hairline:   rgba(217,212,198,.14);
+    --ok:         #7A9B6D;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--ink);
+    color:var(--text);
+    font-family:'IBM Plex Serif',Georgia,serif;
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--verm);color:var(--paper)}
+
+  .mono{font-family:'IBM Plex Mono',monospace}
+  .wrap{max-width:980px;margin:0 auto;padding:0 28px}
+
+  /* ---------- hero ---------- */
+  header{padding:96px 0 64px;border-bottom:1px solid var(--hairline);position:relative;overflow:hidden}
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--verm);margin-bottom:26px;
+  }
+  h1{
+    font-family:'Cormorant Garamond',serif;font-weight:500;
+    font-size:clamp(44px,7vw,76px);line-height:1.02;color:var(--paper);
+    letter-spacing:-.01em;
+  }
+  h1 em{font-style:italic;color:var(--verm)}
+  .standfirst{
+    max-width:620px;margin-top:28px;font-size:19px;color:var(--muted);
+  }
+  .standfirst strong{color:var(--text);font-weight:500}
+  #heroSpark{position:absolute;right:-40px;top:0;height:100%;width:46%;opacity:.5;pointer-events:none}
+
+  .route{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+    background:var(--hairline);border:1px solid var(--hairline);
+    margin-top:56px;
+  }
+  .route a{
+    background:var(--ink);padding:20px 22px;text-decoration:none;color:inherit;
+    transition:background .25s;
+  }
+  .route a:hover{background:var(--ink-2)}
+  .route .rn{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--verm);letter-spacing:.18em}
+  .route .rt{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--paper);margin-top:6px}
+  .route .rp{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--muted);margin-top:8px;line-height:1.5}
+
+  /* ---------- sections ---------- */
+  section{padding:88px 0;border-bottom:1px solid var(--hairline)}
+  .kicker{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--verm);margin-bottom:18px;
+  }
+  h2{
+    font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(32px,4.4vw,46px);
+    line-height:1.1;color:var(--paper);max-width:680px;
+  }
+  .lede{max-width:640px;margin-top:20px;color:var(--muted);font-size:18px}
+  .lede strong{color:var(--text);font-weight:500}
+  p.body{max-width:640px;margin-top:18px}
+  p.body+p.body{margin-top:14px}
+
+  .bridge{
+    border-left:2px solid var(--verm);padding:6px 0 6px 22px;margin:44px 0 0;
+    font-family:'Cormorant Garamond',serif;font-style:italic;font-size:24px;
+    color:var(--paper);max-width:620px;line-height:1.4;
+  }
+
+  /* ---------- chart paper panels ---------- */
+  .panel{
+    background:var(--paper);color:var(--paper-ink);
+    border-radius:3px;margin-top:44px;
+    box-shadow:0 1px 0 rgba(0,0,0,.4), inset 0 0 0 1px rgba(20,24,31,.18);
+    overflow:hidden;
+  }
+  .panel-head{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+    padding:14px 20px;border-bottom:1px solid var(--paper-line);
+  }
+  .panel-title{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:#5d564a}
+  .panel-body{padding:20px}
+  .panel .note{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#6e675a;line-height:1.6}
+
+  button{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;
+    padding:9px 16px;border:1px solid var(--paper-ink);background:transparent;color:var(--paper-ink);
+    cursor:pointer;border-radius:2px;transition:all .2s;text-transform:uppercase;
+  }
+  button:hover{background:var(--paper-ink);color:var(--paper)}
+  button.primary{background:var(--verm);border-color:var(--verm);color:var(--paper)}
+  button.primary:hover{background:#c2410f;border-color:#c2410f}
+  button:focus-visible{outline:2px solid var(--verm);outline-offset:2px}
+
+  canvas{display:block;width:100%}
+
+  .readout{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;
+    padding:5px 12px;border-radius:2px;border:1px solid rgba(20,24,31,.25);
+  }
+  .readout.ok{color:#4a6b3f;border-color:rgba(74,107,63,.45)}
+  .readout.alert{color:var(--verm);border-color:var(--verm);background:var(--verm-soft);animation:blink 1s steps(2) infinite}
+  @keyframes blink{50%{opacity:.55}}
+
+  /* AR window diagram */
+  .ar-diagram{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px}
+  .ar-box{
+    font-family:'IBM Plex Mono',monospace;font-size:13px;
+    border:1px solid var(--paper-ink);padding:10px 13px;border-radius:2px;background:rgba(255,255,255,.35);
+  }
+  .ar-box.pred{border-color:var(--verm);color:var(--verm);border-style:dashed;background:var(--verm-soft)}
+  .ar-arrow{font-family:'IBM Plex Mono',monospace;color:#8a8272;font-size:14px}
+  .ar-weights{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8a8272;width:100%;margin-top:4px}
+
+  /* DTW mini */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:44px}
+  @media(max-width:760px){.duo{grid-template-columns:1fr}}
+  .aside{
+    border:1px solid var(--hairline);padding:24px;border-radius:3px;background:var(--ink-2);
+  }
+  .aside h3{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:24px;color:var(--paper);margin-bottom:10px}
+  .aside p{font-size:15.5px;color:var(--muted)}
+  .aside p strong{color:var(--text);font-weight:500}
+  .aside svg{width:100%;height:auto;margin-top:14px}
+
+  /* ---------- tokens / SLM ---------- */
+  .cr-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  @media(max-width:760px){.cr-cards{grid-template-columns:1fr}}
+  .cr-card{
+    text-align:left;font-family:'IBM Plex Serif',serif;font-size:14px;line-height:1.55;
+    text-transform:none;letter-spacing:0;padding:16px;
+    border:1px solid rgba(20,24,31,.25);background:rgba(255,255,255,.3);
+    color:var(--paper-ink);
+  }
+  .cr-card:hover{background:rgba(255,255,255,.6);color:var(--paper-ink)}
+  .cr-card.sel{border-color:var(--verm);box-shadow:inset 0 0 0 1px var(--verm);background:rgba(255,255,255,.6)}
+  .cr-card .cid{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:var(--verm);display:block;margin-bottom:7px}
+
+  .tok-stream{min-height:64px;margin-top:20px;display:flex;flex-wrap:wrap;gap:6px;align-content:flex-start}
+  .tok{
+    font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:4px 7px;border-radius:2px;
+    background:rgba(20,24,31,.07);border:1px solid rgba(20,24,31,.18);
+    opacity:0;transform:translateY(5px);transition:opacity .25s,transform .25s;
+  }
+  .tok.in{opacity:1;transform:none}
+
+  .bars{margin-top:24px;display:grid;gap:9px}
+  .bar-row{display:grid;grid-template-columns:200px 1fr 56px;gap:12px;align-items:center}
+  @media(max-width:620px){.bar-row{grid-template-columns:130px 1fr 50px}}
+  .bar-label{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.04em;color:#5d564a}
+  .bar-track{height:14px;background:rgba(20,24,31,.08);border-radius:1px;overflow:hidden}
+  .bar-fill{height:100%;width:0;background:#9b9483;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+  .bar-row.top .bar-fill{background:var(--verm)}
+  .bar-row.top .bar-label{color:var(--verm);font-weight:500}
+  .bar-val{font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5d564a;text-align:right}
+
+  .stamp{
+    display:none;margin-top:22px;padding:13px 16px;border:1px dashed var(--verm);
+    font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--verm);background:var(--verm-soft);
+  }
+  .stamp.show{display:block}
+
+  /* ---------- context scale ---------- */
+  .scale{margin-top:44px;border:1px solid var(--hairline);border-radius:3px;background:var(--ink-2);padding:28px 24px 22px}
+  .scale-title{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:24px}
+  .scale-bar{position:relative;height:6px;background:var(--ink-3);border-radius:3px}
+  .scale-bar .seg{position:absolute;top:0;height:100%;border-radius:3px}
+  .scale-marks{position:relative;height:110px;margin-top:4px}
+  .scale-mark{position:absolute;top:0;transform:translateX(-50%);text-align:center;width:170px}
+  .scale-mark .tick{width:1px;height:14px;background:var(--muted);margin:0 auto 8px}
+  .scale-mark .mn{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--verm);letter-spacing:.1em}
+  .scale-mark .md{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);margin-top:4px;line-height:1.5}
+  @media(max-width:680px){
+    .scale-marks{height:auto;margin-top:16px;display:grid;gap:12px}
+    .scale-mark{position:static;transform:none;width:auto;text-align:left;display:flex;gap:12px;align-items:baseline}
+    .scale-mark .tick{display:none}
+  }
+
+  /* ---------- legislation ---------- */
+  .law{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--paper-line)}
+  @media(max-width:760px){.law{grid-template-columns:1fr}}
+  .law-col{background:var(--paper);padding:18px 20px}
+  .law-col h4{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#5d564a;margin-bottom:14px}
+  .clause{
+    font-family:'IBM Plex Serif',serif;font-size:14px;line-height:1.6;padding:12px 13px;margin-bottom:10px;
+    border:1px solid rgba(20,24,31,.16);border-radius:2px;cursor:pointer;background:rgba(255,255,255,.35);
+    transition:all .2s;color:#3a352c;
+  }
+  .clause:hover{background:rgba(255,255,255,.7)}
+  .clause.lit{border-color:var(--verm);box-shadow:inset 0 0 0 1px var(--verm);background:rgba(255,255,255,.7)}
+  .clause .cref{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;color:#8a8272;display:block;margin-bottom:6px}
+  .law-note{
+    padding:18px 20px;border-top:1px solid var(--paper-line);background:var(--paper-dim);
+    font-size:14.5px;line-height:1.65;color:#3a352c;min-height:84px;
+  }
+  .law-note .ln-tag{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--verm);display:block;margin-bottom:8px}
+
+  /* ---------- the lift ---------- */
+  .lift{margin-top:44px;display:grid;gap:14px}
+  .lift-row{
+    display:grid;grid-template-columns:54px 1fr;gap:20px;align-items:center;
+    border:1px solid var(--hairline);border-radius:3px;background:var(--ink-2);padding:20px 22px;
+  }
+  .lift-row .ln{font-family:'Cormorant Garamond',serif;font-size:34px;color:var(--verm);font-style:italic;line-height:1}
+  .lift-flow{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:12.5px}
+  .lift-flow .lf-ctx{padding:7px 12px;border:1px solid var(--hairline);border-radius:2px;color:var(--muted)}
+  .lift-flow .lf-arrow{color:var(--verm)}
+  .lift-flow .lf-out{padding:7px 12px;border:1px dashed var(--verm);border-radius:2px;color:var(--verm)}
+  .lift-row .lift-cap{grid-column:2;font-size:14px;color:var(--muted);margin-top:6px}
+  .lift-row .lift-cap strong{color:var(--text);font-weight:500}
+
+  table{width:100%;border-collapse:collapse;margin-top:44px;font-size:14px}
+  th{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-align:left;padding:12px 14px;border-bottom:1px solid var(--hairline)}
+  td{padding:13px 14px;border-bottom:1px solid var(--hairline);vertical-align:top}
+  td:first-child{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--verm)}
+  tr td{color:var(--text)}
+  .tdm{color:var(--muted);font-size:13px}
+
+  footer{padding:64px 0 88px}
+  .coda{
+    font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(24px,3.4vw,34px);
+    line-height:1.35;color:var(--paper);max-width:760px;
+  }
+  .coda em{color:var(--verm);font-style:italic}
+  .credit{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--muted);margin-top:32px;letter-spacing:.06em;line-height:1.8}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <canvas id="heroSpark" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="eyebrow">A field guide · machine learning at Sellafield</div>
+    <h1>Three sizes<br>of <em>model</em></h1>
+    <p class="standfirst">Signals, sentences, statutes. Beneath all three sits <strong>one idea — predict the next thing from everything before it</strong> — scaled from a vibrating pump to a body of law.</p>
+
+    <nav class="route" aria-label="Sections">
+      <a href="#s1">
+        <div class="rn">01</div>
+        <div class="rt">Autoregression</div>
+        <div class="rp">predicts the next <b>number</b><br>context: seconds of signal</div>
+      </a>
+      <a href="#s2">
+        <div class="rn">02</div>
+        <div class="rt">Small language models</div>
+        <div class="rp">predicts the next <b>token</b><br>context: one report</div>
+      </a>
+      <a href="#s3">
+        <div class="rn">03</div>
+        <div class="rt">Large language models</div>
+        <div class="rp">reasons across <b>documents</b><br>context: a statute book</div>
+      </a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ 01 AUTOREGRESSION ============ -->
+<section id="s1">
+  <div class="wrap">
+    <div class="kicker">01 · Autoregression</div>
+    <h2>Listening to machines</h2>
+    <p class="lede">An autoregressive model makes one modest claim: <strong>the recent past of a signal is the best guide to its next value.</strong> Take a sliding window of recent readings, learn a weighted combination of them, and you have a forecast.</p>
+
+    <div class="panel">
+      <div class="panel-head"><span class="panel-title">Fig. 1a — the sliding window</span></div>
+      <div class="panel-body">
+        <div class="ar-diagram" role="img" aria-label="Diagram: past values y t minus 3, t minus 2, t minus 1 combine through learned weights to produce the prediction y hat t">
+          <span class="ar-box">y<sub>t−3</sub></span>
+          <span class="ar-box">y<sub>t−2</sub></span>
+          <span class="ar-box">y<sub>t−1</sub></span>
+          <span class="ar-arrow">— w₁ w₂ w₃ →</span>
+          <span class="ar-box pred">ŷ<sub>t</sub></span>
+          <span class="ar-weights">prediction = weighted sum of the window · the weights are what training learns</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="body" style="margin-top:40px">On its own a forecast is unremarkable. The trick is to flip it round: <b>compare what the model expected with what actually arrived.</b> The gap is called the <i>residual</i>. While the plant behaves normally the residual hovers near zero. When a failure starts to develop — a coupling wearing, a line beginning to occlude — the signal drifts away from its own history and the residual climbs, often days before anything trips.</p>
+
+    <div class="panel">
+      <div class="panel-head">
+        <span class="panel-title">Fig. 1b — live anomaly detector · WVP feed line (simulated)</span>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <span id="arStatus" class="readout ok">RESIDUAL 0.00 · NOMINAL</span>
+          <button id="faultBtn" class="primary">Inject fault</button>
+          <button id="resetBtn">Reset</button>
+        </div>
+      </div>
+      <canvas id="stripChart" height="340" aria-label="Live strip chart: actual sensor signal, model prediction band, and residual track with alert threshold"></canvas>
+      <div class="panel-body" style="border-top:1px solid var(--paper-line)">
+        <p class="note">SOLID — actual signal &nbsp;·&nbsp; DASHED — model prediction ± confidence &nbsp;·&nbsp; LOWER TRACK — residual vs alert threshold. Inject a fault and watch the residual cross the line <b>before</b> the signal looks visibly wrong. That gap is the maintenance window.</p>
+      </div>
+    </div>
+
+    <div class="duo">
+      <div class="aside">
+        <h3>Why it mattered at WVP</h3>
+        <p>The Waste Vitrification Plant turns highly active liquor into glass — one of the site's highest priorities. Every hour of unplanned downtime extends the life of the hazard. <strong>The success metric was never accuracy; it was lead time</strong>: enough warning to intervene before a blockage manifests.</p>
+      </div>
+      <div class="aside">
+        <h3>Failures rhyme, but never at the same tempo</h3>
+        <p>The same failure precursor can play out over hours or days. <strong>Dynamic time warping</strong> stretches and compresses two sequences to align their shapes, so a slow-motion replay of a known precursor still matches.</p>
+        <svg viewBox="0 0 320 110" aria-label="Dynamic time warping: two similar humps of different widths, with alignment lines connecting corresponding points">
+          <path d="M10,40 C40,40 50,8 70,8 C90,8 100,40 130,40" fill="none" stroke="#56808D" stroke-width="2"/>
+          <path d="M10,95 C70,95 85,62 130,62 C175,62 195,95 310,95" fill="none" stroke="#E0511D" stroke-width="2"/>
+          <g stroke="#8C92A2" stroke-width="1" stroke-dasharray="3 3" opacity=".7">
+            <line x1="30" y1="36" x2="50" y2="91"/>
+            <line x1="55" y1="14" x2="95" y2="72"/>
+            <line x1="70" y1="8"  x2="130" y2="62"/>
+            <line x1="88" y1="13" x2="170" y2="70"/>
+            <line x1="115" y1="36" x2="230" y2="90"/>
+          </g>
+          <text x="10" y="30" font-family="IBM Plex Mono" font-size="9" fill="#8C92A2">known precursor</text>
+          <text x="200" y="80" font-family="IBM Plex Mono" font-size="9" fill="#8C92A2">live signal, slower</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="bridge">Now make one substitution. Replace numbers with words.</div>
+  </div>
+</section>
+
+<!-- ============ 02 SLM ============ -->
+<section id="s2">
+  <div class="wrap">
+    <div class="kicker">02 · Small language models</div>
+    <h2>Reading the site</h2>
+    <p class="lede">A language model is an autoregressive model wearing a different outfit. <strong>Same machinery: a window of recent context, a prediction of what comes next.</strong> The difference is that the “values” are now <em>tokens</em> — chunks of text — and the relationships between them are vastly richer than between two pressure readings, so the model needs far more capacity to learn them.</p>
+
+    <p class="body">Sellafield's Performance Improvement process generates Condition Reports — free-text accounts of anything off-normal, raised by any of 11,000 people on site. Each one needs a trend code so patterns can surface. Coding by hand is slow; backlogs grow. A model that has learned the structure of language can read a report and predict its code the same way it would predict the next word.</p>
+
+    <div class="panel">
+      <div class="panel-head">
+        <span class="panel-title">Fig. 2 — condition report → tokens → trend code</span>
+        <span id="latStamp" class="readout ok" style="display:none">CODED IN 0.4 s · ON-PREM</span>
+      </div>
+      <div class="panel-body">
+        <p class="note" style="margin-bottom:14px">PICK A REPORT (illustrative examples):</p>
+        <div class="cr-cards" id="crCards"></div>
+        <div class="tok-stream" id="tokStream" aria-live="polite"></div>
+        <div class="bars" id="bars"></div>
+        <div class="stamp" id="stamp"></div>
+      </div>
+    </div>
+
+    <div class="duo">
+      <div class="aside">
+        <h3>Why <i>small</i> is the whole story</h3>
+        <p>Nuclear data carries formal security classifications. <strong>No public APIs, no cloud — the model lives on a box in a locked room.</strong> That fixes the compute budget before a single experiment runs, and the engineering problem becomes: how much language understanding fits in the hardware you're allowed to have? A fine-tuned small model hit human-level coding at well under a second per report.</p>
+      </div>
+      <div class="aside">
+        <h3>What the model actually learned</h3>
+        <p>Not rules. Nobody wrote “vibration ⇒ equipment reliability.” The model absorbed <strong>thousands of historically coded reports</strong> and learned the statistical texture of each theme — including site dialect, abbreviations, and the difference between a hazard observed and a hazard caused.</p>
+      </div>
+    </div>
+
+    <div class="bridge">Now scale the same predictor a thousandfold — and something new switches on.</div>
+  </div>
+</section>
+
+<!-- ============ 03 LLM ============ -->
+<section id="s3">
+  <div class="wrap">
+    <div class="kicker">03 · Large language models</div>
+    <h2>Reasoning across jurisdictions</h2>
+    <p class="lede">Grow the parameter count from millions to billions and the context window from one report to entire libraries, and next-token prediction stops looking like classification and starts looking like <strong>reading comprehension at scale</strong>: holding two long documents in mind at once and articulating how they relate.</p>
+
+    <div class="scale">
+      <div class="scale-title">How much the model can hold at once</div>
+      <div class="scale-bar">
+        <span class="seg" style="left:0;width:14%;background:#56808D"></span>
+        <span class="seg" style="left:14%;width:26%;background:#9b8a5e"></span>
+        <span class="seg" style="left:40%;width:60%;background:var(--verm)"></span>
+      </div>
+      <div class="scale-marks">
+        <div class="scale-mark" style="left:7%">
+          <div class="tick"></div>
+          <div class="mn">AR MODEL</div>
+          <div class="md">~10² values<br>seconds of one sensor</div>
+        </div>
+        <div class="scale-mark" style="left:27%">
+          <div class="tick"></div>
+          <div class="mn">SLM</div>
+          <div class="md">~10³ tokens<br>one condition report</div>
+        </div>
+        <div class="scale-mark" style="left:70%">
+          <div class="tick"></div>
+          <div class="mn">LLM</div>
+          <div class="md">~10⁵–10⁶ tokens<br>a statute book, or two</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="body" style="margin-top:40px">A concrete use: comparing nuclear regulation across the Atlantic. The UK regime is <b>goal-setting</b> — it tells the licensee <i>what must be achieved</i> and leaves the how to them. The US regime is largely <b>prescriptive</b> — it specifies intervals, methods and thresholds. Cross-walking the two is months of expert reading. An LLM can hold both regimes in context and surface the correspondences for an expert to verify.</p>
+
+    <div class="panel">
+      <div class="panel-head"><span class="panel-title">Fig. 3 — two regulatory philosophies · click any clause to find its counterpart</span></div>
+      <div class="law" id="lawGrid">
+        <div class="law-col">
+          <h4>United Kingdom · goal-setting</h4>
+          <div id="ukCol"></div>
+        </div>
+        <div class="law-col">
+          <h4>United States · prescriptive</h4>
+          <div id="usCol"></div>
+        </div>
+      </div>
+      <div class="law-note" id="lawNote">
+        <span class="ln-tag">Model commentary</span>
+        Select a clause on either side. The model pairs it with its counterpart and explains how the two regimes diverge. <i>(Clauses are illustrative paraphrases, not statutory text.)</i>
+      </div>
+    </div>
+
+    <div class="duo">
+      <div class="aside">
+        <h3>The same constraint, harder</h3>
+        <p>Everything from level two still applies: classified-adjacent material, no public endpoints. <strong>The deployment question — where is the compute allowed to live? — now dominates the model question.</strong> Secure on-premises or self-managed infrastructure is the price of admission.</p>
+      </div>
+      <div class="aside">
+        <h3>And a new failure mode</h3>
+        <p>An anomaly detector fails quietly; an LLM fails <i>fluently</i>. Confident, plausible, wrong. In a regulated industry that means <strong>the model proposes and the human disposes</strong> — every cross-reference it surfaces is a lead for an expert, never a conclusion.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THE LIFT ============ -->
+<section id="lift">
+  <div class="wrap">
+    <div class="kicker">The lift</div>
+    <h2>One idea, three altitudes</h2>
+    <p class="lede">Lay the three side by side and the pattern is hard to unsee. <strong>Each level is the previous one with more context and more capacity</strong> — and at each step, what the model can be trusted with changes.</p>
+
+    <div class="lift">
+      <div class="lift-row">
+        <div class="ln">i</div>
+        <div>
+          <div class="lift-flow">
+            <span class="lf-ctx">last few sensor readings</span>
+            <span class="lf-arrow">→</span>
+            <span class="lf-out">next value</span>
+          </div>
+          <div class="lift-cap"><strong>Autoregression.</strong> Deviation from its own forecast is the alarm. Output: a maintenance window measured in days.</div>
+        </div>
+      </div>
+      <div class="lift-row">
+        <div class="ln">ii</div>
+        <div>
+          <div class="lift-flow">
+            <span class="lf-ctx">one free-text report</span>
+            <span class="lf-arrow">→</span>
+            <span class="lf-out">next token / trend code</span>
+          </div>
+          <div class="lift-cap"><strong>Small language model.</strong> Same predictor, richer alphabet. Output: human-level coding in under a second, on hardware you control.</div>
+        </div>
+      </div>
+      <div class="lift-row">
+        <div class="ln">iii</div>
+        <div>
+          <div class="lift-flow">
+            <span class="lf-ctx">entire bodies of law</span>
+            <span class="lf-arrow">→</span>
+            <span class="lf-out">structured comparison</span>
+          </div>
+          <div class="lift-cap"><strong>Large language model.</strong> Scale turns prediction into comprehension. Output: leads for experts — proposed, never concluded.</div>
+        </div>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th></th><th>Predicts</th><th>Context</th><th>Capacity</th><th>Latency</th><th>Lives where</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>AR</td><td>next value</td><td class="tdm">~10² readings</td><td class="tdm">a handful of weights</td><td class="tdm">milliseconds</td><td class="tdm">plant edge</td></tr>
+        <tr><td>SLM</td><td>next token → code</td><td class="tdm">~10³ tokens</td><td class="tdm">millions of params</td><td class="tdm">&lt; 1 second</td><td class="tdm">on-prem box</td></tr>
+        <tr><td>LLM</td><td>reasoning over documents</td><td class="tdm">~10⁵–10⁶ tokens</td><td class="tdm">billions of params</td><td class="tdm">seconds</td><td class="tdm">secure / self-managed infra</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="coda">In a high-consequence industry the model is a fifth of the problem. Trust, data access, and <em>where the compute is allowed to live</em> are the rest.</p>
+    <p class="credit">PREPARED FOR A TALK ON ADA MODE'S WORK AT SELLAFIELD · ALL PLANT DATA SIMULATED · CLAUSES PARAPHRASED FOR ILLUSTRATION</p>
+  </div>
+</footer>
+
+<script>
+/* ====================== hero sparkline ====================== */
+(function(){
+  const c = document.getElementById('heroSpark');
+  const ctx = c.getContext('2d');
+  let w,h,t=0;
+  function size(){
+    const r = c.getBoundingClientRect();
+    w = c.width = r.width * devicePixelRatio;
+    h = c.height = r.height * devicePixelRatio;
+  }
+  size(); addEventListener('resize', size);
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    ctx.strokeStyle = 'rgba(86,128,141,.55)';
+    ctx.lineWidth = 1.2*devicePixelRatio;
+    ctx.beginPath();
+    for(let x=0;x<=w;x+=3){
+      const u = x/w;
+      const y = h*0.5 + Math.sin(u*9+t)*h*0.13 + Math.sin(u*23+t*1.7)*h*0.05;
+      x===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    ctx.strokeStyle = 'rgba(224,81,29,.5)';
+    ctx.setLineDash([5*devicePixelRatio,5*devicePixelRatio]);
+    ctx.beginPath();
+    for(let x=0;x<=w;x+=3){
+      const u = x/w;
+      const y = h*0.5 + Math.sin(u*9+t+0.25)*h*0.13 + Math.sin(u*23+t*1.7+0.4)*h*0.05;
+      x===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    ctx.setLineDash([]);
+    t += 0.012;
+    if(!reduced) requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ====================== Fig 1b strip chart ====================== */
+(function(){
+  const cv = document.getElementById('stripChart');
+  const ctx = cv.getContext('2d');
+  const status = document.getElementById('arStatus');
+  const faultBtn = document.getElementById('faultBtn');
+  const resetBtn = document.getElementById('resetBtn');
+
+  const N = 360;                 // visible samples
+  let data = [], pred = [], res = [];
+  let t = 0, fault = false, drift = 0, alerted = false, alertX = null;
+  const THRESH = 0.16;
+
+  function sample(){
+    let v = 0.45*Math.sin(t*0.045) + 0.18*Math.sin(t*0.013+1.3) + (Math.random()-0.5)*0.06;
+    if(fault){
+      drift += 0.0016 + Math.random()*0.0011;
+      v += drift + (Math.random()-0.5)*0.05*Math.min(drift*8,1);
+    }
+    return v;
+  }
+  function predict(){
+    // AR(2)-ish: linear extrapolation of recent history, lightly damped
+    const n = data.length;
+    if(n < 3) return data[n-1] ?? 0;
+    const a = data[n-1], b = data[n-2], c2 = data[n-3];
+    return a + ((a-b)*0.6 + (b-c2)*0.25);
+  }
+  function step(){
+    const p = predict();
+    const v = sample();
+    data.push(v); pred.push(p);
+    const r = Math.abs(v-p);
+    // smooth the residual a touch
+    const prev = res.length ? res[res.length-1] : 0;
+    res.push(prev*0.85 + r*0.15);
+    if(data.length > N){ data.shift(); pred.shift(); res.shift(); if(alertX!==null) alertX--; }
+    t++;
+    const rr = res[res.length-1];
+    if(rr > THRESH && !alerted){ alerted = true; alertX = data.length-1; }
+    if(alerted){
+      status.textContent = 'RESIDUAL ' + rr.toFixed(2) + ' · ALERT — INTERVENE';
+      status.className = 'readout alert';
+    } else {
+      status.textContent = 'RESIDUAL ' + rr.toFixed(2) + ' · NOMINAL';
+      status.className = 'readout ok';
+    }
+  }
+
+  let W,H;
+  function size(){
+    const r = cv.getBoundingClientRect();
+    W = cv.width = r.width * devicePixelRatio;
+    H = 340 * devicePixelRatio;
+    cv.height = H;
+  }
+  size(); addEventListener('resize', size);
+
+  function yMap(v, top, hgt){ return top + hgt/2 - v*hgt*0.62; }
+
+  function draw(){
+    const dp = devicePixelRatio;
+    ctx.clearRect(0,0,W,H);
+
+    const mainTop = 18*dp, mainH = 200*dp;
+    const resTop  = 248*dp, resH  = 70*dp;
+    const xStep = W / (N-1);
+
+    // grid (chart-recorder paper)
+    ctx.strokeStyle = 'rgba(20,24,31,.08)';
+    ctx.lineWidth = 1;
+    for(let gx=0; gx<W; gx+=40*dp){ ctx.beginPath(); ctx.moveTo(gx,0); ctx.lineTo(gx,H); ctx.stroke(); }
+    for(let gy=0; gy<H; gy+=28*dp){ ctx.beginPath(); ctx.moveTo(0,gy); ctx.lineTo(W,gy); ctx.stroke(); }
+
+    // divider + labels
+    ctx.fillStyle = 'rgba(20,24,31,.45)';
+    ctx.font = (10*dp)+'px "IBM Plex Mono", monospace';
+    ctx.fillText('SIGNAL', 12*dp, 14*dp);
+    ctx.fillText('RESIDUAL', 12*dp, (resTop/dp - 6)*dp);
+    ctx.strokeStyle = 'rgba(20,24,31,.2)';
+    ctx.beginPath(); ctx.moveTo(0, 232*dp); ctx.lineTo(W, 232*dp); ctx.stroke();
+
+    // prediction band
+    if(pred.length>2){
+      ctx.fillStyle = 'rgba(224,81,29,.10)';
+      ctx.beginPath();
+      pred.forEach((p,i)=>{ const x=i*xStep, y=yMap(p,mainTop,mainH)-10*dp; i===0?ctx.moveTo(x,y):ctx.lineTo(x,y); });
+      for(let i=pred.length-1;i>=0;i--){ ctx.lineTo(i*xStep, yMap(pred[i],mainTop,mainH)+10*dp); }
+      ctx.closePath(); ctx.fill();
+
+      ctx.strokeStyle = '#E0511D';
+      ctx.lineWidth = 1.4*dp;
+      ctx.setLineDash([6*dp,5*dp]);
+      ctx.beginPath();
+      pred.forEach((p,i)=>{ const x=i*xStep, y=yMap(p,mainTop,mainH); i===0?ctx.moveTo(x,y):ctx.lineTo(x,y); });
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    // actual trace
+    ctx.strokeStyle = '#2F5560';
+    ctx.lineWidth = 2*dp;
+    ctx.beginPath();
+    data.forEach((v,i)=>{ const x=i*xStep, y=yMap(v,mainTop,mainH); i===0?ctx.moveTo(x,y):ctx.lineTo(x,y); });
+    ctx.stroke();
+
+    // residual track
+    const ry = v => resTop + resH - Math.min(v/0.4,1)*resH;
+    // threshold
+    ctx.strokeStyle = 'rgba(224,81,29,.75)';
+    ctx.lineWidth = 1*dp;
+    ctx.setLineDash([3*dp,4*dp]);
+    ctx.beginPath(); ctx.moveTo(0, ry(THRESH)); ctx.lineTo(W, ry(THRESH)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = 'rgba(224,81,29,.8)';
+    ctx.fillText('ALERT THRESHOLD', W-130*dp, ry(THRESH)-5*dp);
+
+    ctx.strokeStyle = '#5d564a';
+    ctx.lineWidth = 1.6*dp;
+    ctx.beginPath();
+    res.forEach((v,i)=>{ const x=i*xStep, y=ry(v); i===0?ctx.moveTo(x,y):ctx.lineTo(x,y); });
+    ctx.stroke();
+
+    // alert flag
+    if(alertX !== null && alertX >= 0){
+      const x = alertX*xStep;
+      ctx.strokeStyle = '#E0511D';
+      ctx.lineWidth = 1.4*dp;
+      ctx.beginPath(); ctx.moveTo(x, mainTop); ctx.lineTo(x, resTop+resH); ctx.stroke();
+      ctx.fillStyle = '#E0511D';
+      ctx.font = (10*dp)+'px "IBM Plex Mono", monospace';
+      const label = '▲ ANOMALY — MAINTENANCE WINDOW OPENS';
+      const lx = Math.min(x+6*dp, W - 250*dp);
+      ctx.fillText(label, lx, mainTop+12*dp);
+    }
+  }
+
+  // warm up history
+  for(let i=0;i<N;i++) step();
+  alerted = false; alertX = null;
+
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let last = 0;
+  function loop(ts){
+    if(ts - last > 33){ step(); draw(); last = ts; }
+    requestAnimationFrame(loop);
+  }
+  if(reduced){
+    // static render with a single pre-computed fault for reduced motion users
+    fault = true;
+    for(let i=0;i<260;i++) step();
+    draw();
+  } else {
+    requestAnimationFrame(loop);
+  }
+
+  faultBtn.addEventListener('click', ()=>{ fault = true; });
+  resetBtn.addEventListener('click', ()=>{
+    fault = false; drift = 0; alerted = false; alertX = null;
+    data=[];pred=[];res=[];t=0;
+    for(let i=0;i<N;i++) step();
+    alerted = false; alertX = null;
+    if(reduced) draw();
+  });
+})();
+
+/* ====================== Fig 2 SLM coder ====================== */
+(function(){
+  const CODES = [
+    ['EQR','Equipment reliability'],
+    ['PRD','Process deviation'],
+    ['CSF','Conventional safety'],
+    ['RDC','Radiological control'],
+    ['HKP','Housekeeping']
+  ];
+  const CRS = [
+    {
+      id:'CR-26-04117',
+      text:'Intermittent vibration noted on transfer pump P-203 during HAL transfer. Pump isolated and tagged out pending inspection of drive coupling.',
+      probs:{EQR:.84, PRD:.07, CSF:.04, RDC:.03, HKP:.02}
+    },
+    {
+      id:'CR-26-04203',
+      text:'Step ladder found obstructing the emergency egress route in Building 214 corridor. Removed and returned to designated storage.',
+      probs:{CSF:.78, HKP:.16, EQR:.02, PRD:.02, RDC:.02}
+    },
+    {
+      id:'CR-26-04288',
+      text:'Vitrification line feed rate drifted above setpoint for approx. 12 minutes before operator correction. No product quality impact identified.',
+      probs:{PRD:.81, EQR:.11, CSF:.04, RDC:.02, HKP:.02}
+    }
+  ];
+
+  const cards = document.getElementById('crCards');
+  const stream = document.getElementById('tokStream');
+  const bars = document.getElementById('bars');
+  const stamp = document.getElementById('stamp');
+  const lat = document.getElementById('latStamp');
+
+  // build bars
+  CODES.forEach(([code,label])=>{
+    const row = document.createElement('div');
+    row.className = 'bar-row';
+    row.dataset.code = code;
+    row.innerHTML = `<span class="bar-label">${code} · ${label}</span>
+                     <span class="bar-track"><span class="bar-fill"></span></span>
+                     <span class="bar-val">—</span>`;
+    bars.appendChild(row);
+  });
+
+  function tokenize(s){
+    // pseudo-BPE: split words, then long words into chunks
+    const out = [];
+    s.split(/(\s+)/).forEach(w=>{
+      if(/^\s+$/.test(w) || w==='') return;
+      if(w.length <= 6){ out.push(w); }
+      else {
+        for(let i=0;i<w.length;i+=4) out.push((i?'·':'')+w.slice(i,i+4));
+      }
+    });
+    return out;
+  }
+
+  let timer = null;
+  function run(cr, btn){
+    [...cards.children].forEach(b=>b.classList.remove('sel'));
+    btn.classList.add('sel');
+    if(timer) clearInterval(timer);
+    stream.innerHTML = '';
+    stamp.classList.remove('show');
+    lat.style.display = 'none';
+    [...bars.children].forEach(r=>{
+      r.classList.remove('top');
+      r.querySelector('.bar-fill').style.width = '0';
+      r.querySelector('.bar-val').textContent = '—';
+    });
+
+    const toks = tokenize(cr.text);
+    toks.forEach(t=>{
+      const el = document.createElement('span');
+      el.className = 'tok';
+      el.textContent = t;
+      stream.appendChild(el);
+    });
+    const els = [...stream.children];
+    let i = 0;
+    timer = setInterval(()=>{
+      if(i < els.length){ els[i++].classList.add('in'); }
+      else {
+        clearInterval(timer);
+        // reveal probabilities
+        let top = null, topP = 0;
+        [...bars.children].forEach(r=>{
+          const p = cr.probs[r.dataset.code] ?? 0;
+          r.querySelector('.bar-fill').style.width = (p*100)+'%';
+          r.querySelector('.bar-val').textContent = p.toFixed(2);
+          if(p > topP){ topP = p; top = r; }
+        });
+        setTimeout(()=>{
+          top.classList.add('top');
+          const [code,label] = CODES.find(c=>c[0]===top.dataset.code);
+          stamp.textContent = '→ RECOMMENDED TREND CODE: ' + code + ' — ' + label.toUpperCase() + ' (CONFIDENCE ' + topP.toFixed(2) + ') · QUEUED FOR HUMAN REVIEW';
+          stamp.classList.add('show');
+          lat.style.display = '';
+        }, 700);
+      }
+    }, 36);
+  }
+
+  CRS.forEach(cr=>{
+    const b = document.createElement('button');
+    b.className = 'cr-card';
+    b.innerHTML = `<span class="cid">${cr.id}</span>${cr.text}`;
+    b.addEventListener('click', ()=>run(cr,b));
+    cards.appendChild(b);
+  });
+})();
+
+/* ====================== Fig 3 legislation pairing ====================== */
+(function(){
+  const PAIRS = [
+    {
+      uk:{ref:'LICENCE CONDITION — MAINTENANCE', text:'The licensee shall make and implement adequate arrangements for the regular and systematic examination, maintenance and testing of all plant which may affect safety.'},
+      us:{ref:'CFR-STYLE RULE — VALVE TESTING', text:'Each safety-related valve shall be exercised and tested at intervals not exceeding 92 days, in accordance with the methods and acceptance criteria of the approved in-service testing programme.'},
+      note:'Same intent — keep safety plant working — expressed in opposite grammars. The UK clause sets a goal and makes the licensee prove their arrangements are “adequate”; the US clause encodes the arrangement itself: a fixed interval, a named programme, defined acceptance criteria. A model cross-walking the two must recognise that one prescriptive rule may satisfy a fraction of one goal-setting duty.'
+    },
+    {
+      uk:{ref:'LICENCE CONDITION — INCIDENTS', text:'The licensee shall make arrangements for the notification, recording, investigation and reporting of incidents occurring on the site.'},
+      us:{ref:'CFR-STYLE RULE — EVENT NOTIFICATION', text:'The licensee shall notify the regulator within one hour of any event meeting the criteria enumerated in paragraphs (a)(1) through (a)(9), followed by a written report within 60 days.'},
+      note:'The UK duty is open-textured: it covers every incident class through one obligation to have arrangements. The US rule is a decision table — enumerated criteria, clock-based deadlines. The LLM\'s useful output here is the mapping: which enumerated US criteria fall inside the UK arrangement, and which UK incident classes have no prescriptive US analogue.'
+    },
+    {
+      uk:{ref:'LICENCE CONDITION — COMPETENCE', text:'Only suitably qualified and experienced persons shall perform any duties which may affect the safety of operations on the site.'},
+      us:{ref:'CFR-STYLE RULE — OPERATOR LICENSING', text:'Reactor operators shall hold a licence renewed at six-year intervals and shall complete a requalification programme delivered on a continuous 24-month cycle.'},
+      note:'“Suitably qualified and experienced persons” — SQEP — is a famous goal-setting phrase: the licensee defines and defends what qualified means. The US equivalent is a licensing apparatus with renewal periods and training cycles fixed in regulation. The comparison surfaces a deep difference in where judgement is allowed to live: with the operator, or with the rulebook.'
+    }
+  ];
+
+  const ukCol = document.getElementById('ukCol');
+  const usCol = document.getElementById('usCol');
+  const note = document.getElementById('lawNote');
+
+  function light(i){
+    document.querySelectorAll('.clause').forEach(c=>c.classList.remove('lit'));
+    document.querySelectorAll('.clause[data-i="'+i+'"]').forEach(c=>c.classList.add('lit'));
+    note.innerHTML = '<span class="ln-tag">Model commentary · pair '+(i+1)+' of '+PAIRS.length+'</span>' + PAIRS[i].note;
+  }
+
+  PAIRS.forEach((p,i)=>{
+    const u = document.createElement('div');
+    u.className = 'clause'; u.dataset.i = i; u.tabIndex = 0;
+    u.innerHTML = '<span class="cref">'+p.uk.ref+'</span>'+p.uk.text;
+    const s = document.createElement('div');
+    s.className = 'clause'; s.dataset.i = i; s.tabIndex = 0;
+    s.innerHTML = '<span class="cref">'+p.us.ref+'</span>'+p.us.text;
+    [u,s].forEach(el=>{
+      el.addEventListener('click', ()=>light(i));
+      el.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); light(i); }});
+    });
+    ukCol.appendChild(u); usCol.appendChild(s);
+  });
+})();
+</script>
+</body>
+</html>

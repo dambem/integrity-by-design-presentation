@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vector DB — Domain Switching</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #000000; --verm: #E0511D; --verm-soft: rgba(224,81,29,.12);
+    --text: #D9D4C6; --muted: #8C92A2; --hairline: rgba(217,212,198,.12);
+    --blue: #5B8DB8; --green: #6BAE75; --gold: #C9A96E; --purple: #9B7ED4;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: var(--ink); font-family: 'IBM Plex Mono', monospace; -webkit-font-smoothing: antialiased; }
+  .wrap { height: 100%; display: flex; flex-direction: column; padding: 12px; gap: 8px; }
+  .header { display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+  .h-title { font-size: 9.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+  .toggle-wrap { display: flex; background: rgba(0, 0, 0, 0.06); border-radius: 3px; padding: 2px; gap: 2px; }
+  .tog { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .06em; padding: 4px 12px; border: none; background: transparent; color: var(--muted); cursor: pointer; border-radius: 2px; transition: all .2s; }
+  .tog.on { background: var(--verm); color: #fff; }
+  .main { flex: 1; display: grid; grid-template-columns: 140px 1fr; gap: 8px; min-height: 0; }
+  .sidebar { display: flex; flex-direction: column; gap: 6px; overflow: hidden; }
+  .side-label { font-size: 8.5px; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+  .word-list { display: flex; flex-direction: column; gap: 3px; }
+  .w-item { padding: 5px 8px; border-radius: 2px; border: 1px solid var(--hairline); font-size: 10.5px; color: var(--muted); cursor: pointer; transition: all .15s; }
+  .w-item:hover { color: var(--text); border-color: rgba(217,212,198,.25); }
+  .w-item.sel { color: var(--text); border-color: var(--verm); background: var(--verm-soft); }
+  .vec-box { border: 1px solid var(--hairline); border-radius: 2px; padding: 8px; background: rgb(0, 0, 0); flex: 1; display: flex; flex-direction: column; gap: 5px; min-height: 0; overflow: hidden; }
+  .vec-ctx { font-size: 8.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .vec-nums { font-size: 9.5px; color: var(--verm); line-height: 1.9; flex: 1; }
+  .meaning { font-family: 'IBM Plex Serif', serif; font-size: 10px; color: rgba(217,212,198,.6); line-height: 1.5; font-style: italic; border-top: 1px solid var(--hairline); padding-top: 5px; }
+  .canvas-wrap { position: relative; }
+  canvas { display: block; width: 100%; height: 100%; border: 1px solid var(--hairline); border-radius: 3px; cursor: crosshair; }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div class="toggle-wrap">
+      <button class="tog on" id="btnG">General English</button>
+      <button class="tog" id="btnS">Sailing Context</button>
+    </div>
+  </div>
+  <div class="main">
+    <div class="sidebar">
+      <div>
+        <div class="side-label">Words</div>
+        <div class="word-list" id="wordList"></div>
+      </div>
+      <div class="vec-box">
+        <div class="vec-ctx">Vector · <span id="vecCtxLabel">General</span></div>
+        <div class="vec-nums" id="vecNums">click a word</div>
+        <div class="meaning" id="meaningBox"></div>
+      </div>
+    </div>
+    <div class="canvas-wrap">
+      <canvas id="c"></canvas>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  const CLUSTERS = {
+    general: [
+      { id: 'movement', label: 'Movement / Sport', color: '#5B8DB8' },
+      { id: 'household', label: 'Household', color: '#6BAE75' },
+      { id: 'body', label: 'Body / Clothing', color: '#C9A96E' },
+      { id: 'leadership', label: 'Leadership', color: '#9B7ED4' }
+    ],
+    sailing: [
+      { id: 'points', label: 'Points of Sail', color: '#5B8DB8' },
+      { id: 'rigging', label: 'Rigging', color: '#6BAE75' },
+      { id: 'vessel', label: 'Vessel', color: '#C9A96E' },
+      { id: 'handling', label: 'Boat Handling', color: '#9B7ED4' }
+    ]
+  };
+
+  const WORDS = [
+    {
+      label: 'run',
+      general: { x: .78, y: .38, c: 'movement' },
+      sailing: { x: .70, y: .48, c: 'points' },
+      mg: 'To move at speed; a jog or sprint.',
+      ms: 'Sailing downwind — wind directly behind.',
+      vg: [ 0.71, -0.23,  0.54, -0.12,  0.38, -0.09],
+      vs: [ 0.08,  0.84, -0.31,  0.66, -0.44,  0.22]
+    },
+    {
+      label: 'beat',
+      general: { x: .72, y: .54, c: 'movement' },
+      sailing: { x: .55, y: .42, c: 'points' },
+      mg: 'To strike rhythmically; a musical pulse.',
+      ms: 'Sailing upwind — the hardest point of sail.',
+      vg: [ 0.63, -0.18,  0.47, -0.08,  0.51,  0.14],
+      vs: [-0.09,  0.79, -0.41,  0.72, -0.33,  0.18]
+    },
+    {
+      label: 'reach',
+      general: { x: .83, y: .60, c: 'movement' },
+      sailing: { x: .63, y: .55, c: 'points' },
+      mg: 'To extend toward something; to achieve.',
+      ms: 'Wind abeam — the fastest point of sail.',
+      vg: [ 0.68, -0.31,  0.42,  0.05,  0.44, -0.17],
+      vs: [ 0.14,  0.76, -0.29,  0.58, -0.51,  0.31]
+    },
+    {
+      label: 'sheet',
+      general: { x: .24, y: .62, c: 'household' },
+      sailing: { x: .28, y: .30, c: 'rigging' },
+      mg: 'A flat piece of fabric; a bed sheet.',
+      ms: 'A rope controlling the angle of a sail.',
+      vg: [-0.44,  0.38, -0.21,  0.57, -0.08,  0.33],
+      vs: [ 0.31, -0.62,  0.78, -0.11,  0.43, -0.55]
+    },
+    {
+      label: 'tack',
+      general: { x: .18, y: .44, c: 'household' },
+      sailing: { x: .40, y: .26, c: 'rigging' },
+      mg: 'A short nail; a sticky coating.',
+      ms: 'Turning the bow through the wind; a course leg.',
+      vg: [-0.52,  0.27, -0.14,  0.63,  0.12,  0.28],
+      vs: [ 0.24, -0.71,  0.83, -0.06,  0.37, -0.48]
+    },
+    {
+      label: 'tender',
+      general: { x: .48, y: .76, c: 'body' },
+      sailing: { x: .22, y: .70, c: 'vessel' },
+      mg: 'Soft; gentle; sore to the touch.',
+      ms: 'A small boat that serves a larger vessel.',
+      vg: [-0.31,  0.54,  0.22, -0.43,  0.67, -0.19],
+      vs: [ 0.55,  0.17, -0.64,  0.38,  0.09, -0.72]
+    },
+    {
+      label: 'heel',
+      general: { x: .38, y: .33, c: 'body' },
+      sailing: { x: .68, y: .74, c: 'handling' },
+      mg: 'The back of the foot; the back of a shoe.',
+      ms: 'The lean angle of a boat sailing in wind.',
+      vg: [-0.18,  0.61,  0.35, -0.27,  0.44,  0.09],
+      vs: [ 0.43,  0.28, -0.57,  0.71, -0.19,  0.38]
+    },
+    {
+      label: 'helm',
+      general: { x: .62, y: .20, c: 'leadership' },
+      sailing: { x: .78, y: .68, c: 'handling' },
+      mg: '"At the helm" — in charge; leadership.',
+      ms: 'The wheel or tiller used to steer the boat.',
+      vg: [ 0.22, -0.45,  0.67,  0.31, -0.58,  0.14],
+      vs: [ 0.61,  0.33, -0.48,  0.77, -0.12,  0.29]
+    }
+  ];
+
+  let ctx_name = 'general';
+  let sel = null;
+  let positions = WORDS.map(w => ({ x: w.general.x, y: w.general.y }));
+
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width = canvas.clientWidth * devicePixelRatio;
+    canvas.height = canvas.clientHeight * devicePixelRatio;
+  }
+  window.addEventListener('resize', () => { resize(); draw(); });
+  resize();
+
+  function eio(t) { return t < .5 ? 2 * t * t : -1 + (4 - 2 * t) * t; }
+  function lerp(a, b, t) { return a + (b - a) * t; }
+
+  function clusterColor(word, cn) {
+    const cl = CLUSTERS[cn].find(c => c.id === word[cn].c);
+    return cl ? cl.color : '#8C92A2';
+  }
+
+  function draw() {
+    const W = canvas.width, H = canvas.height;
+    const dpr = devicePixelRatio;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#14181F';
+    ctx.fillRect(0, 0, W, H);
+
+    // Subtle grid
+    ctx.strokeStyle = 'rgba(217,212,198,.04)';
+    ctx.lineWidth = 1;
+    for (let i = 1; i < 5; i++) {
+      ctx.beginPath(); ctx.moveTo(W * i / 5, 0); ctx.lineTo(W * i / 5, H); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0, H * i / 5); ctx.lineTo(W, H * i / 5); ctx.stroke();
+    }
+
+    const PX = W * .08, PY = H * .08, RX = W * .84, RY = H * .84;
+
+    // Cluster connection lines
+    WORDS.forEach((w1, i) => {
+      WORDS.forEach((w2, j) => {
+        if (j <= i) return;
+        if (w1[ctx_name].c !== w2[ctx_name].c) return;
+        ctx.beginPath();
+        ctx.moveTo(positions[i].x * RX + PX, positions[i].y * RY + PY);
+        ctx.lineTo(positions[j].x * RX + PX, positions[j].y * RY + PY);
+        ctx.strokeStyle = 'rgba(217,212,198,.07)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      });
+    });
+
+    // Cluster centroid labels
+    CLUSTERS[ctx_name].forEach(cluster => {
+      const members = WORDS.filter(w => w[ctx_name].c === cluster.id);
+      if (!members.length) return;
+      let cx = 0, cy = 0;
+      members.forEach(w => {
+        const idx = WORDS.indexOf(w);
+        cx += positions[idx].x;
+        cy += positions[idx].y;
+      });
+      cx /= members.length;
+      cy /= members.length;
+      const px = cx * RX + PX;
+      const py = cy * RY + PY - 18 * dpr;
+      ctx.save();
+      ctx.font = `${8.5 * dpr}px "IBM Plex Mono"`;
+      ctx.fillStyle = cluster.color;
+      ctx.globalAlpha = 0.45;
+      ctx.textAlign = 'center';
+      ctx.fillText(cluster.label.toUpperCase(), px, py);
+      ctx.restore();
+    });
+
+    // Word dots + labels
+    WORDS.forEach((word, i) => {
+      const px = positions[i].x * RX + PX;
+      const py = positions[i].y * RY + PY;
+      const color = clusterColor(word, ctx_name);
+      const isSel = sel === i;
+
+      if (isSel) {
+        ctx.beginPath();
+        ctx.arc(px, py, 10 * dpr, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.globalAlpha = 0.15;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+
+      ctx.beginPath();
+      ctx.arc(px, py, (isSel ? 5.5 : 4) * dpr, 0, Math.PI * 2);
+      ctx.fillStyle = color;
+      ctx.globalAlpha = isSel ? 1 : 0.65;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+
+      ctx.font = `${isSel ? '500' : '400'} ${10.5 * dpr}px "IBM Plex Mono"`;
+      ctx.fillStyle = isSel ? '#D9D4C6' : 'rgba(217,212,198,.65)';
+      ctx.textAlign = 'left';
+      ctx.fillText(word.label, px + 8 * dpr, py + 4 * dpr);
+    });
+  }
+
+  function switchCtx(newCtx) {
+    if (newCtx === ctx_name) return;
+    ctx_name = newCtx;
+    const start = positions.map(p => ({ ...p }));
+    const end = WORDS.map(w => ({ x: w[newCtx].x, y: w[newCtx].y }));
+    let t0 = null;
+    function anim(ts) {
+      if (!t0) t0 = ts;
+      const raw = Math.min(1, (ts - t0) / 750);
+      const t = eio(raw);
+      for (let i = 0; i < WORDS.length; i++) {
+        positions[i] = { x: lerp(start[i].x, end[i].x, t), y: lerp(start[i].y, end[i].y, t) };
+      }
+      draw();
+      if (raw < 1) requestAnimationFrame(anim);
+    }
+    requestAnimationFrame(anim);
+    updateSidebar();
+  }
+
+  function fmtVec(v) {
+    return '[ ' + v.map(n => (n >= 0 ? '+' : '') + n.toFixed(2)).join(', ') + ' ]';
+  }
+
+  function updateSidebar() {
+    document.getElementById('vecCtxLabel').textContent = ctx_name === 'general' ? 'General' : 'Sailing';
+    if (sel === null) {
+      document.getElementById('vecNums').textContent = 'click a word';
+      document.getElementById('meaningBox').textContent = '';
+      return;
+    }
+    const w = WORDS[sel];
+    const vec = ctx_name === 'general' ? w.vg : w.vs;
+    document.getElementById('vecNums').textContent = fmtVec(vec);
+    document.getElementById('meaningBox').textContent = ctx_name === 'general' ? w.mg : w.ms;
+  }
+
+  // Word list
+  const wordList = document.getElementById('wordList');
+  WORDS.forEach((word, i) => {
+    const el = document.createElement('div');
+    el.className = 'w-item';
+    el.textContent = word.label;
+    el.addEventListener('click', () => {
+      sel = sel === i ? null : i;
+      [...wordList.children].forEach((c, j) => c.classList.toggle('sel', j === sel));
+      updateSidebar();
+      draw();
+    });
+    wordList.appendChild(el);
+  });
+
+  // Canvas click
+  canvas.addEventListener('click', e => {
+    const r = canvas.getBoundingClientRect();
+    const mx = (e.clientX - r.left) * devicePixelRatio;
+    const my = (e.clientY - r.top) * devicePixelRatio;
+    const W = canvas.width, H = canvas.height;
+    const PX = W * .08, PY = H * .08, RX = W * .84, RY = H * .84;
+    let hit = null;
+    WORDS.forEach((w, i) => {
+      const px = positions[i].x * RX + PX;
+      const py = positions[i].y * RY + PY;
+      if (Math.hypot(mx - px, my - py) < 14 * devicePixelRatio) hit = i;
+    });
+    if (hit !== null) {
+      sel = sel === hit ? null : hit;
+      [...wordList.children].forEach((c, j) => c.classList.toggle('sel', j === sel));
+      updateSidebar();
+      draw();
+    }
+  });
+
+  // Toggle buttons
+  document.getElementById('btnG').addEventListener('click', () => {
+    document.getElementById('btnG').classList.add('on');
+    document.getElementById('btnS').classList.remove('on');
+    switchCtx('general');
+  });
+  document.getElementById('btnS').addEventListener('click', () => {
+    document.getElementById('btnS').classList.add('on');
+    document.getElementById('btnG').classList.remove('on');
+    switchCtx('sailing');
+  });
+
+  draw();
+})();
+</script>
+</body>
+</html>

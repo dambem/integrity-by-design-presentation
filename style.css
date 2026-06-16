@@ -8,37 +8,39 @@
 
 :root {
   /* Override Slidev theme primary */
-  --slidev-theme-primary: #ff6b35;
+  --slidev-theme-primary: oklch(64% 0.19 35);
 
-  /* Primary accents */
-  --c-primary: #ff6b35;         /* deep orange */
-  --c-primary-light: #F2D785;   /* warm gold */
-  --c-primary-subtle: rgba(255, 107, 53, 0.08);
+  /* Primary accents — oklch for perceptual uniformity
+     Hue 35° = orange, Hue 80° = warm gold (analogous harmony) */
+  --c-primary:       oklch(64% 0.19 35);   /* was #ff6b35, same feel, less neon */
+  --c-primary-light: oklch(84% 0.14 80);   /* was #F2D785, richer saffron gold */
+  --c-primary-subtle: oklch(64% 0.19 35 / 0.08);
 
-  /* Surfaces */
-  --c-surface: #0a0a0a;
-  --c-surface-raised: #111111;
-  --c-surface-muted: #1a1a1a;
+  /* Surfaces — micro warm tint at hue 35 echoes primary, prevents cold blue-black */
+  --c-surface:       oklch(8%  0.012 35);  /* was #0a0a0a */
+  --c-surface-raised: oklch(11% 0.012 35); /* was #111111 */
+  --c-surface-muted:  oklch(15% 0.012 35); /* was #1a1a1a */
 
-  /* Text hierarchy */
-  --c-text: #ffffff;
-  --c-text-secondary: #c0c0c0;
-  --c-text-muted: #a0a0a0;
-  --c-text-faint: #606060;
+  /* Text hierarchy — uniform oklch lightness steps, warm-tinted
+     97 / 76 / 60 / 40 gives even perceptual steps vs the old #fff/#c0c/#a0a/#606 */
+  --c-text:           oklch(97% 0.008 35); /* near-white with warmth */
+  --c-text-secondary: oklch(76% 0.012 35); /* was #c0c0c0 */
+  --c-text-muted:     oklch(60% 0.012 35); /* was #a0a0a0 */
+  --c-text-faint:     oklch(40% 0.010 35); /* was #606060 */
 
-  /* Semantic: danger */
-  --c-danger: #f87171;
-  --c-danger-bg: rgba(220, 38, 38, 0.1);
+  /* Semantic: danger — H:18, warm red near orange family, feels intentional not clashing */
+  --c-danger:    oklch(68% 0.20 18);
+  --c-danger-bg: oklch(68% 0.20 18 / 0.10);
 
-  /* Semantic: warning */
-  --c-warning: #fbbf24;
-  --c-warning-bg: rgba(217, 119, 6, 0.1);
+  /* Semantic: warning — H:72, amber, analogous with gold */
+  --c-warning:    oklch(78% 0.17 72);
+  --c-warning-bg: oklch(78% 0.17 72 / 0.10);
 
-  /* Semantic: success */
-  --c-success: #4ade80;
-  --c-success-bg: rgba(22, 163, 74, 0.1);
+  /* Semantic: success — H:148, cool teal-green, temperature contrast with warm primary */
+  --c-success:    oklch(72% 0.17 148);
+  --c-success-bg: oklch(72% 0.17 148 / 0.10);
 
-  /* Borders — rgba for dark mode crispness */
+  /* Borders */
   --border-hairline: 1px solid rgba(255, 255, 255, 0.06);
   --border-subtle:   1px solid rgba(255, 255, 255, 0.1);
 
@@ -94,6 +96,11 @@ h2 {
   gap: 0.75rem;
 }
 
+@keyframes bar-shimmer {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.55; }
+}
+
 h2::before {
   content: '';
   display: inline-block;
@@ -101,6 +108,8 @@ h2::before {
   width: 3px;
   height: 1.2em;
   background: linear-gradient(180deg, var(--c-primary-light), var(--c-primary));
+  animation: bar-shimmer 4s ease-in-out infinite;
+  box-shadow: 0 0 6px rgba(255, 107, 53, 0.4);
 }
 
 
@@ -428,4 +437,16 @@ h2::before {
   outline: 2px solid var(--c-primary);
   outline-offset: 2px;
   border-radius: 0;
+}
+
+
+/* === ANIMATION IFRAMES === */
+
+.animation-frame {
+  width: 100%;
+  height: 58vh;
+  border: none;
+  border-radius: 2px;
+  background: transparent;
+  display: block;
 }

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neural Network</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:100%;height:100%;overflow:hidden;background:#000}
+  canvas{display:block;width:100%;height:100%}
+  .label{
+    position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
+    font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.16em;
+    text-transform:uppercase;color:rgba(255,255,255,.45);white-space:nowrap;
+  }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+(function(){
+  const c = document.getElementById('c');
+  const ctx = c.getContext('2d');
+  const dpr = devicePixelRatio;
+  let w, h, t = 0;
+
+  function resize(){
+    w = c.width  = window.innerWidth  * dpr;
+    h = c.height = window.innerHeight * dpr;
+  }
+  resize();
+  addEventListener('resize', resize);
+
+  // layers: input=3, hidden=5, hidden=4, output=2
+  const LAYERS = [3, 5, 4, 2];
+  const LABELS = ['Input', 'Hidden', 'Hidden', 'Output'];
+
+  function nodePos(li, ni){
+    const lx = w * 0.14 + (w * 0.72) * (li / (LAYERS.length - 1));
+    const count = LAYERS[li];
+    const spacing = Math.min(h * 0.18, h * 0.72 / (count + 1));
+    const ly = h * 0.5 + (ni - (count - 1) / 2) * spacing;
+    return { x: lx, y: ly };
+  }
+
+  // activation: 0..1, 0=left, 1=right
+  // each layer activates when wave front passes through
+  function layerActivation(li){
+    // wave travels left to right over ~2 seconds, then resets
+    const waveFront = ((t * 0.4) % 1.4) - 0.2; // -0.2 to 1.2
+    const lFrac = li / (LAYERS.length - 1);
+    const dist = waveFront - lFrac;
+    return Math.max(0, Math.min(1, 1 - Math.abs(dist) * 6));
+  }
+
+  function draw(){
+    ctx.clearRect(0, 0, w, h);
+
+    // connections first
+    for(let li = 0; li < LAYERS.length - 1; li++){
+      const act = (layerActivation(li) + layerActivation(li + 1)) * 0.5;
+      for(let ni = 0; ni < LAYERS[li]; ni++){
+        for(let nj = 0; nj < LAYERS[li + 1]; nj++){
+          const from = nodePos(li, ni);
+          const to   = nodePos(li + 1, nj);
+          const baseAlpha = 0.06;
+          const alpha = baseAlpha + act * 0.28;
+          ctx.strokeStyle = `rgba(86,128,141,${alpha})`;
+          ctx.lineWidth = dpr;
+          ctx.beginPath();
+          ctx.moveTo(from.x, from.y);
+          ctx.lineTo(to.x, to.y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    // nodes
+    for(let li = 0; li < LAYERS.length; li++){
+      const act = layerActivation(li);
+      for(let ni = 0; ni < LAYERS[li]; ni++){
+        const { x, y } = nodePos(li, ni);
+        const r = 9 * dpr;
+
+        // glow when active
+        if(act > 0.05){
+          const g = ctx.createRadialGradient(x, y, 0, x, y, r * 3.5);
+          g.addColorStop(0, `rgba(224,81,29,${act * 0.35})`);
+          g.addColorStop(1, 'rgba(224,81,29,0)');
+          ctx.beginPath();
+          ctx.arc(x, y, r * 3.5, 0, Math.PI * 2);
+          ctx.fillStyle = g;
+          ctx.fill();
+        }
+
+        // ring
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(86,128,141,${0.25 + act * 0.65})`;
+        ctx.lineWidth = 1.5 * dpr;
+        ctx.stroke();
+
+        // fill
+        ctx.beginPath();
+        ctx.arc(x, y, r - dpr, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(224,81,29,${act * 0.55})`;
+        ctx.fill();
+      }
+    }
+
+    // layer labels
+    ctx.font = `${9 * dpr}px IBM Plex Mono`;
+    ctx.textAlign = 'center';
+    for(let li = 0; li < LAYERS.length; li++){
+      const act = layerActivation(li);
+      const { x } = nodePos(li, 0);
+      ctx.fillStyle = `rgba(255,255,255,${0.3 + act * 0.4})`;
+      ctx.fillText(LABELS[li], x, h * 0.91);
+    }
+
+    t += 0.014;
+    requestAnimationFrame(draw);
+  }
+
+  draw();
+})();
+</script>
+</body>
+</html>

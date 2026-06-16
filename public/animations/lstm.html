@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LSTM</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:100%;height:100%;overflow:hidden;background:#000}
+  canvas{display:block;width:100%;height:100%}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+(function(){
+  const c = document.getElementById('c');
+  const ctx = c.getContext('2d');
+  const dpr = devicePixelRatio;
+  let w, h, t = 0;
+
+  function resize(){
+    w = c.width  = window.innerWidth  * dpr;
+    h = c.height = window.innerHeight * dpr;
+  }
+  resize();
+  addEventListener('resize', resize);
+
+  function arrow(x1, y1, x2, y2, col){
+    const dx = x2 - x1, dy = y2 - y1;
+    const len = Math.hypot(dx, dy);
+    if(len < 1) return;
+    const ux = dx / len, uy = dy / len;
+    const hs = 6 * dpr;
+    ctx.strokeStyle = col;
+    ctx.lineWidth = 1.5 * dpr;
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+    ctx.fillStyle = col;
+    ctx.beginPath();
+    ctx.moveTo(x2, y2);
+    ctx.lineTo(x2 - ux * hs - uy * hs * 0.5, y2 - uy * hs + ux * hs * 0.5);
+    ctx.lineTo(x2 - ux * hs + uy * hs * 0.5, y2 - uy * hs - ux * hs * 0.5);
+    ctx.closePath(); ctx.fill();
+  }
+
+  function pill(x, y, rw, rh, fillCol, strokeCol, lw){
+    const r = Math.min(rw, rh) * 0.35;
+    ctx.beginPath();
+    ctx.moveTo(x - rw + r, y - rh);
+    ctx.lineTo(x + rw - r, y - rh);
+    ctx.quadraticCurveTo(x + rw, y - rh, x + rw, y - rh + r);
+    ctx.lineTo(x + rw, y + rh - r);
+    ctx.quadraticCurveTo(x + rw, y + rh, x + rw - r, y + rh);
+    ctx.lineTo(x - rw + r, y + rh);
+    ctx.quadraticCurveTo(x - rw, y + rh, x - rw, y + rh - r);
+    ctx.lineTo(x - rw, y - rh + r);
+    ctx.quadraticCurveTo(x - rw, y - rh, x - rw + r, y - rh);
+    ctx.closePath();
+    if(fillCol){ ctx.fillStyle = fillCol; ctx.fill(); }
+    if(strokeCol){ ctx.strokeStyle = strokeCol; ctx.lineWidth = lw || dpr; ctx.stroke(); }
+  }
+
+  function draw(){
+    ctx.clearRect(0, 0, w, h);
+
+    const cx = w * 0.5;
+    const cy = h * 0.5;
+
+    // --- Cell state bar (long-term memory highway at top) ---
+    const csY  = cy - h * 0.26;
+    const csX1 = w * 0.06;
+    const csX2 = w * 0.94;
+
+    // Track
+    ctx.strokeStyle = 'rgba(86,128,141,0.3)';
+    ctx.lineWidth = 2.5 * dpr;
+    ctx.beginPath(); ctx.moveTo(csX1, csY); ctx.lineTo(csX2, csY); ctx.stroke();
+
+    // Label above track
+    ctx.font = `${8.5 * dpr}px IBM Plex Mono`;
+    ctx.fillStyle = 'rgba(86,128,141,0.55)';
+    ctx.textAlign = 'center';
+    ctx.fillText('cell state  ·  long-term memory', cx, csY - 10 * dpr);
+
+    // Animated beads along cell state
+    const beadCount = 7;
+    for(let i = 0; i < beadCount; i++){
+      const frac = ((i / beadCount) + t * 0.09) % 1;
+      const bx = csX1 + (csX2 - csX1) * frac;
+      const val = Math.sin(i * 1.9 + t * 0.6) * 0.5 + 0.5;
+      const alpha = Math.sin(frac * Math.PI) * 0.75;
+      const r = (4 + val * 3) * dpr;
+      ctx.beginPath(); ctx.arc(bx, csY, r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(86,128,141,${alpha})`;
+      ctx.fill();
+    }
+
+    // Arrow caps
+    arrow(csX2 - 2 * dpr, csY, csX2 + 22 * dpr, csY, 'rgba(86,128,141,0.4)');
+    ctx.font = `${8 * dpr}px IBM Plex Mono`;
+    ctx.fillStyle = 'rgba(86,128,141,0.5)';
+    ctx.textAlign = 'left';
+    ctx.fillText('c_t', csX2 + 26 * dpr, csY + 4 * dpr);
+
+    // --- Three gates ---
+    const gateY   = cy + h * 0.04;
+    const gateR   = 24 * dpr;
+    const gates = [
+      { x: cx - w * 0.22, label: 'f',      sub: 'forget',  color: '224,81,29',   phase: 0   },
+      { x: cx,            label: 'i + g',  sub: 'input',   color: '107,174,117', phase: 2.1 },
+      { x: cx + w * 0.22, label: 'o',      sub: 'output',  color: '91,141,184',  phase: 4.2 },
+    ];
+
+    gates.forEach(({ x, label, sub, color, phase }) => {
+      const pulse = Math.sin(t * 1.3 + phase) * 0.5 + 0.5;
+
+      // Connector from gate to cell state
+      ctx.setLineDash([4 * dpr, 4 * dpr]);
+      ctx.strokeStyle = `rgba(${color},0.18)`;
+      ctx.lineWidth = dpr;
+      ctx.beginPath(); ctx.moveTo(x, gateY - gateR); ctx.lineTo(x, csY + 3 * dpr); ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Glow
+      const g = ctx.createRadialGradient(x, gateY, 0, x, gateY, gateR * 2.5);
+      g.addColorStop(0, `rgba(${color},${0.12 + pulse * 0.12})`);
+      g.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.beginPath(); ctx.arc(x, gateY, gateR * 2.5, 0, Math.PI * 2);
+      ctx.fillStyle = g; ctx.fill();
+
+      // Circle
+      ctx.beginPath(); ctx.arc(x, gateY, gateR, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(${color},${0.35 + pulse * 0.5})`;
+      ctx.lineWidth = (1 + pulse) * dpr;
+      ctx.fillStyle = `rgba(${color},${0.06 + pulse * 0.08})`;
+      ctx.fill(); ctx.stroke();
+
+      // Gate label
+      ctx.font = `bold ${9 * dpr}px IBM Plex Mono`;
+      ctx.fillStyle = `rgba(${color},${0.7 + pulse * 0.3})`;
+      ctx.textAlign = 'center';
+      ctx.fillText(label, x, gateY + 3.5 * dpr);
+
+      // Sub-label
+      ctx.font = `${8 * dpr}px IBM Plex Mono`;
+      ctx.fillStyle = `rgba(${color},0.5)`;
+      ctx.fillText(sub, x, gateY + gateR + 14 * dpr);
+    });
+
+    // --- Previous hidden state input (left) ---
+    const prevY = gateY;
+    const prevX = w * 0.02;
+    ctx.font = `${8.5 * dpr}px IBM Plex Mono`;
+    ctx.fillStyle = 'rgba(255,255,255,0.5)';
+    ctx.textAlign = 'left';
+    ctx.fillText('h_{t-1}', prevX, prevY - gateR - 10 * dpr);
+    arrow(prevX + 36 * dpr, prevY, gates[0].x - gateR - 4 * dpr, prevY, 'rgba(255,255,255,0.3)');
+
+    // --- Input sequence (bottom) ---
+    const seqY   = cy + h * 0.30;
+    const tokens = ['x₁', 'x₂', 'x₃', 'x₄', 'x₅'];
+    const step   = Math.floor(t * 0.5) % tokens.length;
+
+    ctx.font = `${8 * dpr}px IBM Plex Mono`;
+    ctx.fillStyle = 'rgba(255,255,255,0.4)';
+    ctx.textAlign = 'center';
+    ctx.fillText('input sequence', cx, seqY - 28 * dpr);
+
+    tokens.forEach((tok, i) => {
+      const tx = cx - w * 0.16 + i * w * 0.08;
+      const active = i === step;
+      const alpha  = active ? 0.9 : 0.3;
+      const col    = active ? '224,81,29' : '86,128,141';
+
+      pill(tx, seqY, 14 * dpr, 11 * dpr,
+        `rgba(${col},${active ? 0.12 : 0.04})`,
+        `rgba(${col},${active ? 0.8 : 0.25})`,
+        active ? 1.5 * dpr : dpr);
+
+      ctx.font = `${9.5 * dpr}px IBM Plex Mono`;
+      ctx.fillStyle = `rgba(${col},${alpha})`;
+      ctx.textAlign = 'center';
+      ctx.fillText(tok, tx, seqY + 4 * dpr);
+
+      // Active token → middle gate (input gate)
+      if(active){
+        arrow(tx, seqY - 13 * dpr, cx, gateY + gateR + 4 * dpr, 'rgba(224,81,29,0.3)');
+      }
+    });
+
+    // --- Output h_t ---
+    const outX = w * 0.93;
+    arrow(gates[2].x + gateR + 4 * dpr, gateY, outX - 24 * dpr, gateY, 'rgba(91,141,184,0.35)');
+    ctx.font = `${8.5 * dpr}px IBM Plex Mono`;
+    ctx.fillStyle = 'rgba(91,141,184,0.55)';
+    ctx.textAlign = 'left';
+    ctx.fillText('h_t', outX - 20 * dpr, gateY - gateR - 10 * dpr);
+
+    // Footer
+    ctx.font = `${8 * dpr}px IBM Plex Mono`;
+    ctx.fillStyle = 'rgba(255,255,255,0.3)';
+    ctx.textAlign = 'center';
+    ctx.fillText("carries what matters · forgets what doesn't", cx, h - 12 * dpr);
+
+    t += 0.013;
+    requestAnimationFrame(draw);
+  }
+
+  draw();
+})();
+</script>
+</body>
+</html>
