@@ -132,16 +132,16 @@ As such, I may have opinions that don't reflect on the business.
 
 ---
 
+
 # What this talk will go through
 
-- Intro level explanation of concepts within AI 
+- (Hopefully) interesting explanations of concepts within AI 
 - Case studies where we've introduced AI into secure environments
 - Limitations of LLMs within data analysis
 - Quick dive into the effects of current LLM architectures
 - Few examples of why certain attacks still work on LLMs
-
 <br>
-
+<br>
 ### What this talk won't go through
 
 - Detailed results & methodology for projects (Available on ada-mode.com)
@@ -326,24 +326,24 @@ url: /animations/neural-net.html
 ---
 
 
-# How neural networks work
+# Neural Networks & Data
 
-<div>
 
-<p style="color:#D9D4C6;font-size:1rem;line-height:1.7">Numbers are multiplied by weights, summed together, and passed to the next layer. 
-This repeats until we reach a specific state that we can predict. <br> This could be an output signal, a state, or anything that can be mapped by a number </p>
+<v-clicks>
+<p style="color:#D9D4C6;font-size:1rem;line-height:1.7">
+
+Numbers are multiplied by weights, summed together, and passed to the next layer. 
+
+Weights initially begin completely randomised - and slowly build up by receiving enough predicted information about a situation 
+
+ This could be an output signal, a state, or anything that can be mapped by a number </p>
 
 <p style="color:var(--c-text-secondary);font-size:0.9rem;line-height:1.7;margin-top:1rem"> Each time the network gets it wrong, it works backwards and nudges each weight slightly in the right direction. Do that enough times, across enough layers, and it starts picking up complex patterns.</p>
 
 <div class="callout-info mt-6" style="font-size:0.85rem">
 Input → weighted sum → activation → repeat<br>
 </div>
-
-</div>
-<div>
-
-
-</div>
+</v-clicks>
 
 
 ---
@@ -376,6 +376,8 @@ Different algorithms suit different kinds of data. Sometimes we need to use a mi
 
 <div class="grid grid-cols-1 gap-1 mt-2">
 
+<v-clicks>
+
 <div class="card">
   <div class="font-bold text-accent text-sm">Random Forest</div>
   <div class="text-xs text-muted mt-1">Hundreds of decision trees, each trained on a different slice of data. The best suited groups of decisions apply - allowing a proof of which decisions went into which groupings. </div>
@@ -391,6 +393,7 @@ Different algorithms suit different kinds of data. Sometimes we need to use a mi
   <div class="text-xs text-muted mt-1">Carries information across a sequence. It decides what to keep, what to forget, and what to output at each step. Great for rule where a sequence of values may be more important than a single one.</div>
 </div>
 
+</v-clicks>
 </div>
 
 ---
@@ -471,7 +474,7 @@ url: /animations/attention.html
 
 <p style="color:var(--c-text-secondary);font-size:0.9rem;line-height:1.7;margin-top:1rem">But Attention is great for understanding a key concept of how modern LLMs work</p>
 
-<p style="color:var(--c-text-secondary);font-size:0.9rem;line-height:1.7;margin-top:1rem">Before transformers, models read text one token at a time. Each step carried a compressed memory. Long-range context was hard to hold onto.</p>
+<p style="color:var(--c-text-secondary);font-size:0.9rem;line-height:1.7;margin-top:1rem">Before LLMS & transformer architecture, models read text one token at a time. Each step carrying a short memory. Long-range context was hard to hold onto.</p>
 
 <p style="color:var(--c-text-secondary);font-size:0.9rem;line-height:1.7;margin-top:1rem">Attention lets every token look at every other token at once and learn a weight: <em>how relevant is this to the current conversation?</em></p>
 </v-clicks>
