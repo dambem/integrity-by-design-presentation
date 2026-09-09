@@ -1,79 +1,99 @@
-/* ============================================
-   Integrity by Design — Global Style System
-   Dark mode, sharp edges, textured — bemben.co.uk aesthetic
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
-   Design approach: near-black surfaces, deep orange + gold
-   accents, SVG noise grain, no rounded corners.
+/* ============================================
+   The Slop Shop — Global Style System
+   GeoCities-core. Comic Sans, beveled borders,
+   tiled backgrounds, rainbow WordArt, hard shadows.
+
+   Design approach: light "under construction" web-page
+   surfaces, candy accents, chunky 3D bevels, tiny
+   wobbles — but a grown-up grid underneath so the
+   layouts still read from the back of the room.
    ============================================ */
 
 :root {
   /* Override Slidev theme primary */
-  --slidev-theme-primary: oklch(64% 0.19 35);
+  --slidev-theme-primary: #ff2d95;
 
-  /* Primary accents — oklch for perceptual uniformity
-     Hue 35° = orange, Hue 80° = warm gold (analogous harmony) */
-  --c-primary:       oklch(64% 0.19 35);   /* was #ff6b35, same feel, less neon */
-  --c-primary-light: oklch(84% 0.14 80);   /* was #F2D785, richer saffron gold */
-  --c-primary-subtle: oklch(64% 0.19 35 / 0.08);
+  /* Primary accents — the two highlighter pens */
+  --c-primary:        #e5007d;  /* hot magenta */
+  --c-primary-light:  #00a3c4;  /* cyan */
+  --c-primary-subtle: rgba(255, 45, 149, 0.12);
 
-  /* Surfaces — micro warm tint at hue 35 echoes primary, prevents cold blue-black */
-  --c-surface:       oklch(8%  0.012 35);  /* was #0a0a0a */
-  --c-surface-raised: oklch(11% 0.012 35); /* was #111111 */
-  --c-surface-muted:  oklch(15% 0.012 35); /* was #1a1a1a */
+  /* Raw rgb of the two accents, for the alpha washes below */
+  --c-primary-rgb:       229 0 125;
+  --c-primary-light-rgb: 0 163 196;
 
-  /* Text hierarchy — uniform oklch lightness steps, warm-tinted
-     97 / 76 / 60 / 40 gives even perceptual steps vs the old #fff/#c0c/#a0a/#606 */
-  --c-text:           oklch(97% 0.008 35); /* near-white with warmth */
-  --c-text-secondary: oklch(76% 0.012 35); /* was #c0c0c0 */
-  --c-text-muted:     oklch(60% 0.012 35); /* was #a0a0a0 */
-  --c-text-faint:     oklch(40% 0.010 35); /* was #606060 */
+  /* Surfaces — paper-white with a faint sky wash, like a table-layout page */
+  --c-surface:        #fffdf2;
+  --c-surface-raised: #ffffff;
+  --c-surface-muted:  #eef6ff;
 
-  /* Semantic: danger — H:18, warm red near orange family, feels intentional not clashing */
-  --c-danger:    oklch(68% 0.20 18);
-  --c-danger-bg: oklch(68% 0.20 18 / 0.10);
+  /* Text hierarchy — proper ink, this is a light page now */
+  --c-text:           #16121f;
+  --c-text-secondary: #3a3352;
+  --c-text-muted:     #6b6285;
+  --c-text-faint:     #938ba8;
 
-  /* Semantic: warning — H:72, amber, analogous with gold */
-  --c-warning:    oklch(78% 0.17 72);
-  --c-warning-bg: oklch(78% 0.17 72 / 0.10);
+  /* Welsh copy — visited-link purple, sits a step below the English */
+  --c-cy:             #7a1fa2;
 
-  /* Semantic: success — H:148, cool teal-green, temperature contrast with warm primary */
-  --c-success:    oklch(72% 0.17 148);
-  --c-success-bg: oklch(72% 0.17 148 / 0.10);
+  /* Semantic: danger — alarm red */
+  --c-danger:    #d8000c;
+  --c-danger-bg: #ffe0e0;
 
-  /* Borders */
-  --border-hairline: 1px solid rgba(255, 255, 255, 0.06);
-  --border-subtle:   1px solid rgba(255, 255, 255, 0.1);
+  /* Semantic: warning — hazard tape yellow */
+  --c-warning:    #8a6100;
+  --c-warning-bg: #fff4c2;
 
-  /* Radii — sharp, no rounding */
-  --radius-sm: 2px;
-  --radius-md: 2px;
-  --radius-lg: 2px;
+  /* Semantic: success — lime green terminal */
+  --c-success:    #0a7a24;
+  --c-success-bg: #ddffe0;
 
-  /* Shadows — deep for dark surfaces */
-  --shadow-sm:       0 1px 2px rgb(0 0 0 / 0.4), 0 0 0 1px rgba(255,255,255,0.03);
-  --shadow-card:     0 1px 3px rgb(0 0 0 / 0.5), 0 0 0 1px rgba(255,255,255,0.04), inset 0 1px 0 rgba(255,255,255,0.04);
-  --shadow-elevated: 0 4px 20px rgb(0 0 0 / 0.6), 0 0 0 1px rgba(255,255,255,0.04);
+  /* Borders — thick, black, unapologetic */
+  --border-hairline: 2px solid #16121f;
+  --border-subtle:   3px solid #16121f;
+
+  /* Radii — 2000s rounding was either 0 or a big goofy pill */
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+
+  /* Shadows — hard offset drop shadows, no blur, like a table cell */
+  --shadow-sm:       3px 3px 0 rgba(22, 18, 31, 0.85);
+  --shadow-card:     5px 5px 0 rgba(22, 18, 31, 0.85);
+  --shadow-elevated: 8px 8px 0 rgba(22, 18, 31, 0.85);
 
   /* Easing */
-  --ease-out: cubic-bezier(0.16, 1, 5, 1);
-  --ease-spring: cubic-bezier(5, 1.56, 0.64, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* The one true font stack */
+  --font-comic: 'Comic Sans MS', 'Comic Sans', 'Chalkboard SE', 'Comic Neue', 'Marker Felt', cursive;
+  --font-type:  'Courier New', Courier, monospace;
 
   /* Code blocks */
-  --slidev-code-background: #141414;
-  --slidev-code-foreground: #d4d4d4;
-  --slidev-slide-container-background: #0a0a0a;
-  --slidev-controls-foreground: #a0a0a0;
+  --slidev-code-background: #fbf6ff;
+  --slidev-code-foreground: #2a2140;
+  --slidev-slide-container-background: #d9ecff;
+  --slidev-controls-foreground: #6b6285;
 }
 
 
 /* === FONTS === */
+/* Comic Sans if the machine has it, Comic Neue if it doesn't. */
 
-@font-face {
-  font-family: 'Advercase';
-  src: url('./AdvercaseFont.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: block;
+html, body, .slidev-layout,
+.slidev-layout h1, .slidev-layout h2, .slidev-layout h3,
+.slidev-layout h4, .slidev-layout p, .slidev-layout li,
+.slidev-layout div, .slidev-layout span, .slidev-layout b,
+button, input, select, textarea {
+  font-family: var(--font-comic) !important;
+}
+
+/* Code keeps a typewriter face — Comic Sans monospace is a bridge too far */
+code, pre, pre *, .font-mono, .slidev-code, .slidev-code * {
+  font-family: var(--font-type) !important;
 }
 
 
@@ -84,94 +104,126 @@ h1, h2, h3 {
 }
 
 h1 {
-  font-family: 'Advercase', 'DM Sans', sans-serif;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.005em;
+  font-weight: 700;
+  color: var(--c-text);
+  text-shadow: 2px 3px 0 #ffd400;
 }
 
 h2 {
-  font-family: 'Advercase', 'DM Sans', sans-serif;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.005em;
+  font-weight: 700;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.6rem;
+  color: var(--c-text);
+  text-shadow: 2px 2px 0 #ffd400;
 }
 
-@keyframes bar-shimmer {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.55; }
+/* Candy-stripe bar in place of the old shimmer rule — it crawls, like a
+   1999 "under construction" divider. */
+@keyframes barber-pole {
+  from { background-position: 0 0; }
+  to   { background-position: 0 -28px; }
 }
 
 h2::before {
   content: '';
   display: inline-block;
   flex-shrink: 0;
-  width: 3px;
-  height: 1.2em;
-  background: linear-gradient(180deg, var(--c-primary-light), var(--c-primary));
-  animation: bar-shimmer 4s ease-in-out infinite;
-  box-shadow: 0 0 6px rgba(255, 107, 53, 0.4);
+  width: 14px;
+  height: 1.15em;
+  border: 2px solid #16121f;
+  background-image: repeating-linear-gradient(
+    45deg,
+    #ffd400 0 7px,
+    #16121f 7px 14px
+  );
+  background-size: 20px 20px;
+  animation: barber-pole 1.4s linear infinite;
 }
+
+/* Welsh subtitles inside a heading, and the rainbow sign, opt out of the
+   yellow drop shadow — it muddies the italics. */
+h1 .cy, h2 .cy,
+.slidev-layout.section h1 {
+  text-shadow: none;
+}
+
+h2 .cy { font-weight: 400; }
+
+a, .slidev-layout a {
+  color: #0000ee;
+  text-decoration: underline;
+}
+
+a:visited { color: #7a1fa2; }
 
 
 /* === SLIDE LAYOUT OVERRIDES === */
+/* Tiled background: sparkle .gif energy over faint graph paper, the way every
+   personal homepage had a repeating tile behind the text. Painted as
+   background layers rather than a pseudo-element so nothing can sit on top
+   of the slide content. */
 
 .slidev-layout {
-  background: var(--c-surface);
   color: var(--c-text);
   position: relative;
-}
-
-/* SVG noise grain overlay — matches bemben.co.uk body::before */
-.slidev-layout::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  opacity: 0.045;
-  z-index: -1;
-  pointer-events: none;
+  background-color: var(--c-surface);
   background-image:
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"),
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter2'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.02' numOctaves='1' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter2)' opacity='0.5'/%3E%3C/svg%3E");
-  background-size: 300px 300px, 600px 600px;
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23ff2d95' stroke-opacity='0.16' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M20 8v24M8 20h24'/%3E%3Cpath d='M92 68v18M83 77h18'/%3E%3C/g%3E%3Cg fill='none' stroke='%2300a3c4' stroke-opacity='0.16' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M64 24v14M57 31h14'/%3E%3C/g%3E%3C/svg%3E"),
+    repeating-linear-gradient(0deg,  rgba(90, 60, 120, 0.07) 0 1px, transparent 1px 24px),
+    repeating-linear-gradient(90deg, rgba(90, 60, 120, 0.07) 0 1px, transparent 1px 24px);
+  background-size: 200px 200px, auto, auto;
 }
 
-.slidev-layout.section {
-  background:
-    radial-gradient(ellipse at 70% 20%, rgba(255, 107, 53, 0.09) 0%, transparent 60%),
-    radial-gradient(ellipse at 20% 80%, rgba(242, 215, 133, 0.04) 0%, transparent 50%),
-    #0a0a0a;
+/* Title + section slides: a starburst, the kind that said FREE DOWNLOADS.
+   A paper-coloured vignette sits over the rays so they burn out well before
+   they reach the copy. */
+.slidev-layout.section,
+.slidev-layout.cover,
+.slidev-layout.intro {
+  background-color: var(--c-surface);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23ff2d95' stroke-opacity='0.16' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M20 8v24M8 20h24'/%3E%3Cpath d='M92 68v18M83 77h18'/%3E%3C/g%3E%3Cg fill='none' stroke='%2300a3c4' stroke-opacity='0.16' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M64 24v14M57 31h14'/%3E%3C/g%3E%3C/svg%3E"),
+    radial-gradient(circle at 78% 20%,
+      rgba(255, 253, 242, 0) 0%,
+      rgba(255, 253, 242, 0.6) 14%,
+      var(--c-surface) 32%),
+    repeating-conic-gradient(from 0deg at 78% 20%,
+      rgba(255, 150, 0, 0.6) 0deg 5deg,
+      rgba(255, 255, 255, 0) 5deg 10deg),
+    radial-gradient(ellipse at 78% 20%, rgba(255, 45, 149, 0.14) 0%, transparent 40%),
+    radial-gradient(ellipse at 14% 84%, rgba(0, 163, 196, 0.18) 0%, transparent 50%);
+  background-size: 200px 200px, auto, auto, auto, auto;
 }
 
 
 /* === CARDS === */
+/* Index cards pinned to a corkboard: thick outline, hard shadow, a hair off-square. */
 
 .card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--c-surface-raised);
+  border: var(--border-subtle);
   border-radius: var(--radius-md);
   padding: 1rem;
   box-shadow: var(--shadow-card);
-  transition: box-shadow 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+  transition: transform 0.18s var(--ease-spring), box-shadow 0.18s var(--ease-out);
 }
 
-@keyframes card-lift {
-  0% {
-    box-shadow: var(--shadow-card);
-    transform: translateY(0);
-  }
-  100% {
-    box-shadow: var(--shadow-elevated);
-    transform: translateY(-1px);
-  }
-}
+/* Alternate the tilt so a stack of cards looks hand-placed */
+.card:nth-child(odd)  { transform: rotate(-0.55deg); }
+.card:nth-child(even) { transform: rotate(0.5deg); }
 
-.card {
-  animation: card-lift 0.4s var(--ease-out) 0.3s both;
+.card:hover {
+  transform: rotate(0deg) translate(-2px, -2px);
+  box-shadow: var(--shadow-elevated);
 }
 
 .card--accent {
-  background: rgba(255, 107, 53, 0.06);
-  border-color: rgba(255, 107, 53, 0.2);
+  background: linear-gradient(160deg, #fff0f8 0%, #ffe4f3 100%);
+  border-color: #16121f;
+  box-shadow: 5px 5px 0 var(--c-primary);
 }
 
 .card--lg {
@@ -181,61 +233,81 @@ h2::before {
 
 
 /* === CALLOUT BOXES === */
-/* Dark tint + coloured left accent line */
+/* Loud pastel fill, dashed outline, and an emoji doing the work of an icon. */
 
-.callout-danger {
-  background: var(--c-danger-bg);
-  border: var(--border-hairline);
-  border-left: 3px solid color-mix(in srgb, var(--c-danger) 60%, transparent);
-  border-radius: var(--radius-md);
-  padding: 1rem;
-  box-shadow: var(--shadow-sm);
-}
-
-.callout-info {
-  background: var(--c-primary-subtle);
-  border: var(--border-hairline);
-  border-left: 3px solid color-mix(in srgb, var(--c-primary) 50%, transparent);
-  border-radius: var(--radius-md);
-  padding: 1rem;
-  box-shadow: var(--shadow-sm);
-}
-
-.callout-success {
-  background: var(--c-success-bg);
-  border: var(--border-hairline);
-  border-left: 3px solid color-mix(in srgb, var(--c-success) 60%, transparent);
-  border-radius: var(--radius-md);
-  padding: 1rem;
-  box-shadow: var(--shadow-sm);
-}
-
+.callout-danger,
+.callout-info,
+.callout-success,
 .callout-warning {
-  background: var(--c-warning-bg);
-  border: var(--border-hairline);
-  border-left: 3px solid color-mix(in srgb, var(--c-warning) 60%, transparent);
+  border: 3px dashed #16121f;
   border-radius: var(--radius-md);
-  padding: 1rem;
+  padding: 0.7rem 0.85rem 0.7rem 2.2rem;
   box-shadow: var(--shadow-sm);
+  position: relative;
+}
+
+.callout-danger::before,
+.callout-info::before,
+.callout-success::before,
+.callout-warning::before {
+  position: absolute;
+  left: 0.6rem;
+  top: 0.55rem;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.callout-danger  { background: var(--c-danger-bg);  }
+.callout-info    { background: #e6f3ff;             }
+.callout-success { background: var(--c-success-bg); }
+.callout-warning { background: var(--c-warning-bg); }
+
+.callout-danger::before  { content: '\26A0\FE0F'; }
+.callout-info::before    { content: '\1F4A1';     }
+.callout-success::before { content: '\2705';      }
+.callout-warning::before { content: '\1F37A';     }
+
+.callout-danger:has(> .lang-tag), .callout-info:has(> .lang-tag),
+.callout-success:has(> .lang-tag), .callout-warning:has(> .lang-tag),
+.callout-danger:has(> * > .lang-tag), .callout-info:has(> * > .lang-tag),
+.callout-success:has(> * > .lang-tag), .callout-warning:has(> * > .lang-tag) {
+  padding-left: 0.85rem;
+}
+
+.callout-danger:has(.lang-tag)::before,
+.callout-info:has(.lang-tag)::before,
+.callout-success:has(.lang-tag)::before,
+.callout-warning:has(.lang-tag)::before {
+  content: none;
 }
 
 .callout-info--lg,
 .callout-danger--lg,
 .callout-success--lg,
 .callout-warning--lg {
-  padding: 1.5rem;
+  padding: 1.5rem 1.5rem 1.5rem 3rem;
   border-radius: var(--radius-lg);
+}
+
+.callout-info--lg::before,
+.callout-danger--lg::before,
+.callout-success--lg::before,
+.callout-warning--lg::before {
+  left: 1rem;
+  top: 1.3rem;
+  font-size: 1.3rem;
 }
 
 
 /* === STAT DISPLAYS === */
 
 .stat-value {
-  font-size: 2rem;
+  font-size: 2.1rem;
   font-weight: 700;
   line-height: 1.1;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
   font-variant-numeric: tabular-nums;
+  text-shadow: 2px 2px 0 rgba(22, 18, 31, 0.28);
 }
 
 .stat-value--danger  { color: var(--c-danger); }
@@ -243,7 +315,7 @@ h2::before {
 .stat-value--success { color: var(--c-success); }
 
 .stat-label {
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   color: var(--c-text-muted);
   margin-top: 0.25rem;
   letter-spacing: 0.01em;
@@ -253,7 +325,7 @@ h2::before {
 /* === TEXT COLOR UTILITIES === */
 
 .text-accent    { color: var(--c-primary); }
-.text-gold      { color: var(--c-primary-light); }
+.text-gold      { color: #b56a00; }
 .text-danger    { color: var(--c-danger); }
 .text-success   { color: var(--c-success); }
 .text-warning   { color: var(--c-warning); }
@@ -276,54 +348,96 @@ h2::before {
 /* === ATTRIBUTIONS === */
 
 .attribution {
-  font-size: 0.75rem;
-  color: var(--c-text-faint);
+  font-size: 0.8rem;
+  color: var(--c-text-secondary);
+  background: rgba(255, 255, 255, 0.75);
+  border: 2px solid #16121f;
+  padding: 0.1rem 0.45rem;
+  display: inline-block;
+  box-shadow: 2px 2px 0 rgba(22, 18, 31, 0.6);
 }
 
 .attribution--subtle {
-  font-size: 0.7rem;
-  color: var(--c-text-faint);
-  opacity: 0.6;
+  font-size: 0.75rem;
+  color: var(--c-text-muted);
+  font-style: italic;
 }
 
 
 /* === SPECIAL EFFECTS === */
 
 .glass {
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(20px) saturate(1.2);
-  -webkit-backdrop-filter: blur(20px) saturate(1.2);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: var(--border-subtle);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-elevated), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  box-shadow: var(--shadow-elevated);
 }
 
+/* Marquee-adjacent: a box that hums with a slow hazard-tape edge */
 .highlight-box {
   background: var(--c-surface-muted);
-  border: var(--border-subtle);
+  border: 3px solid #16121f;
   border-radius: var(--radius-md);
   padding: 1rem;
   text-align: center;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-card);
+  position: relative;
+}
+
+.highlight-box::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 8px;
+  border: 2px solid #16121f;
+  background-image: repeating-linear-gradient(45deg, #ffd400 0 7px, #16121f 7px 14px);
+  background-size: 20px 20px;
+  animation: barber-pole 1.8s linear infinite;
 }
 
 
 /* === CODE BLOCKS === */
+/* Sunken well, like a <textarea> from 2001 */
 
 .slidev-layout pre {
   border-radius: 0 !important;
-  border: var(--border-subtle) !important;
+  border: 3px solid #16121f !important;
+  box-shadow: inset 3px 3px 0 rgba(22, 18, 31, 0.08) !important;
+  background: var(--slidev-code-background) !important;
 }
 
 
-/* === LISTS — tighter, crisper === */
+/* === LISTS — chunky bullets === */
+
+.slidev-layout ul {
+  list-style: none;
+  padding-left: 1.5rem;
+}
+
+.slidev-layout ul > li {
+  position: relative;
+}
+
+.slidev-layout ul > li::before {
+  content: '\2605';
+  position: absolute;
+  left: -1.25rem;
+  color: var(--c-primary);
+  font-size: 0.85em;
+  top: 0.05em;
+}
 
 .slidev-layout li + li {
-  margin-top: 0.15em;
+  margin-top: 0.3em;
 }
 
-.slidev-layout li::marker {
+.slidev-layout ol > li::marker {
   color: var(--c-primary);
+  font-weight: 700;
 }
 
 
@@ -333,9 +447,8 @@ h2::before {
   position: absolute;
   bottom: 1.5rem;
   right: 2rem;
-  font-size: 0.6rem;
-  color: var(--c-text-faint);
-  opacity: 0.7;
+  font-size: 0.62rem;
+  color: var(--c-text-muted);
   max-width: 40%;
   text-align: right;
   line-height: 1.4;
@@ -343,11 +456,8 @@ h2::before {
 }
 
 .source a {
-  color: var(--c-text-faint);
+  color: #0000ee;
   text-decoration: underline;
-  text-underline-offset: 2px;
-  text-decoration-color: color-mix(in srgb, var(--c-text-faint) 40%, transparent);
-  transition: color 0.2s var(--ease-out);
 }
 
 .source a:hover {
@@ -358,83 +468,87 @@ h2::before {
 /* === SLIDE PROGRESS BAR === */
 
 .slidev-progress {
-  background: linear-gradient(90deg, var(--c-primary-light), var(--c-primary)) !important;
+  height: 5px !important;
+  background: repeating-linear-gradient(
+    90deg,
+    #ff2d95 0 18px,
+    #ffd400 18px 36px,
+    #00a3c4 36px 54px,
+    #7fdb00 54px 72px
+  ) !important;
 }
 
 
 /* === MERMAID DIAGRAMS === */
 
-/* Transparent SVG background — inherits slide */
 .mermaid svg,
 .slidev-mermaid svg {
   background: transparent !important;
 }
 
-/* Default node shapes — dark fill, subtle border */
+/* Node shapes — white boxes with fat black outlines */
 .mermaid .node rect,
 .mermaid .node circle,
 .mermaid .node ellipse,
 .mermaid .node polygon,
 .mermaid .node path,
 .mermaid .node .label-container {
-  fill: #141414 !important;
-  stroke: rgba(255, 255, 255, 0.15) !important;
-  stroke-width: 1px !important;
+  fill: #ffffff !important;
+  stroke: #16121f !important;
+  stroke-width: 2.5px !important;
 }
 
-/* Node label text */
 .mermaid .node .label,
 .mermaid .nodeLabel,
 .mermaid .node foreignObject div,
 .mermaid text {
-  color: #e0e0e0 !important;
-  fill: #e0e0e0 !important;
+  color: #16121f !important;
+  fill: #16121f !important;
+  font-family: var(--font-comic) !important;
 }
 
-/* Edge lines */
 .mermaid .edgePath .path,
 .mermaid .flowchart-link {
-  stroke: rgba(255, 255, 255, 0.3) !important;
-  stroke-width: 1.5px !important;
+  stroke: var(--c-primary) !important;
+  stroke-width: 2.5px !important;
 }
 
-/* Arrowhead markers */
 .mermaid marker path,
 .mermaid .arrowheadPath {
-  fill: rgba(255, 255, 255, 0.3) !important;
-  stroke: rgba(255, 255, 255, 0.3) !important;
+  fill: var(--c-primary) !important;
+  stroke: var(--c-primary) !important;
 }
 
-/* Edge labels (the text on arrows) */
 .mermaid .edgeLabel,
 .mermaid .edgeLabel foreignObject,
 .mermaid .edgeLabel p {
-  background: #111111 !important;
-  background-color: #111111 !important;
-  color: #a0a0a0 !important;
+  background: #ffd400 !important;
+  background-color: #ffd400 !important;
+  color: #16121f !important;
   border-radius: 0 !important;
 }
 
 .mermaid .edgeLabel rect {
-  fill: #111111 !important;
+  fill: #ffd400 !important;
   opacity: 1 !important;
 }
 
-/* Cluster / subgraph borders */
 .mermaid .cluster rect {
-  fill: rgba(255, 255, 255, 0.02) !important;
-  stroke: rgba(255, 255, 255, 0.08) !important;
+  fill: rgba(0, 163, 196, 0.08) !important;
+  stroke: #16121f !important;
+  stroke-dasharray: 5 4 !important;
 }
+
 
 /* === SELECTION + FOCUS === */
 
 ::selection {
-  background: rgba(255, 107, 53, 0.25);
-  color: #ffffff;
+  background: #ffd400;
+  color: #16121f;
 }
 
 :focus-visible {
-  outline: 2px solid var(--c-primary);
+  outline: 3px dashed var(--c-primary);
   outline-offset: 2px;
   border-radius: 0;
 }
@@ -445,8 +559,219 @@ h2::before {
 .animation-frame {
   width: 100%;
   height: 58vh;
-  border: none;
-  border-radius: 2px;
-  background: transparent;
+  border: 3px solid #16121f;
+  border-radius: 0;
+  background: #ffffff;
   display: block;
+  box-shadow: var(--shadow-card);
+}
+
+
+/* === BILINGUAL COPY === */
+/* English leads, Welsh sits beneath it in visited-link purple, italic. */
+
+.cy {
+  color: var(--c-cy);
+  font-style: italic;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.cy--sm { font-size: 0.82em; }
+
+
+
+/* === RUNNING ORDER === */
+/* An HTML table from 2002: zebra rows, ridged rules, tabular times. */
+
+.run-row {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr auto;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.3rem 0.5rem;
+  border-bottom: 2px solid rgba(22, 18, 31, 0.25);
+}
+
+.run-row:nth-child(even) { background: rgba(0, 163, 196, 0.08); }
+
+.run-row:last-child { border-bottom: none; }
+
+.run-slot {
+  font-family: var(--font-type) !important;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--c-text-secondary);
+}
+
+.run-dur {
+  font-family: var(--font-type) !important;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: var(--c-primary);
+  border: 2px solid #16121f;
+  padding: 0 0.3rem;
+  box-shadow: 2px 2px 0 rgba(22, 18, 31, 0.6);
+}
+
+/* Breaks and the bar sit apart from the talks */
+.run-row--break {
+  background: #ffd400 !important;
+  border: 2px solid #16121f;
+  padding-left: 0.6rem;
+  margin: 0.2rem 0;
+  box-shadow: 3px 3px 0 rgba(22, 18, 31, 0.6);
+}
+
+/* Keep the whole running order on one screen: the Welsh line is a caption
+   here, not a paragraph. */
+.run-row .cy--sm {
+  font-size: 0.74em;
+  line-height: 1.25;
+}
+
+
+/* === SPEAKER GRID === */
+/* Six little trading cards. */
+
+.speaker {
+  border: 3px solid #16121f;
+  background: linear-gradient(165deg, #ffffff 0%, #eef6ff 100%);
+  padding: 0.55rem 0.65rem;
+  box-shadow: 4px 4px 0 rgba(22, 18, 31, 0.75);
+}
+
+.speaker:nth-child(3n+1) { box-shadow: 4px 4px 0 var(--c-primary); }
+.speaker:nth-child(3n+2) { box-shadow: 4px 4px 0 var(--c-primary-light); }
+.speaker:nth-child(3n+3) { box-shadow: 4px 4px 0 #b56a00; }
+
+.speaker-num {
+  font-family: var(--font-type) !important;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: #16121f;
+  display: inline-block;
+  padding: 0 0.28rem;
+  letter-spacing: 0.1em;
+}
+
+
+/* === PHOTOS === */
+/* Framed like a print stuck to the page with a fat black border. */
+
+.slidev-layout img:not(.qr) {
+  border: 4px solid #16121f;
+  box-shadow: 6px 6px 0 rgba(22, 18, 31, 0.8);
+}
+
+
+/* === QR PANEL === */
+/* Framed like a "SCAN ME" web badge, with a lazy wobble. */
+
+@keyframes qr-wobble {
+  0%, 100% { transform: rotate(-1.2deg); }
+  50%      { transform: rotate(1.2deg); }
+}
+
+.qr {
+  background: #ffffff;
+  padding: 0.6rem;
+  width: 100%;
+  max-width: 190px;
+  display: block;
+  border: 4px solid #16121f;
+  box-shadow: 6px 6px 0 var(--c-primary-light);
+  animation: qr-wobble 4s ease-in-out infinite;
+}
+
+
+/* === RAINBOW TITLE — the shop sign === */
+/* WordArt: a rainbow sweep behind a hard black outline, with a lamp flicker. */
+
+@keyframes sign-rainbow {
+  from { background-position: 0% 50%; }
+  to   { background-position: 200% 50%; }
+}
+
+@keyframes sign-flicker {
+  0%, 100%  { filter: none; }
+  47%       { filter: none; }
+  48%       { filter: brightness(1.6) saturate(1.4); }
+  49%       { filter: none; }
+  92%       { filter: none; }
+  93%       { filter: brightness(0.75); }
+  94%       { filter: none; }
+}
+
+.shop-sign {
+  display: inline-block;
+  background-image: linear-gradient(
+    100deg,
+    #ff2d95, #ff7a00, #ffd400, #7fdb00, #00a3c4, #8000ff, #ff2d95
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: 2px #16121f;
+  paint-order: stroke fill;
+  text-shadow: 4px 4px 0 rgba(22, 18, 31, 0.28);
+  animation: sign-rainbow 6s linear infinite, sign-flicker 7s linear infinite;
+}
+
+
+
+/* === MOTION OPT-OUT === */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+
+/* === SLOP TAXONOMY === */
+
+.slop-grade {
+  font-weight: 700;
+  color: var(--c-primary-light);
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+}
+
+.slop-desc {
+  font-size: 0.85rem;
+  color: var(--c-text-secondary);
+  line-height: 1.5;
+  margin-top: 0.3rem;
+  text-wrap: pretty;
+}
+
+
+/* === ADMISSIBLE-ITEM CHIPS === */
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.chip {
+  font-size: 0.8rem;
+  color: var(--c-text-secondary);
+  background: rgb(var(--c-primary-rgb) / 0.08);
+  border: 1px solid rgb(var(--c-primary-rgb) / 0.25);
+  padding: 0.2rem 0.55rem;
+  white-space: nowrap;
+}
+
+/* Every third chip leans pink, so the block reads as a jumble not a list */
+.chip:nth-child(3n) {
+  background: rgb(var(--c-primary-light-rgb) / 0.58);
+  border-color: rgb(var(--c-primary-light-rgb) / 0.28);
 }
