@@ -337,6 +337,11 @@ hideInToc: true
 # The First Speaker
 
 please welcome
+<div class="flex flex-col items-center justify-start">
+  <img class="qr" src="/Unknown.svg" alt="QR code to the Slop Shop board and Drive folder" />
+  <div class="text-base text-secondary mt-4 text-center">Scan to claim your slop</div>
+</div>
+
 
 ---
 layout: image-left
@@ -354,6 +359,11 @@ hideInToc: true
 ---
 
 # Speaker 2
+<div class="flex flex-col items-center justify-start">
+  <img class="qr" src="/Unknown.svg" alt="QR code to the Slop Shop board and Drive folder" />
+  <div class="text-base text-secondary mt-4 text-center">Scan to claim your slop</div>
+</div>
+
 
 please welcome
 
@@ -373,6 +383,11 @@ hideInToc: true
 # Speaker 3
 
 please welcome
+<div class="flex flex-col items-center justify-start">
+  <img class="qr" src="/Unknown.svg" alt="QR code to the Slop Shop board and Drive folder" />
+  <div class="text-base text-secondary mt-4 text-center">Scan to claim your slop</div>
+</div>
+
 
 ---
 layout: default
@@ -399,6 +414,11 @@ hideInToc: true
 # Speaker 4
 
 please welcome
+<div class="flex flex-col items-center justify-start">
+  <img class="qr" src="/Unknown.svg" alt="QR code to the Slop Shop board and Drive folder" />
+  <div class="text-base text-secondary mt-4 text-center">Scan to claim your slop</div>
+</div>
+
 
 ---
 layout: image-left
@@ -417,6 +437,12 @@ hideInToc: true
 
 please welcome
 
+
+<div class="flex flex-col items-center justify-start">
+  <img class="qr" src="/Unknown.svg" alt="QR code to the Slop Shop board and Drive folder" />
+  <div class="text-base text-secondary mt-4 text-center">Scan to claim your slop</div>
+</div>
+
 ---
 layout: default
 hideInToc: true
@@ -426,6 +452,10 @@ hideInToc: true
 
 please welcome
 
+<div class="flex flex-col items-center justify-start">
+  <img class="qr" src="/Unknown.svg" alt="QR code to the Slop Shop board and Drive folder" />
+  <div class="text-base text-secondary mt-4 text-center">Scan to claim your slop</div>
+</div>
 
 ---
 layout: default
@@ -459,7 +489,6 @@ hideInToc: true
 <div class="flex flex-col items-center justify-start">
   <img class="qr" src="/Unknown.svg" alt="QR code to the Slop Shop board and Drive folder" />
   <div class="text-base text-secondary mt-4 text-center">Scan to claim your slop</div>
-  <div class="attribution--subtle mt-2 text-center">placeholder link</div>
 </div>
 
 </div>
